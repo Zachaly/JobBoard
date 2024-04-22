@@ -15,15 +15,17 @@ namespace JobBoard.Tests.Unit.Factory
         [Fact]
         public void Create_CreatesValidEntity()
         {
-            var request = new AddCompanyAccountRequest(
-                "email",
-                "pass",
-                "name",
-                "city",
-                "postal-code",
-                "addr",
-                "ctn",
-                "contactemail");
+            var request = new AddCompanyAccountRequest
+            {
+                Email = "email",
+                Password = "pass",
+                Name = "name",
+                City = "city",
+                PostalCode = "postal-code",
+                Address = "addr",
+                Country = "ctn",
+                ContactEmail = "contactemail"
+            };
 
             var passwordHash = "hash";
 

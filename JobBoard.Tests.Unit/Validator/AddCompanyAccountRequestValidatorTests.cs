@@ -20,16 +20,18 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void ValidRequest_PassesValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "company name",
-                "city",
-                "12-345",
-                "address",
-                "country",
-                "email2@email.com");
-
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
+                   
             var res = _validator.Validate(request);
 
             Assert.True(res.IsValid);
@@ -38,15 +40,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidEmail_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email",
-                "zaq1@WSX",
-                "company name",
-                "city",
-                "12-345",
-                "address",
-                "country",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -58,15 +62,17 @@ namespace JobBoard.Tests.Unit.Validator
         [InlineData(101)]
         public void InvalidPasswordLength_DoesNotPassValidation(int len)
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                new string('a', len),
-                "company name",
-                "city",
-                "12-345",
-                "address",
-                "country",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = new string('a', len),
+                Name = "company name",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -76,15 +82,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidCompanyName_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "",
-                "city",
-                "12-345",
-                "address",
-                "country",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -94,15 +102,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidCity_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "company name",
-                "",
-                "12-345",
-                "address",
-                "country",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -112,15 +122,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidPostalCode_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "company name",
-                "city",
-                "",
-                "address",
-                "country",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "city",
+                PostalCode = "",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -130,15 +142,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidAddress_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "company name",
-                "city",
-                "12-345",
-                "",
-                "country",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "",
+                Country = "country",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -148,15 +162,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidCountry_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "company name",
-                "city",
-                "12-345",
-                "address",
-                "",
-                "email@email.com");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "",
+                ContactEmail = "email2@email.com"
+            };
 
             var res = _validator.Validate(request);
 
@@ -166,15 +182,17 @@ namespace JobBoard.Tests.Unit.Validator
         [Fact]
         public void InvalidContactEmail_DoesNotPassValidation()
         {
-            var request = new AddCompanyAccountRequest(
-                "email@email.com",
-                "zaq1@WSX",
-                "company name",
-                "city",
-                "12-345",
-                "address",
-                "country",
-                "email");
+            var request = new AddCompanyAccountRequest()
+            {
+                Email = "email@email.com",
+                Password = "zaq1@WSX",
+                Name = "company name",
+                City = "city",
+                PostalCode = "12-345",
+                Address = "address",
+                Country = "country",
+                ContactEmail = "email"
+            };
 
             var res = _validator.Validate(request);
 
