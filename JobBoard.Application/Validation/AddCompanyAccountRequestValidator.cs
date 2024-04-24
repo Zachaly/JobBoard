@@ -12,7 +12,7 @@ namespace JobBoard.Application.Validation
             RuleFor(x => x.Address).NotEmpty();
             RuleFor(x => x.City).NotEmpty();
             RuleFor(x => x.PostalCode).NotEmpty();
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
             RuleFor(x => x.Country).NotEmpty();
             RuleFor(x => x.Password).NotEmpty().Length(8, 100);
         }

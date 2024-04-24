@@ -13,5 +13,13 @@ namespace JobBoard.Database
         public DbSet<CompanyAccount> CompanyAccounts { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CompanyAccount>()
+                .Property(e => e.Name).HasMaxLength(200);
+        }
     }
 }

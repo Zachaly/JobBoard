@@ -79,14 +79,16 @@ namespace JobBoard.Tests.Unit.Validator
             Assert.False(res.IsValid);
         }
 
-        [Fact]
-        public void InvalidCompanyName_DoesNotPassValidation()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(201)]
+        public void InvalidCompanyName_DoesNotPassValidation(int len)
         {
             var request = new AddCompanyAccountRequest()
             {
                 Email = "email@email.com",
                 Password = "zaq1@WSX",
-                Name = "",
+                Name = new string('a', len),
                 City = "city",
                 PostalCode = "12-345",
                 Address = "address",
