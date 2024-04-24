@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.5.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JobBoard.Api\JobBoard.Api.csproj" />
     <ProjectReference Include="..\JobBoard.Database\JobBoard.Database.csproj" />
   </ItemGroup>
 

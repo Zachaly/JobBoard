@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using JobBoard.Application.Service;
 
-namespace JobBoard.Tests.Unit.Service
+namespace JobBoard.Tests.Unit.ServiceTests
 {
     public class HashServiceTests
     {

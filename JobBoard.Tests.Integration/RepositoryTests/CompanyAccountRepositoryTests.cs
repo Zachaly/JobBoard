@@ -4,7 +4,7 @@ using JobBoard.Domain.Entity;
 using JobBoard.Model.CompanyAccount;
 using Microsoft.EntityFrameworkCore;
 
-namespace JobBoard.Tests.Integration.Repository
+namespace JobBoard.Tests.Integration.RepositoryTests
 {
     public class CompanyAccountRepositoryTests : IDisposable
     {
@@ -37,7 +37,6 @@ namespace JobBoard.Tests.Integration.Repository
             };
 
             await _repository.AddAsync(entity);
-
 
             Assert.Contains(_dbContext.CompanyAccounts, x => x == entity);
         }

@@ -1,13 +1,16 @@
 using JobBoard.Api.Extensions;
 using JobBoard.Database;
+using Microsoft.AspNetCore.Mvc;
+[assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.AddDatabase();
+builder.ConfigureSwagger();
+builder.AddServices();
 
 var app = builder.Build();
 
@@ -30,3 +33,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

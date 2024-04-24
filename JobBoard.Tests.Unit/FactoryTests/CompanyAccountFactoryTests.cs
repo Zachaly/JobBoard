@@ -1,7 +1,7 @@
 ﻿using JobBoard.Application.Factory;
 using JobBoard.Model.CompanyAccount;
 
-namespace JobBoard.Tests.Unit.Factory
+namespace JobBoard.Tests.Unit.FactoryTests
 {
     public class CompanyAccountFactoryTests 
     {

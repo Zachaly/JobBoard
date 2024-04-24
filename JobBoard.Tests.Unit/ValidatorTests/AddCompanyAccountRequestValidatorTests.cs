@@ -1,12 +1,7 @@
 ﻿using JobBoard.Application.Validation;
 using JobBoard.Model.CompanyAccount;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace JobBoard.Tests.Unit.Validator
+namespace JobBoard.Tests.Unit.ValidatorTests
 {
     public class AddCompanyAccountRequestValidatorTests
     {
