@@ -6,3 +6,12 @@
   * .NET 8
   * ASP.NET Core
   * EntityFramework Core
+  * MediatR
+  * FluentValidation
+  * XUnit
+* Frontend
+  * Vue3
+  * Vue Router
+  * Axios
+  * Pinia
+  * Bulma
