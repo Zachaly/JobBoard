@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.AddDatabase();
 builder.ConfigureSwagger();
 builder.AddServices();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -25,6 +26,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(opt =>
+{
+    opt.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins("http://localhost:3000")
+        .AllowCredentials();
+});
 
 app.UseHttpsRedirection();
 
