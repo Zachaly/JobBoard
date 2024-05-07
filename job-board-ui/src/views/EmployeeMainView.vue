@@ -1,13 +1,11 @@
 <template>
     <ViewTemplate>
         <div class="columns is-centered">
-            <div class="column is-4 is-centered">
-                <button @click="goToCreateAccount" class="button is-info">
-                    Create account
-                </button>
+            <div class="column is-4">
+                <button class="button is-info" @click="goToCreateAccount">Create account</button>
             </div>
         </div>
-    </ViewTemplate>
+    </ViewTemplate>    
 </template>
 
 <script setup lang="ts">
@@ -17,7 +15,6 @@ import ViewTemplate from './ViewTemplate.vue';
 const router = useRouter()
 
 const goToCreateAccount = () => {
-    router.push('/company/create-account')
+    router.push('/employee/create-account')
 }
-
 </script>

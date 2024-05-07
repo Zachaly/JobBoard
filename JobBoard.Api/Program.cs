@@ -1,6 +1,7 @@
 using JobBoard.Api.Extensions;
 using JobBoard.Database;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 [assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,8 @@ var app = builder.Build();
 using(var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
+
+    dbContext.Database.Migrate();
 }
 
 if (app.Environment.IsDevelopment())
