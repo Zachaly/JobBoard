@@ -1,7 +1,9 @@
 ﻿using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Domain.Entity;
-using JobBoard.Model;
+using JobBoard.Expressions;
 using JobBoard.Model.EmployeeAccount;
+using Microsoft.EntityFrameworkCore;
+
 namespace JobBoard.Database.Repository
 {
     public class EmployeeAccountRepository : IEmployeeAccountRepository
@@ -13,29 +15,29 @@ namespace JobBoard.Database.Repository
             _dbContext = dbContext;
         }
 
-        public Task AddAsync(EmployeeAccount account)
+        public async Task AddAsync(EmployeeAccount account)
         {
-            throw new NotImplementedException();
-        }
+            await _dbContext.EmployeeAccounts.AddAsync(account);
 
-        public Task<IEnumerable<EmployeeAccountModel>> GetAsync(PagedRequest request)
-        {
-            throw new NotImplementedException();
+            await _dbContext.SaveChangesAsync();
         }
 
         public Task<IEnumerable<EmployeeAccountModel>> GetAsync(GetEmployeeAccountRequest request)
         {
-            throw new NotImplementedException();
+            var result = _dbContext.EmployeeAccounts
+                .AddPagination(request)
+                .Select(EmployeeAccountExpressions.Model)
+                .AsEnumerable();
+
+            return Task.FromResult(result);
         }
 
         public Task<EmployeeAccount?> GetByEmailAsync(string email)
-        {
-            throw new NotImplementedException();
-        }
+            => _dbContext.EmployeeAccounts.Where(a => a.Email == email).FirstOrDefaultAsync();
 
         public Task<EmployeeAccountModel?> GetByIdAsync(long id)
-        {
-            throw new NotImplementedException();
-        }
+            => _dbContext.EmployeeAccounts.Where(a => a.Id == id)
+                .Select(EmployeeAccountExpressions.Model)
+                .FirstOrDefaultAsync();
     }
 }

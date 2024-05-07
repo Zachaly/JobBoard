@@ -1,23 +1,15 @@
-﻿using JobBoard.Database;
-using JobBoard.Database.Repository;
+﻿using JobBoard.Database.Repository;
 using JobBoard.Domain.Entity;
 using JobBoard.Model.CompanyAccount;
-using Microsoft.EntityFrameworkCore;
 
 namespace JobBoard.Tests.Integration.RepositoryTests
 {
-    public class CompanyAccountRepositoryTests : IDisposable
+    public class CompanyAccountRepositoryTests : DatabaseTest
     {
-        private readonly ApplicationDbContext _dbContext;
         private readonly CompanyAccountRepository _repository;
 
-        public CompanyAccountRepositoryTests()
+        public CompanyAccountRepositoryTests() : base()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseSqlServer(Constants.ConnectionString).Options;
-
-            _dbContext = new ApplicationDbContext(options);
-            _dbContext.Database.Migrate();
             _repository = new CompanyAccountRepository(_dbContext);
         }
 
@@ -98,12 +90,6 @@ namespace JobBoard.Tests.Integration.RepositoryTests
             Assert.Equal(expected.City, res.City);
             Assert.Equal(expected.Address, res.Address);
             Assert.Equal(expected.ContactEmail, res.ContactEmail);
-        }
-
-        public void Dispose()
-        {
-            _dbContext.Database.EnsureDeleted();
-            _dbContext.Dispose();
         }
     }
 }

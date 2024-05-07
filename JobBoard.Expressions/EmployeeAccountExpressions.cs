@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 
 namespace JobBoard.Expressions
 {
-    public class EmployeeAccountExpressions
+    public static class EmployeeAccountExpressions
     {
-        public Expression<Func<EmployeeAccount, EmployeeAccountModel>> Model { get; } = account => new EmployeeAccountModel
+        public static Expression<Func<EmployeeAccount, EmployeeAccountModel>> Model { get; } = account => new EmployeeAccountModel
         {
             AboutMe = account.AboutMe,
             City = account.City,

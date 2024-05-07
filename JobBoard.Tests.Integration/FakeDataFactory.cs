@@ -1,10 +1,5 @@
 ﻿using Bogus;
 using JobBoard.Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobBoard.Tests.Integration
 {
@@ -20,6 +15,16 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.City, f => f.Address.City())
                 .RuleFor(x => x.Name, f => f.Name.JobTitle())
                 .RuleFor(x => x.Password, _ => "hash")
+                .Generate(count);
+
+        public static List<EmployeeAccount> CreateEmployeeAccounts(int count)
+            => new Faker<EmployeeAccount>()
+                .RuleFor(x => x.Email, f => f.Internet.Email())
+                .RuleFor(x => x.PasswordHash, f => f.Random.String())
+                .RuleFor(x => x.FirstName, f => f.Name.FirstName())
+                .RuleFor(x => x.LastName, f => f.Name.LastName())
+                .RuleFor(x => x.PhoneNumber, f => f.Phone.PhoneNumber().Replace(" ", ""))
+                .RuleFor(x => x.PasswordHash, _ => "hash")
                 .Generate(count);
     }
 }
