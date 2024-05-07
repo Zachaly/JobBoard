@@ -22,6 +22,7 @@ namespace JobBoard.Api.Extensions
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
             builder.Services.AddScoped<ICompanyAccountRepository, CompanyAccountRepository>();
+            builder.Services.AddScoped<IEmployeeAccountRepository, EmployeeAccountRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder builder)
@@ -31,6 +32,7 @@ namespace JobBoard.Api.Extensions
 
             builder.Services.AddScoped<IHashService, HashService>();
             builder.Services.AddScoped<ICompanyAccountFactory, CompanyAccountFactory>();
+            builder.Services.AddScoped<IEmployeeAccountFactory, EmployeeAccountFactory>();
         }
 
         public static void ConfigureSwagger(this WebApplicationBuilder builder)
