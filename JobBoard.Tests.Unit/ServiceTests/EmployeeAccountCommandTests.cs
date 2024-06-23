@@ -147,5 +147,83 @@ namespace JobBoard.Tests.Unit.ServiceTests
             Assert.False(res.IsSuccess);
             Assert.NotNull(res.Error);
         }
+
+        [Fact]
+        public async Task EmployeeLoginCommand_ReturnsResponseWithTokenAndId()
+        {
+            var request = new EmployeeLoginCommand();
+
+            var account = new EmployeeAccount
+            {
+                Id = 1,
+            };
+
+            const string Token = "token";
+
+            var repository = Substitute.For<IEmployeeAccountRepository>();
+            repository.GetByEmailAsync(request.Login).Returns(account);
+
+            var hashService = Substitute.For<IHashService>();
+            hashService.VerifyPassword(request.Password, account.PasswordHash).Returns(true);
+
+            var tokenService = Substitute.For<ITokenService>();
+            tokenService.GenerateTokenAsync(account.Id, "Employee").Returns(Token);
+
+            var handler = new EmployeeLoginHandler(repository, tokenService, hashService);
+
+            var res = await handler.Handle(request, default);
+
+            Assert.True(res.IsSuccess);
+            Assert.Equal(account.Id, res.UserId);
+            Assert.Equal(Token, res.AuthToken);
+        }
+
+        [Fact]
+        public async Task EmployeeLoginCommand_UserNotFound_Failure()
+        {
+            var request = new EmployeeLoginCommand();
+
+            var repository = Substitute.For<IEmployeeAccountRepository>();
+            repository.GetByEmailAsync(request.Login).ReturnsNull();
+
+            var hashService = Substitute.For<IHashService>();
+
+            var tokenService = Substitute.For<ITokenService>();
+
+            var handler = new EmployeeLoginHandler(repository, tokenService, hashService);
+
+            var res = await handler.Handle(request, default);
+
+            Assert.False(res.IsSuccess);
+            Assert.Equal(0, res.UserId);
+            Assert.Empty(res.AuthToken);
+        }
+
+        [Fact]
+        public async Task EmployeeLoginCommand_PasswordDoNotMatch_Failure()
+        {
+            var request = new EmployeeLoginCommand();
+
+            var account = new EmployeeAccount
+            {
+                Id = 1,
+            };
+
+            var repository = Substitute.For<IEmployeeAccountRepository>();
+            repository.GetByEmailAsync(request.Login).Returns(account);
+
+            var hashService = Substitute.For<IHashService>();
+            hashService.VerifyPassword(request.Password, account.PasswordHash).Returns(false);
+
+            var tokenService = Substitute.For<ITokenService>();
+
+            var handler = new EmployeeLoginHandler(repository, tokenService, hashService);
+
+            var res = await handler.Handle(request, default);
+
+            Assert.False(res.IsSuccess);
+            Assert.Equal(0, res.UserId);
+            Assert.Empty(res.AuthToken);
+        }
     }
 }
