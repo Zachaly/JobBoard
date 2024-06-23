@@ -23,6 +23,7 @@ namespace JobBoard.Api.Extensions
 
             builder.Services.AddScoped<ICompanyAccountRepository, CompanyAccountRepository>();
             builder.Services.AddScoped<IEmployeeAccountRepository, EmployeeAccountRepository>();
+            builder.Services.AddScoped<IAdminAccountRepository, AdminAccountRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder builder)
@@ -33,6 +34,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IHashService, HashService>();
             builder.Services.AddScoped<ICompanyAccountFactory, CompanyAccountFactory>();
             builder.Services.AddScoped<IEmployeeAccountFactory, EmployeeAccountFactory>();
+            builder.Services.AddScoped<IAdminAccountFactory, AdminAccountFactory>();
         }
 
         public static void ConfigureSwagger(this WebApplicationBuilder builder)

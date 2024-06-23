@@ -26,5 +26,11 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.PhoneNumber, f => f.Phone.PhoneNumber().Replace(" ", ""))
                 .RuleFor(x => x.PasswordHash, _ => "hash")
                 .Generate(count);
+
+        public static List<AdminAccount> CreateAdminAccounts(int count) 
+            => new Faker<AdminAccount>()
+                .RuleFor(x => x.Login, f => f.Name.FirstName())
+                .RuleFor(x => x.PasswordHash, f => f.Random.String())
+                .Generate(count);
     }
 }

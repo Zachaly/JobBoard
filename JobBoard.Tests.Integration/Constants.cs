@@ -2,6 +2,6 @@
 {
     internal static class Constants
     {
-        public const string ConnectionString = "server=.; database=JobBoardTests; Trusted_Connection=true; Integrated Security=True; TrustServerCertificate=True";
+        public const string ConnectionString = "server=.\\SQLEXPRESS; database=JobBoardTests; Trusted_Connection=true; Integrated Security=True; TrustServerCertificate=True";
     }
 }

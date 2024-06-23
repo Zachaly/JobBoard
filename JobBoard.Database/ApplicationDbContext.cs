@@ -7,6 +7,7 @@ namespace JobBoard.Database
     {
         public DbSet<CompanyAccount> CompanyAccounts { get; set; }
         public DbSet<EmployeeAccount> EmployeeAccounts { get; set; }
+        public DbSet<AdminAccount> AdminAccounts { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
@@ -34,6 +35,9 @@ namespace JobBoard.Database
 
             modelBuilder.Entity<EmployeeAccount>()
                 .Property(e => e.PhoneNumber).HasMaxLength(20);
+
+            modelBuilder.Entity<AdminAccount>()
+                .Property(e => e.Login).HasMaxLength(100);
         }
     }
 }
