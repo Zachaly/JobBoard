@@ -1,4 +1,6 @@
+import AdminMainView from '@/views/AdminMainView.vue'
 import CompanyMainViewVue from '@/views/CompanyMainView.vue'
+import CreateAdminAccountView from '@/views/CreateAdminAccountView.vue'
 import CreateCompanyAccountViewVue from '@/views/CreateCompanyAccountView.vue'
 import CreateEmployeeAccountViewVue from '@/views/CreateEmployeeAccountView.vue'
 import EmployeeMainViewVue from '@/views/EmployeeMainView.vue'
@@ -12,7 +14,9 @@ const routes: Array<RouteRecordRaw> = [
   createRoute('/company', 'company-main', CompanyMainViewVue),
   createRoute('/company/create-account', 'company-create-account', CreateCompanyAccountViewVue),
   createRoute('/employee', 'employee-main', EmployeeMainViewVue),
-  createRoute('/employee/create-account', 'employee-create-account', CreateEmployeeAccountViewVue)
+  createRoute('/employee/create-account', 'employee-create-account', CreateEmployeeAccountViewVue),
+  createRoute('/admin', 'admin-panel', AdminMainView),
+  createRoute('/admin/create-account', 'admin-create-account', CreateAdminAccountView)
 ]
 
 const router = createRouter({
