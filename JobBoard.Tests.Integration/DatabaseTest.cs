@@ -13,7 +13,7 @@ namespace JobBoard.Tests.Integration
                 .UseSqlServer(Constants.ConnectionString).Options;
 
             _dbContext = new ApplicationDbContext(options);
-            _dbContext.Database.EnsureCreated();
+            _dbContext.Database.Migrate();
         }
 
         public void Dispose()

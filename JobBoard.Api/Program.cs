@@ -23,6 +23,8 @@ using(var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
+app.CreateDefaultAdmin();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
