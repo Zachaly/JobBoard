@@ -15,7 +15,7 @@ namespace JobBoard.Api.Extensions
             return new BadRequestObjectResult(response);
         }
 
-        public static ActionResult<TResult> ReturnOkOrNotFound<TResult>(TResult res)
+        public static ActionResult<TResult> ReturnOkOrNotFound<TResult>(TResult? res) where TResult : class
         {
             if (res == null)
             {

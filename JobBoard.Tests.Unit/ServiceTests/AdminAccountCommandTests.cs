@@ -118,5 +118,23 @@ namespace JobBoard.Tests.Unit.ServiceTests
             Assert.False(res.IsSuccess);
             Assert.NotEmpty(res.Error);
         }
+
+        [Fact]
+        public async Task GetAdminAccountByIdCommand_ReturnsAdminAccount()
+        {
+            var command = new GetAdminAccountByIdCommand(1);
+
+            var account = new AdminAccountModel();
+
+            var repository = Substitute.For<IAdminAccountRepository>();
+
+            repository.GetByIdAsync(command.Id).Returns(account);
+
+            var handler = new GetAdminAccountByIdHandler(repository);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.Equal(account, res);
+        }
     }
 }
