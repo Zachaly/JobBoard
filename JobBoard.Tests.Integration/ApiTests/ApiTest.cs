@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using JobBoard.Application.Command;
+using JobBoard.Model.Response;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
@@ -25,11 +29,78 @@ namespace JobBoard.Tests.Integration.ApiTests
             _httpClient = webFactory.CreateClient();
         }
 
-        protected async Task<T?> GetContentFromBadRequest<T>(HttpResponseMessage response)
+        protected async Task<T?> GetContentFromBadRequestAsync<T>(HttpResponseMessage response)
         {
             var stringContent = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<T>(stringContent);
+        }
+
+        protected async Task AuthorizeAdminAsync()
+        {
+            var request = new AdminLoginCommand
+            {
+                Login = "admin_main",
+                Password = "zaq1@WSX"
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/admin-account/login", request);
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
+        }
+
+        protected async Task AuthorizeEmployeeAsync()
+        {
+            var registerRequest = new AddEmployeeAccountCommand
+            {
+                Email = "test@email.com",
+                Password = "zaq1@WSX",
+                FirstName = "fname",
+                LastName = "lname",
+                PhoneNumber = "123456789"
+            };
+
+            await _httpClient.PostAsJsonAsync("api/employee-account", registerRequest);
+
+            var loginRequest = new EmployeeLoginCommand
+            {
+                Login = registerRequest.Email,
+                Password = registerRequest.Password,
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/employee-account/login", loginRequest);
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
+        }
+
+        protected async Task AuthorizeCompanyAsync()
+        {
+            var registerRequest = new AddCompanyAccountCommand
+            {
+                Address = "addr",
+                City = "city",
+                ContactEmail = "company@company.com",
+                Country = "pl",
+                Email = "login@email.com",
+                Name = "company",
+                Password = "zaq1@WSX",
+                PostalCode = "12345"
+            };
+
+            await _httpClient.PostAsJsonAsync("api/company-account", registerRequest);
+
+            var loginRequest = new CompanyLoginCommand
+            {
+                Login = registerRequest.Email,
+                Password = registerRequest.Password,
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/company-account/login", loginRequest);
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
         }
     }
 }

@@ -59,5 +59,20 @@ namespace JobBoard.Api.Controllers
 
             return res.ReturnCreatedOrBadRequest();
         }
+
+        /// <summary>
+        /// Returns access token and id of specified user
+        /// </summary>
+        /// <response code="200">Login successfull</response>
+        /// <response code="400">Invalid login data</response>
+        [HttpPost("login")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<LoginResponse>> Login(CompanyLoginCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnOkOrBadRequest();
+        }
     }
 }

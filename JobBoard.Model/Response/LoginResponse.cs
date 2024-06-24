@@ -16,5 +16,7 @@
             UserId = 0;
             AuthToken = "";
         }
+
+        public LoginResponse() : base() { }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using JobBoard.Application.Exception;
 using JobBoard.Application.Service.Abstraction;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,9 +22,9 @@ namespace JobBoard.Application.Service
         private readonly TokenConfiguration _configuration;
         private readonly TokenValidationParameters _validationParameters;
 
-        public TokenService(TokenConfiguration config, TokenValidationParameters validationParameters)
+        public TokenService(IOptions<TokenConfiguration> config, TokenValidationParameters validationParameters)
         {
-            _configuration = config;
+            _configuration = config.Value;
             _validationParameters = validationParameters;
         }
 
@@ -36,9 +37,10 @@ namespace JobBoard.Application.Service
                 new Claim("Role", role)
             };
 
-            var handler = new JsonWebTokenHandler();
-
-            handler.MapInboundClaims = false;
+            var handler = new JsonWebTokenHandler
+            {
+                MapInboundClaims = false
+            };
 
             var token = handler.CreateToken(new SecurityTokenDescriptor
             {
@@ -51,7 +53,6 @@ namespace JobBoard.Application.Service
                 NotBefore = DateTime.Now,
             });
 
-
             return Task.FromResult(token);
         }
 
@@ -61,8 +62,10 @@ namespace JobBoard.Application.Service
 
             parameters.ValidateLifetime = false;
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            tokenHandler.MapInboundClaims = false;
+            var tokenHandler = new JwtSecurityTokenHandler
+            {
+                MapInboundClaims = false
+            };
 
             ClaimsPrincipal claimsPrincipal;
             SecurityToken securityToken;

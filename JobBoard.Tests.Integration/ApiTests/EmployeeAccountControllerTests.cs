@@ -42,7 +42,7 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, command);
 
-            var content = await GetContentFromBadRequest<ResponseModel>(response);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Contains(content.ValidationErrors.Keys, x => x == "Email");
@@ -64,7 +64,7 @@ namespace JobBoard.Tests.Integration.ApiTests
             await _httpClient.PostAsJsonAsync(Endpoint, command);
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, command);
-            var content = await GetContentFromBadRequest<ResponseModel>(response);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotEmpty(content.Error);
@@ -105,6 +105,50 @@ namespace JobBoard.Tests.Integration.ApiTests
             var response = await _httpClient.GetAsync($"{Endpoint}/2137");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Login_ValidCredentials_ReturnsTokenAndUserId()
+        {
+            var registerRequest = new AddEmployeeAccountCommand
+            {
+                Email = "test@email.com",
+                Password = "zaq1@WSX",
+                FirstName = "fname",
+                LastName = "lname",
+                PhoneNumber = "123456789"
+            };
+
+            await _httpClient.PostAsJsonAsync(Endpoint, registerRequest);
+
+            var loginRequest = new EmployeeLoginCommand
+            {
+                Login = registerRequest.Email,
+                Password = registerRequest.Password,
+            };
+
+            var account = _dbContext.EmployeeAccounts.First();
+
+            var response = await _httpClient.PostAsJsonAsync($"{Endpoint}/login", loginRequest);
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(account.Id, content.UserId);
+            Assert.NotEmpty(content.AuthToken);
+        }
+
+        [Fact]
+        public async Task Login_InvalidCredentials_ReturnsBadRequest()
+        {
+            var loginRequest = new EmployeeLoginCommand
+            {
+                Login = "em",
+                Password = "pass",
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/employee-account/login", loginRequest);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
