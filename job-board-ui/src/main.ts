@@ -9,6 +9,6 @@ axios.defaults.baseURL = 'https://localhost:5001/api/'
 const pinia = createPinia()
 
 createApp(App)
-    .use(router)
     .use(pinia)
+    .use(router)
     .mount('#app')

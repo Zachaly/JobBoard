@@ -3,13 +3,14 @@
         <div class="columns is-centered">
             <div class="column is-4">
                 <button class="button is-info" @click="goToCreateAccount">Create account</button>
+                <RouterLink to="/employee/login" class="button">Login</RouterLink>
             </div>
         </div>
     </ViewTemplate>    
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import ViewTemplate from './ViewTemplate.vue';
 
 const router = useRouter()
