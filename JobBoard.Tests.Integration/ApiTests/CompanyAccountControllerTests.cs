@@ -1,4 +1,5 @@
-﻿using JobBoard.Model.CompanyAccount;
+﻿using JobBoard.Application.Command;
+using JobBoard.Model.CompanyAccount;
 using JobBoard.Model.Response;
 using System.Net;
 using System.Net.Http.Json;
@@ -91,7 +92,7 @@ namespace JobBoard.Tests.Integration.ApiTests
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
-            var content = await GetContentFromBadRequest<ResponseModel>(response);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotEmpty(content.Error);
@@ -113,10 +114,57 @@ namespace JobBoard.Tests.Integration.ApiTests
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
-            var content = await GetContentFromBadRequest<ResponseModel>(response);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotEmpty(content.ValidationErrors["Email"]);
+        }
+
+        [Fact]
+        public async Task Login_ValidCredentials_ReturnsTokenAndUserId()
+        {
+            var registerRequest = new AddCompanyAccountCommand
+            {
+                Address = "addr",
+                City = "city",
+                ContactEmail = "company@company.com",
+                Country = "pl",
+                Email = "login@email.com",
+                Name = "company",
+                Password = "zaq1@WSX",
+                PostalCode = "12345"
+            };
+
+             await _httpClient.PostAsJsonAsync(Endpoint, registerRequest);
+
+            var loginRequest = new CompanyLoginCommand
+            {
+                Login = registerRequest.Email,
+                Password = registerRequest.Password,
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"{Endpoint}/login", loginRequest);
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            var account = _dbContext.CompanyAccounts.First();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(account.Id, content.UserId);
+            Assert.NotEmpty(content.AuthToken);
+        }
+
+        [Fact]
+        public async Task Login_InvalidCredentials_ReturnsBadRequest()
+        {
+            var loginRequest = new CompanyLoginCommand
+            {
+                Login = "em",
+                Password = "pass",
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"{Endpoint}/login", loginRequest);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

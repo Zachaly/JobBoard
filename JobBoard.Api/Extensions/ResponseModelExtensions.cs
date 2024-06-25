@@ -34,5 +34,15 @@ namespace JobBoard.Api.Extensions
 
             return new BadRequestObjectResult(response);
         }
+
+        public static ActionResult ReturnOkOrBadRequest(this ResponseModel response)
+        {
+            if (response.IsSuccess)
+            {
+                return new OkObjectResult(response);
+            }
+
+            return new BadRequestObjectResult(response);
+        }
     }
 }

@@ -1,13 +1,16 @@
-﻿using JobBoard.Api.Extensions;
+﻿using JobBoard.Api.Constants;
+using JobBoard.Api.Extensions;
 using JobBoard.Application.Command;
 using JobBoard.Model.AdminAccount;
 using JobBoard.Model.Response;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobBoard.Api.Controllers
 {
     [Route("/api/admin-account")]
+    [Authorize(Policy = AuthPolicyNames.Admin)]
     public class AdminAccountController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -58,6 +61,22 @@ namespace JobBoard.Api.Controllers
             var res = await _mediator.Send(command);
 
             return res.ReturnCreatedOrBadRequest();
-        }        
+        }
+
+        /// <summary>
+        /// Returns access token and id of specified user
+        /// </summary>
+        /// <response code="200">Login successfull</response>
+        /// <response code="400">Invalid login data</response>
+        [HttpPost("login")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [AllowAnonymous]
+        public async Task<ActionResult<LoginResponse>> Login(AdminLoginCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnOkOrBadRequest();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using JobBoard.Api.Constants;
 using JobBoard.Application.Command;
 using JobBoard.Application.Factory;
 using JobBoard.Application.Factory.Abstraction;
@@ -8,9 +9,12 @@ using JobBoard.Application.Validation;
 using JobBoard.Database;
 using JobBoard.Database.Repository;
 using JobBoard.Database.Repository.Abstraction;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text;
 
 namespace JobBoard.Api.Extensions
 {
@@ -35,6 +39,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<ICompanyAccountFactory, CompanyAccountFactory>();
             builder.Services.AddScoped<IEmployeeAccountFactory, EmployeeAccountFactory>();
             builder.Services.AddScoped<IAdminAccountFactory, AdminAccountFactory>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
         }
 
         public static void ConfigureSwagger(this WebApplicationBuilder builder)
@@ -77,6 +82,47 @@ namespace JobBoard.Api.Extensions
                         new string[]{}
                     }
                 });
+            });
+        }
+
+        public static void ConfigureAuthorization(this WebApplicationBuilder builder)
+        {
+            var bytes = Encoding.UTF8.GetBytes(builder.Configuration["Token:SecretKey"]!);
+            var key = new SymmetricSecurityKey(bytes);
+            var validationParameters = new TokenValidationParameters
+            {
+                IssuerSigningKey = key,
+                ValidIssuer = builder.Configuration["Token:AuthIssuer"],
+                ValidAudience = builder.Configuration["Token:AuthAudience"],
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidAlgorithms = [SecurityAlgorithms.HmacSha256Signature],
+                ValidateIssuerSigningKey = true,
+            };
+
+            builder.Services.AddSingleton(validationParameters);
+            builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Token"));
+
+            builder.Services.AddAuthentication(config =>
+            {
+                config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(config =>
+            {
+                config.SaveToken = true;
+                config.RequireHttpsMetadata = false;
+                config.TokenValidationParameters = validationParameters;
+                config.MapInboundClaims = false;
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthPolicyNames.Admin,
+                    pol => pol.RequireClaim(AuthClaimNames.RoleClaim, AuthClaimNames.Admin));
+                options.AddPolicy(AuthPolicyNames.Company,
+                    pol => pol.RequireClaim(AuthClaimNames.RoleClaim, AuthClaimNames.Company, AuthClaimNames.Admin));
+                options.AddPolicy(AuthPolicyNames.Employee,
+                    pol => pol.RequireClaim(AuthClaimNames.RoleClaim, AuthClaimNames.Employee, AuthClaimNames.Employee));
             });
         }
     }

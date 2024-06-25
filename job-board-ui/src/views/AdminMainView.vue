@@ -96,11 +96,19 @@
 
 <script setup lang="ts">
 import AdminAccountModel from '@/model/admin-account/AdminAccountModel';
-import ViewTemplate from './ViewTemplate.vue';
 import { onMounted, ref, Ref } from 'vue' 
 import EmployeeAccountModel from '@/model/employee-account/EmployeeAccountModel';
 import CompanyAccountModel from '@/model/company-account/CompanyAccountModel';
 import axios from 'axios';
+import useAuthStore, { AuthType } from '@/stores/AuthStore';
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+if(authStore.currentAuthType != AuthType.Admin) {
+    router.push('/admin/login')
+}
 
 const admins: Ref<AdminAccountModel[]> = ref([])
 const employees: Ref<EmployeeAccountModel[]> = ref([])

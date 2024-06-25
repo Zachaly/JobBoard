@@ -32,10 +32,9 @@ namespace JobBoard.Database.Repository
             return Task.FromResult(query);
         }
 
-        public Task<CompanyModel?> GetByEmailAsync(string email)
+        public Task<CompanyAccount?> GetByEmailAsync(string email)
             => _dbContext.CompanyAccounts
                 .Where(account => account.Email == email)
-                .Select(CompanyAccountExpressions.Model)
                 .FirstOrDefaultAsync();
 
         public Task<CompanyModel?> GetByIdAsync(long id)

@@ -8,6 +8,6 @@ namespace JobBoard.Database.Repository.Abstraction
         Task AddAsync(CompanyAccount account);
         Task<IEnumerable<CompanyModel>> GetAsync(GetCompanyRequest request);
         Task<CompanyModel?> GetByIdAsync(long id);
-        Task<CompanyModel?> GetByEmailAsync(string email);
+        Task<CompanyAccount?> GetByEmailAsync(string email);
     }
 }

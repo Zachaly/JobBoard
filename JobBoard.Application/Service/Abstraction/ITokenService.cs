@@ -1,0 +1,8 @@
+﻿namespace JobBoard.Application.Service.Abstraction
+{
+    public interface ITokenService
+    {
+        Task<string> GenerateTokenAsync(long userId, string role);
+        Task<long> GetUserIdFromToken(string token);
+    }
+}

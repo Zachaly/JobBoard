@@ -13,6 +13,7 @@ builder.AddDatabase();
 builder.ConfigureSwagger();
 builder.AddServices();
 builder.Services.AddCors();
+builder.ConfigureAuthorization();
 
 var app = builder.Build();
 
@@ -41,6 +42,7 @@ app.UseCors(opt =>
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Net;
 using JobBoard.Model.Response;
+using JobBoard.Application.Command;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
@@ -12,6 +13,8 @@ namespace JobBoard.Tests.Integration.ApiTests
         [Fact]
         public async Task Get_ReturnAccounts()
         {
+            await AuthorizeAdminAsync();
+
             _dbContext.AdminAccounts.AddRange(FakeDataFactory.CreateAdminAccounts(9));
             _dbContext.SaveChanges();
 
@@ -28,6 +31,8 @@ namespace JobBoard.Tests.Integration.ApiTests
         [Fact]
         public async Task GetById_ReturnsAccount()
         {
+            await AuthorizeAdminAsync();
+
             var expected = _dbContext.AdminAccounts.First();
 
             var response = await _httpClient.GetAsync($"{Endpoint}/{expected.Id}");
@@ -41,6 +46,8 @@ namespace JobBoard.Tests.Integration.ApiTests
         [Fact]
         public async Task GetById_AccountNotFount_ReturnsNotFound()
         {
+            await AuthorizeAdminAsync();
+
             var response = await _httpClient.GetAsync($"{Endpoint}/2137");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -49,6 +56,8 @@ namespace JobBoard.Tests.Integration.ApiTests
         [Fact]
         public async Task Post_ValidRequest_AddsNewAccount()
         {
+            await AuthorizeAdminAsync();
+
             var request = new AddAdminAccountRequest
             {
                 Login = "new_admin",
@@ -64,6 +73,8 @@ namespace JobBoard.Tests.Integration.ApiTests
         [Fact]
         public async Task Post_LoginTaken_ReturnsBadRequest()
         {
+            await AuthorizeAdminAsync();
+
             var request = new AddAdminAccountRequest
             {
                 Login = "admin_main",
@@ -72,7 +83,7 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
 
-            var content = await GetContentFromBadRequest<ResponseModel>(response);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotEmpty(content.Error);
@@ -81,6 +92,8 @@ namespace JobBoard.Tests.Integration.ApiTests
         [Fact]
         public async Task Post_InvalidRequest_ReturnsBadRequest()
         {
+            await AuthorizeAdminAsync();
+
             var request = new AddAdminAccountRequest
             {
                 Login = "",
@@ -89,11 +102,44 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
 
-            var content = await GetContentFromBadRequest<ResponseModel>(response);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotEmpty(content.ValidationErrors);
             Assert.Contains(content.ValidationErrors.Keys, x => x == "Login");
+        }
+
+        [Fact]
+        public async Task Login_ValidCredentials_ReturnsTokenAndUserId()
+        {
+            var request = new AdminLoginCommand
+            {
+                Login = "admin_main",
+                Password = "zaq1@WSX"
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"{Endpoint}/login", request);
+            var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            var account = _dbContext.AdminAccounts.Where(x => x.Login == request.Login).First();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotEmpty(content.AuthToken);
+            Assert.Equal(account.Id, content.UserId);
+        }
+
+        [Fact]
+        public async Task Login_InvalidCredentials_ReturnsBadRequest()
+        {
+            var request = new AdminLoginCommand
+            {
+                Login = "login",
+                Password = "pass"
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"{Endpoint}/login", request);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
