@@ -3,6 +3,6 @@
     public interface ITokenService
     {
         Task<string> GenerateTokenAsync(long userId, string role);
-        Task<long> GetUserIdFromToken(string token);
+        Task<(long Id, string Role)> GetUserIdAndRoleFromToken(string token);
     }
 }

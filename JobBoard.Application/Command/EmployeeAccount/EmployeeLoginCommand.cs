@@ -4,11 +4,6 @@ using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Model;
 using JobBoard.Model.Response;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobBoard.Application.Command
 {
@@ -21,12 +16,15 @@ namespace JobBoard.Application.Command
         private readonly IEmployeeAccountRepository _repository;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-        public EmployeeLoginHandler(IEmployeeAccountRepository repository, ITokenService tokenService, IHashService hashService)
+        public EmployeeLoginHandler(IEmployeeAccountRepository repository, ITokenService tokenService, IHashService hashService,
+            IRefreshTokenService refreshTokenService)
         {
             _repository = repository;
             _hashService = hashService;
             _tokenService = tokenService;
+            _refreshTokenService = refreshTokenService;
         }
 
         public async Task<LoginResponse> Handle(EmployeeLoginCommand request, CancellationToken cancellationToken)
@@ -43,9 +41,10 @@ namespace JobBoard.Application.Command
                 return new LoginResponse("Email or password not correct");
             }
 
+            var refreshToken = await _refreshTokenService.GenerateEmployeeAccountTokenAsync(account.Id);
             var token = await _tokenService.GenerateTokenAsync(account.Id, "Employee");
 
-            return new LoginResponse(account.Id, token);
+            return new LoginResponse(account.Id, token, refreshToken);
         }
     }
 }

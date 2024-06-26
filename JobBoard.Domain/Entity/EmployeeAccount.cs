@@ -11,5 +11,7 @@
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? AboutMe { get; set; }
+
+        public ICollection<EmployeeAccountRefreshToken> RefreshTokens { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace JobBoard.Application.Service
@@ -56,7 +57,7 @@ namespace JobBoard.Application.Service
             return Task.FromResult(token);
         }
 
-        public Task<long> GetUserIdFromToken(string token)
+        public Task<(long Id, string Role)> GetUserIdAndRoleFromToken(string token)
         {
             var parameters = _validationParameters.Clone();
 
@@ -85,15 +86,16 @@ namespace JobBoard.Application.Service
             }
 
             var idClaim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "sub");
+            var roleClaim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "Role");
 
-            if (idClaim is null)
+            if (idClaim is null || roleClaim is null)
             {
                 throw new InvalidTokenException("Token is not valid jwt");
             }
 
             var id = long.Parse(idClaim.Value);
 
-            return Task.FromResult(id);
+            return Task.FromResult((id, roleClaim.Value));
         }
     }
 }
