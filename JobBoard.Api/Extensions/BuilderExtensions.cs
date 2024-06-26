@@ -28,6 +28,9 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<ICompanyAccountRepository, CompanyAccountRepository>();
             builder.Services.AddScoped<IEmployeeAccountRepository, EmployeeAccountRepository>();
             builder.Services.AddScoped<IAdminAccountRepository, AdminAccountRepository>();
+            builder.Services.AddScoped<IAdminAccountRefreshTokenRepository, AdminAccountRefreshTokenRepository>();
+            builder.Services.AddScoped<ICompanyAccountRefreshTokenRepository, CompanyAccountRefreshTokenRepository>();
+            builder.Services.AddScoped<IEmployeeAccountRefreshTokenRepository, EmployeeAccountRefreshTokenRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder builder)
@@ -40,6 +43,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IEmployeeAccountFactory, EmployeeAccountFactory>();
             builder.Services.AddScoped<IAdminAccountFactory, AdminAccountFactory>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         }
 
         public static void ConfigureSwagger(this WebApplicationBuilder builder)
