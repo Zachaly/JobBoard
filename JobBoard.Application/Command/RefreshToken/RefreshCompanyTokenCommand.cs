@@ -4,11 +4,11 @@ using JobBoard.Domain.Entity;
 
 namespace JobBoard.Application.Command
 {
-    public class RefreshCompanyTokenCommand
+    public class RefreshCompanyTokenCommand : RefreshTokenCommand
     {
     }
 
-    public class RefreshCompanyTokenHandler : RefreshTokenHandler<CompanyAccountRefreshToken, RefreshAdminTokenCommand>
+    public class RefreshCompanyTokenHandler : RefreshTokenHandler<CompanyAccountRefreshToken, RefreshCompanyTokenCommand>
     {
         private readonly IRefreshTokenService _refreshTokenService;
 

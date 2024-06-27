@@ -26,7 +26,7 @@ namespace JobBoard.Database.Repository
 
         public Task<TToken?> GetValidTokenAsync(string token, long accountId)
             => _dbContext.Set<TToken>().FirstOrDefaultAsync(t => t.IsValid && t.AccountId == accountId 
-                && t.Token == token && t.ExpirationDate <= DateTime.Now);
+                && t.Token == token && t.ExpirationDate >= DateTime.Now);
 
         public Task UpdateTokenAsync(TToken token)
         {
