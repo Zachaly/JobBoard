@@ -8,6 +8,7 @@ namespace JobBoard.Database.Repository.Abstraction
         Task<TToken?> GetValidTokenAsync(string token, long accountId);
         Task AddAsync(TToken token);
         Task UpdateTokenAsync(TToken token);
+        Task<TToken?> GetByTokenAsync(string token);
     }
 
     public interface IAdminAccountRefreshTokenRepository : IRefreshTokenRepository<AdminAccountRefreshToken>

@@ -122,5 +122,50 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
+        [Fact]
+        public async Task RevokeAdminToken_TokenSetInvalid()
+        {
+            var loginData = await AuthorizeAdminAsync();
+
+            var request = new RevokeRefreshTokenCommand(loginData.RefreshToken);
+
+            var response = await _httpClient.PatchAsJsonAsync($"{Endpoint}/admin/revoke", request);
+
+            var token = _dbContext.AdminAccountRefreshTokens.First(x => x.Token == loginData.RefreshToken);
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.False(token.IsValid);
+        }
+
+        [Fact]
+        public async Task RevokeCompanyToken_TokenSetInvalid()
+        {
+            var loginData = await AuthorizeCompanyAsync();
+
+            var request = new RevokeRefreshTokenCommand(loginData.RefreshToken);
+
+            var response = await _httpClient.PatchAsJsonAsync($"{Endpoint}/company/revoke", request);
+
+            var token = _dbContext.CompanyAccountRefreshTokens.First(x => x.Token == loginData.RefreshToken);
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.False(token.IsValid);
+        }
+
+        [Fact]
+        public async Task RevokeEmployeeToken_TokenSetInvalid()
+        {
+            var loginData = await AuthorizeEmployeeAsync();
+
+            var request = new RevokeRefreshTokenCommand(loginData.RefreshToken);
+
+            var response = await _httpClient.PatchAsJsonAsync($"{Endpoint}/employee/revoke", request);
+
+            var token = _dbContext.EmployeeAccountRefreshTokens.First(x => x.Token == loginData.RefreshToken);
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.False(token.IsValid);
+        }
     }
 }

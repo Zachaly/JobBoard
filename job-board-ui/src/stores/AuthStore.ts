@@ -7,12 +7,29 @@ import { defineStore } from "pinia";
 import { ref, Ref } from "vue";
 import useTokenStore from "./TokenStore";
 import RefreshTokenRequest from "@/model/RefreshTokenRequest";
+import RevokeRefreshTokenRequest from "@/model/RevokeRefreshTokenRequest";
 
 export enum AuthType {
   Admin = 1,
   Company = 2,
   Employee = 3,
   NotAuthorized = 4,
+}
+
+const authTypeToEndpointPart = (type: AuthType) => {
+  if(type == AuthType.Admin) {
+    return 'admin'
+  }
+
+  if(type == AuthType.Company) {
+    return 'company'
+  }
+
+  if(type == AuthType.Employee) {
+    return 'employee'
+  }
+
+  return ''
 }
 
 const useAuthStore = defineStore("auth", () => {
@@ -36,6 +53,8 @@ const useAuthStore = defineStore("auth", () => {
     rememberMe.value = remember;
     axios.defaults.headers.common.Authorization = `Bearer ${tokenStore.getAccessToken()}`;
     
+    console.log(currentAuthType.value)
+
     axios.interceptors.response.use(
       (response) => response,
       async (error: AxiosError) => {
@@ -86,26 +105,12 @@ const useAuthStore = defineStore("auth", () => {
         resolve(null);
       }
 
-      let typeString = ""
-
-      switch(type) {
-        case AuthType.Admin:
-          typeString = "admin"
-          break
-        case AuthType.Company:
-          typeString = "company"
-          break
-        case AuthType.Employee:
-          typeString = "employee"
-          break
-      }
+      const typeString = authTypeToEndpointPart(type)
 
       const request: RefreshTokenRequest = {
         accessToken: tokenStore.getAccessToken() ?? "",
         refreshToken: tokenStore.getRefreshToken() ?? "",
       };
-
-      console.log(request)
 
       axios
         .post<LoginResponse>(`refresh-token/${typeString}`, request)
@@ -117,6 +122,12 @@ const useAuthStore = defineStore("auth", () => {
     });
 
   const logout = () => {
+    const revokeTokenRequest: RevokeRefreshTokenRequest = {
+      token: tokenStore.getRefreshToken() ?? ''
+    }
+
+    axios.patch(`refresh-token/${authTypeToEndpointPart(currentAuthType.value)}/revoke`, revokeTokenRequest)
+
     currentUserId.value = 0;
     currentAuthType.value = AuthType.NotAuthorized;
     axios.defaults.headers.common.Authorization = "";

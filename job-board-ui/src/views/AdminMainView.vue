@@ -1,6 +1,7 @@
 <template>
 <div class="container">
     <RouterLink to="/admin/create-account" class="button">Create account</RouterLink>
+    <button class="button is-danger" @click="logout">Logout</button>
     <div class="columns">
         <div class="column is-2">
             <p class="title">
@@ -119,5 +120,10 @@ onMounted(() => {
     axios.get<CompanyAccountModel[]>('company-account').then(res => companies.value = res.data)
     axios.get<EmployeeAccountModel[]>('employee-account').then(res => employees.value = res.data)
 })
+
+const logout = () => {
+    authStore.logout()
+    router.push('/admin/login')
+}
 
 </script>
