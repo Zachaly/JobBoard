@@ -102,6 +102,7 @@ namespace JobBoard.Api.Extensions
                 ValidateIssuer = true,
                 ValidAlgorithms = [SecurityAlgorithms.HmacSha256Signature],
                 ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
             };
 
             builder.Services.AddSingleton(validationParameters);
