@@ -60,5 +60,44 @@ namespace JobBoard.Api.Controllers
 
             return res.ReturnOkOrBadRequest();
         }
+
+        /// <summary>
+        /// Revokes specified refresh token
+        /// </summary>
+        /// <response code="204">Token revoken or non existent</response>
+        [HttpPatch("admin/revoke")]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult<ResponseModel>> RevokeAdminToken(RevokeAdminTokenCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnNoContentOrBadRequest();
+        }
+
+        /// <summary>
+        /// Revokes specified refresh token
+        /// </summary>
+        /// <response code="204">Token revoken or non existent</response>
+        [HttpPatch("company/revoke")]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult<ResponseModel>> RevokeCompanyToken(RevokeCompanyTokenCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnNoContentOrBadRequest();
+        }
+
+        /// <summary>
+        /// Revokes specified refresh token
+        /// </summary>
+        /// <response code="204">Token revoken or non existent</response>
+        [HttpPatch("employee/revoke")]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult<ResponseModel>> RevokeEmployeeToken(RevokeEmployeeTokenCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnNoContentOrBadRequest();
+        }
     }
 }

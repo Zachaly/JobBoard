@@ -34,6 +34,9 @@ namespace JobBoard.Database.Repository
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<TToken?> GetByTokenAsync(string token)
+            => _dbContext.Set<TToken>().FirstOrDefaultAsync(t => t.Token == token);
     }
 
     public class AdminAccountRefreshTokenRepository : RefreshTokenRepository<AdminAccountRefreshToken>,
