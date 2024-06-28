@@ -15,12 +15,15 @@ namespace JobBoard.Application.Command
         private readonly IAdminAccountRepository _repository;
         private readonly ITokenService _tokenService;
         private readonly IHashService _hashService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-        public AdminLoginHandler(IAdminAccountRepository repository, ITokenService tokenService, IHashService hashService)
+        public AdminLoginHandler(IAdminAccountRepository repository, ITokenService tokenService, IHashService hashService,
+            IRefreshTokenService refreshTokenService)
         {
             _repository = repository;
             _tokenService = tokenService;
             _hashService = hashService;
+            _refreshTokenService = refreshTokenService;
         }
 
         public async Task<LoginResponse> Handle(AdminLoginCommand request, CancellationToken cancellationToken)
@@ -37,10 +40,10 @@ namespace JobBoard.Application.Command
                 return new LoginResponse("Login or password not correct");
             }
 
+            var refreshToken = await _refreshTokenService.GenerateAdminAccountTokenAsync(account.Id);
             var token = await _tokenService.GenerateTokenAsync(account.Id, "Admin");
-
-
-            return new LoginResponse(account.Id, token);
+            
+            return new LoginResponse(account.Id, token, refreshToken);
         }
     }
 }

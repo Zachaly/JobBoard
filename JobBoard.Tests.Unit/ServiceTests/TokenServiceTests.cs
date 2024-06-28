@@ -60,16 +60,17 @@ namespace JobBoard.Tests.Unit.ServiceTests
         }
 
         [Fact]
-        public async Task GetIdFromTokenAsync_ReturnsProperId()
+        public async Task GetUserIdAndRoleFromTokenAsync_ReturnsProperId()
         {
             const long UserId = 2;
             const string Role = "Test";
 
             var token = await _tokenService.GenerateTokenAsync(UserId, Role);
 
-            var res = await _tokenService.GetUserIdFromToken(token);
+            var res = await _tokenService.GetUserIdAndRoleFromToken(token);
 
-            Assert.Equal(UserId, res);
+            Assert.Equal(UserId, res.Id);
+            Assert.Equal(Role, res.Role);
         }
     }
 }

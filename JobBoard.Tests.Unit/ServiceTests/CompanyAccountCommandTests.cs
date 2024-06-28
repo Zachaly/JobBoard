@@ -150,6 +150,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
                 Id = 1,
             };
 
+            const string RefreshToken = "reftoken";
             const string Token = "token";
 
             var repository = Substitute.For<ICompanyAccountRepository>();
@@ -161,13 +162,17 @@ namespace JobBoard.Tests.Unit.ServiceTests
             var tokenService = Substitute.For<ITokenService>();
             tokenService.GenerateTokenAsync(account.Id, "Company").Returns(Token);
 
-            var handler = new CompanyLoginHandler(repository, hashService, tokenService);
+            var refreshTokenService = Substitute.For<IRefreshTokenService>();
+            refreshTokenService.GenerateCompanyAccountTokenAsync(account.Id).Returns(RefreshToken);
+
+            var handler = new CompanyLoginHandler(repository, hashService, tokenService, refreshTokenService);
 
             var res = await handler.Handle(request, default);
 
             Assert.True(res.IsSuccess);
             Assert.Equal(account.Id, res.UserId);
             Assert.Equal(Token, res.AuthToken);
+            Assert.Equal(RefreshToken, res.RefreshToken);
         }
 
         [Fact]
@@ -182,13 +187,16 @@ namespace JobBoard.Tests.Unit.ServiceTests
 
             var tokenService = Substitute.For<ITokenService>();
 
-            var handler = new CompanyLoginHandler(repository, hashService, tokenService);
+            var refreshTokenService = Substitute.For<IRefreshTokenService>();
+
+            var handler = new CompanyLoginHandler(repository, hashService, tokenService, refreshTokenService);
 
             var res = await handler.Handle(request, default);
 
             Assert.False(res.IsSuccess);
             Assert.Equal(0, res.UserId);
             Assert.Empty(res.AuthToken);
+            Assert.Empty(res.RefreshToken);
         }
 
         [Fact]
@@ -209,13 +217,16 @@ namespace JobBoard.Tests.Unit.ServiceTests
 
             var tokenService = Substitute.For<ITokenService>();
 
-            var handler = new CompanyLoginHandler(repository, hashService, tokenService);
+            var refreshTokenService = Substitute.For<IRefreshTokenService>();
+
+            var handler = new CompanyLoginHandler(repository, hashService, tokenService, refreshTokenService);
 
             var res = await handler.Handle(request, default);
 
             Assert.False(res.IsSuccess);
             Assert.Equal(0, res.UserId);
             Assert.Empty(res.AuthToken);
+            Assert.Empty(res.RefreshToken);
         }
     }
 }

@@ -125,7 +125,9 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotEmpty(content.AuthToken);
+            Assert.NotEmpty(content.RefreshToken);
             Assert.Equal(account.Id, content.UserId);
+            Assert.Contains(_dbContext.AdminAccountRefreshTokens, t => t.Token == content.RefreshToken);
         }
 
         [Fact]

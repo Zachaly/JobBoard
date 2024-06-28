@@ -36,7 +36,7 @@ namespace JobBoard.Tests.Integration.ApiTests
             return JsonConvert.DeserializeObject<T>(stringContent);
         }
 
-        protected async Task AuthorizeAdminAsync()
+        protected async Task<LoginResponse> AuthorizeAdminAsync()
         {
             var request = new AdminLoginCommand
             {
@@ -48,9 +48,11 @@ namespace JobBoard.Tests.Integration.ApiTests
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
+
+            return content;
         }
 
-        protected async Task AuthorizeEmployeeAsync()
+        protected async Task<LoginResponse> AuthorizeEmployeeAsync()
         {
             var registerRequest = new AddEmployeeAccountCommand
             {
@@ -73,9 +75,11 @@ namespace JobBoard.Tests.Integration.ApiTests
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
+
+            return content;
         }
 
-        protected async Task AuthorizeCompanyAsync()
+        protected async Task<LoginResponse> AuthorizeCompanyAsync()
         {
             var registerRequest = new AddCompanyAccountCommand
             {
@@ -101,6 +105,8 @@ namespace JobBoard.Tests.Integration.ApiTests
             var content = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
+
+            return content;
         }
     }
 }

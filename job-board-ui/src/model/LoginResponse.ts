@@ -1,6 +1,7 @@
 import ResponseModel from "./ResponseModel";
 
 export default interface LoginResponse extends ResponseModel {
-    userId: number,
-    authToken: string
+  userId: number;
+  authToken: string;
+  refreshToken: string;
 }

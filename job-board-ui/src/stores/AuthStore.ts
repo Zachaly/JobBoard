@@ -2,56 +2,152 @@ import AdminAccountModel from "@/model/admin-account/AdminAccountModel";
 import CompanyAccountModel from "@/model/company-account/CompanyAccountModel";
 import EmployeeAccountModel from "@/model/employee-account/EmployeeAccountModel";
 import LoginResponse from "@/model/LoginResponse";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { defineStore } from "pinia";
 import { ref, Ref } from "vue";
+import useTokenStore from "./TokenStore";
+import RefreshTokenRequest from "@/model/RefreshTokenRequest";
 
 export enum AuthType {
-    Admin,
-    Company,
-    Employee,
-    NotAuthorized
+  Admin = 1,
+  Company = 2,
+  Employee = 3,
+  NotAuthorized = 4,
 }
 
-const useAuthStore = defineStore('auth', () => {
-    const currentAuthType: Ref<AuthType> = ref(AuthType.NotAuthorized)
-    const currentUserId: Ref<number> = ref(0)
-    const authToken = ref('')
-    const adminData: Ref<AdminAccountModel | null> = ref(null)
-    const employeeData: Ref<EmployeeAccountModel | null> = ref(null)
-    const companyData: Ref<CompanyAccountModel | null> = ref(null)
+const useAuthStore = defineStore("auth", () => {
+  const currentAuthType: Ref<AuthType> = ref(AuthType.NotAuthorized);
+  const currentUserId: Ref<number> = ref(0);
+  const adminData: Ref<AdminAccountModel | null> = ref(null);
+  const employeeData: Ref<EmployeeAccountModel | null> = ref(null);
+  const companyData: Ref<CompanyAccountModel | null> = ref(null);
+  const rememberMe = ref(false);
 
-    const authorize = (loginResponse: LoginResponse, type: AuthType) => {
-        currentAuthType.value = type
-        currentUserId.value = loginResponse.userId
-        authToken.value = loginResponse.authToken
-        axios.defaults.headers.common.Authorization = `Bearer ${authToken.value}`
+  const tokenStore = useTokenStore();
 
-        adminData.value = null
-        employeeData.value = null
-        companyData.value = null
+  const authorize = (
+    loginResponse: LoginResponse,
+    type: AuthType,
+    remember = false
+  ) => {
+    currentAuthType.value = type;
+    currentUserId.value = loginResponse.userId;
+    tokenStore.registerTokens(loginResponse);
+    rememberMe.value = remember;
+    axios.defaults.headers.common.Authorization = `Bearer ${tokenStore.getAccessToken()}`;
+    
+    axios.interceptors.response.use(
+      (response) => response,
+      async (error: AxiosError) => {
+        console.log(error)
+        if (error.response?.status == 401) {
+          const success = await refreshTokens(currentAuthType.value);
+          if (!success) {
+            return Promise.reject(error);
+          }
 
-        if(type == AuthType.Admin) {
-            axios.get<AdminAccountModel>(`admin-account/${loginResponse.userId}`).then(res => adminData.value = res.data)
-        } else if(type == AuthType.Company) {
-            axios.get<CompanyAccountModel>(`company-account/${loginResponse.userId}`).then(res => companyData.value = res.data)
-        } else if(type == AuthType.Employee) {
-            axios.get<EmployeeAccountModel>(`employee-account/${loginResponse.userId}`).then(res => employeeData.value = res.data)
+          const config = error.config!;
+          config.headers.Authorization = `Bearer ${tokenStore.getAccessToken()}`;
+
+          return axios(config);
         }
+
+        return Promise.reject(error);
+      }
+    );
+
+    adminData.value = null;
+    employeeData.value = null;
+    companyData.value = null;
+
+    if (type == AuthType.Admin) {
+      axios
+        .get<AdminAccountModel>(`admin-account/${loginResponse.userId}`)
+        .then((res) => (adminData.value = res.data));
+    } else if (type == AuthType.Company) {
+      axios
+        .get<CompanyAccountModel>(`company-account/${loginResponse.userId}`)
+        .then((res) => (companyData.value = res.data));
+    } else if (type == AuthType.Employee) {
+      axios
+        .get<EmployeeAccountModel>(`employee-account/${loginResponse.userId}`)
+        .then((res) => (employeeData.value = res.data));
     }
 
-    const logout = () => {
-        currentUserId.value = 0
-        currentAuthType.value = AuthType.NotAuthorized
-        authToken.value = ''
-        axios.defaults.headers.common.Authorization = ''
-        adminData.value = null
-        employeeData.value = null
-        companyData.value = null
+    if (remember) {
+      tokenStore.saveTokens(type);
+    }
+  };
+
+  const refreshTokens = (type: AuthType) =>
+    new Promise<LoginResponse | null>((resolve) => {
+
+      if (type == AuthType.NotAuthorized) {
+        resolve(null);
+      }
+
+      let typeString = ""
+
+      switch(type) {
+        case AuthType.Admin:
+          typeString = "admin"
+          break
+        case AuthType.Company:
+          typeString = "company"
+          break
+        case AuthType.Employee:
+          typeString = "employee"
+          break
+      }
+
+      const request: RefreshTokenRequest = {
+        accessToken: tokenStore.getAccessToken() ?? "",
+        refreshToken: tokenStore.getRefreshToken() ?? "",
+      };
+
+      console.log(request)
+
+      axios
+        .post<LoginResponse>(`refresh-token/${typeString}`, request)
+        .then((res) => {
+          tokenStore.registerTokens(res.data);
+          resolve(res.data);
+        })
+        .catch(() => resolve(null));
+    });
+
+  const logout = () => {
+    currentUserId.value = 0;
+    currentAuthType.value = AuthType.NotAuthorized;
+    axios.defaults.headers.common.Authorization = "";
+    adminData.value = null;
+    employeeData.value = null;
+    companyData.value = null;
+
+    tokenStore.clearTokens();
+  };
+
+  const loadSavedUser = async () => {
+    const type = tokenStore.loadTokensFromStorage();
+
+    if (
+      tokenStore.getAccessToken() == null ||
+      tokenStore.getRefreshToken() == null ||
+      type == AuthType.NotAuthorized
+    ) {
+      return;
     }
 
-    return { authorize, currentAuthType, currentUserId, logout }
-})
+    const data = await refreshTokens(type);
 
+    if (!data) {
+      return;
+    }
 
-export default useAuthStore
+    authorize(data, type, true);
+  };
+
+  return { authorize, currentAuthType, currentUserId, logout, loadSavedUser };
+});
+
+export default useAuthStore;
