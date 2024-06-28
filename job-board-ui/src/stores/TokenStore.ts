@@ -24,6 +24,10 @@ const useTokenStore = defineStore("token", () => {
   const clearTokens = () => {
     localStorage.setItem(ACCESS_TOKEN_STORAGE, "");
     localStorage.setItem(REFRESH_TOKEN_STORAGE, "");
+    localStorage.setItem("auth_type", '')
+
+    sessionStorage.setItem(ACCESS_TOKEN_STORAGE, "")
+    sessionStorage.setItem(REFRESH_TOKEN_STORAGE, '')
 
     accessToken.value = "";
     refreshToken.value = "";

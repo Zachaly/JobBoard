@@ -6,6 +6,7 @@
                     Create account
                 </button>
                 <RouterLink to="/company/login" class="button">Login</RouterLink>
+                <RouterLink to="/company/profile" class="button">Profile</RouterLink>
             </div>
         </div>
     </ViewTemplate>
