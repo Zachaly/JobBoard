@@ -14,7 +14,7 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.Country, f => f.Address.CountryCode())
                 .RuleFor(x => x.City, f => f.Address.City())
                 .RuleFor(x => x.Name, f => f.Name.JobTitle())
-                .RuleFor(x => x.Password, _ => "hash")
+                .RuleFor(x => x.PasswordHash, _ => "hash")
                 .Generate(count);
 
         public static List<EmployeeAccount> CreateEmployeeAccounts(int count)

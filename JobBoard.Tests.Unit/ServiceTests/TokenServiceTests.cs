@@ -9,7 +9,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
 {
     public class TokenServiceTests
     {
-        private readonly TokenService _tokenService;
+        private readonly AccessTokenService _tokenService;
         private readonly IOptions<TokenConfiguration> _config;
         private readonly TokenValidationParameters _validationParameters;
 
@@ -39,7 +39,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
                 ValidateIssuerSigningKey = true,
             };
 
-            _tokenService = new TokenService(_config, _validationParameters);
+            _tokenService = new AccessTokenService(_config, _validationParameters);
         }
 
         [Fact]

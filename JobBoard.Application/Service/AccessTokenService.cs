@@ -18,12 +18,12 @@ namespace JobBoard.Application.Service
         public int TokenLifetime { get; init; }
     }
 
-    public class TokenService : ITokenService
+    public class AccessTokenService : IAccessTokenService
     {
         private readonly TokenConfiguration _configuration;
         private readonly TokenValidationParameters _validationParameters;
 
-        public TokenService(IOptions<TokenConfiguration> config, TokenValidationParameters validationParameters)
+        public AccessTokenService(IOptions<TokenConfiguration> config, TokenValidationParameters validationParameters)
         {
             _configuration = config.Value;
             _validationParameters = validationParameters;

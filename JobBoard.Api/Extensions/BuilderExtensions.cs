@@ -42,7 +42,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<ICompanyAccountFactory, CompanyAccountFactory>();
             builder.Services.AddScoped<IEmployeeAccountFactory, EmployeeAccountFactory>();
             builder.Services.AddScoped<IAdminAccountFactory, AdminAccountFactory>();
-            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         }
 

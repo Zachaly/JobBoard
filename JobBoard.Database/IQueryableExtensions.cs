@@ -1,4 +1,4 @@
-﻿using JobBoard.Domain.Entity;
+﻿using JobBoard.Domain;
 using JobBoard.Model;
 
 namespace JobBoard.Database

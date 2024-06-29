@@ -15,10 +15,10 @@ namespace JobBoard.Application.Command
     {
         private readonly IEmployeeAccountRepository _repository;
         private readonly IHashService _hashService;
-        private readonly ITokenService _tokenService;
+        private readonly IAccessTokenService _tokenService;
         private readonly IRefreshTokenService _refreshTokenService;
 
-        public EmployeeLoginHandler(IEmployeeAccountRepository repository, ITokenService tokenService, IHashService hashService,
+        public EmployeeLoginHandler(IEmployeeAccountRepository repository, IAccessTokenService tokenService, IHashService hashService,
             IRefreshTokenService refreshTokenService)
         {
             _repository = repository;

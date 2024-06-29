@@ -5,7 +5,7 @@ using JobBoard.Domain.Entity;
 using JobBoard.Model.Response;
 using MediatR;
 
-namespace JobBoard.Application.Command
+namespace JobBoard.Application.Command.Abstraction
 {
     public abstract class RefreshTokenCommand : IRequest<LoginResponse>
     {
@@ -18,9 +18,9 @@ namespace JobBoard.Application.Command
         where TCommand : RefreshTokenCommand
     {
         private readonly IRefreshTokenRepository<TToken> _tokenRepository;
-        private readonly ITokenService _tokenService;
+        private readonly IAccessTokenService _tokenService;
 
-        protected RefreshTokenHandler(IRefreshTokenRepository<TToken> tokenRepository, ITokenService tokenService)
+        protected RefreshTokenHandler(IRefreshTokenRepository<TToken> tokenRepository, IAccessTokenService tokenService)
         {
             _tokenRepository = tokenRepository;
             _tokenService = tokenService;
@@ -36,14 +36,14 @@ namespace JobBoard.Application.Command
             {
                 userData = await _tokenService.GetUserIdAndRoleFromToken(request.AccessToken);
             }
-            catch(InvalidTokenException ex)
+            catch (InvalidTokenException ex)
             {
                 return new LoginResponse(ex.Message);
             }
 
             var usedToken = await _tokenRepository.GetValidTokenAsync(request.RefreshToken, userData.Id);
 
-            if(usedToken is null)
+            if (usedToken is null)
             {
                 return new LoginResponse("Invalid token");
             }

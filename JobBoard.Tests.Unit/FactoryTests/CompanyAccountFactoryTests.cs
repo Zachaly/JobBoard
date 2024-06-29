@@ -31,7 +31,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
 
             var account = _factory.Create(request, passwordHash);
 
-            Assert.Equal(passwordHash, account.Password);
+            Assert.Equal(passwordHash, account.PasswordHash);
             Assert.Equal(request.Country, account.Country);
             Assert.Equal(request.Name, account.Name);
             Assert.Equal(request.City, account.City);

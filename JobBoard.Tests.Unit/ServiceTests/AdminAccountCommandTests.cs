@@ -156,7 +156,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
             var hashService = Substitute.For<IHashService>();
             hashService.VerifyPassword(request.Password, account.PasswordHash).Returns(true);
 
-            var tokenService = Substitute.For<ITokenService>();
+            var tokenService = Substitute.For<IAccessTokenService>();
             tokenService.GenerateTokenAsync(account.Id, "Admin").Returns(Token);
 
             var refreshTokenService = Substitute.For<IRefreshTokenService>();
@@ -182,7 +182,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
 
             var hashService = Substitute.For<IHashService>();
 
-            var tokenService = Substitute.For<ITokenService>();
+            var tokenService = Substitute.For<IAccessTokenService>();
 
             var refreshTokenService = Substitute.For<IRefreshTokenService>();
 
@@ -212,7 +212,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
             var hashService = Substitute.For<IHashService>();
             hashService.VerifyPassword(request.Password, account.PasswordHash).Returns(false);
 
-            var tokenService = Substitute.For<ITokenService>();
+            var tokenService = Substitute.For<IAccessTokenService>();
 
             var refreshTokenService = Substitute.For<IRefreshTokenService>();
 

@@ -14,7 +14,7 @@ namespace JobBoard.Application.Factory
                 ContactEmail = request.ContactEmail,
                 Country = request.Country,
                 Email = request.Email,
-                Password = passwordHash,
+                PasswordHash = passwordHash,
                 Name = request.Name,
                 PostalCode = request.PostalCode,
             };

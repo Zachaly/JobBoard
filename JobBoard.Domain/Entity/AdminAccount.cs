@@ -1,6 +1,6 @@
 ﻿namespace JobBoard.Domain.Entity
 {
-    public class AdminAccount : IEntity
+    public class AdminAccount : IAccountEntity
     {
         public long Id { get; set; }
         public string Login { get; set; }

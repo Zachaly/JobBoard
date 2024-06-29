@@ -1,4 +1,5 @@
-﻿using JobBoard.Application.Service.Abstraction;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Application.Service.Abstraction;
 using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Domain.Entity;
 
@@ -12,7 +13,7 @@ namespace JobBoard.Application.Command
     {
         private readonly IRefreshTokenService _refreshTokenService;
 
-        public RefreshCompanyTokenHandler(ICompanyAccountRefreshTokenRepository tokenRepository, ITokenService tokenService,
+        public RefreshCompanyTokenHandler(ICompanyAccountRefreshTokenRepository tokenRepository, IAccessTokenService tokenService,
             IRefreshTokenService refreshTokenService) 
             : base(tokenRepository, tokenService)
         {
