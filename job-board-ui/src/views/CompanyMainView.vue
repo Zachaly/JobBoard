@@ -21,5 +21,4 @@ const router = useRouter()
 const goToCreateAccount = () => {
     router.push('/company/create-account')
 }
-
 </script>

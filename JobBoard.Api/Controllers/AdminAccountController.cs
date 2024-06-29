@@ -21,7 +21,7 @@ namespace JobBoard.Api.Controllers
         }
 
         /// <summary>
-        /// Returns list of admin account
+        /// Returns list of admin accounts
         /// </summary>
         /// <response code="200">List of admin accounts</response>
         [HttpGet]

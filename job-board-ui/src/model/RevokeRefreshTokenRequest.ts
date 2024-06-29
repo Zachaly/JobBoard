@@ -1,3 +1,3 @@
 export default interface RevokeRefreshTokenRequest {
-    token: string
+  token: string;
 }

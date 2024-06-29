@@ -4,12 +4,12 @@
             <div class="control">
                 <label for="" class="label">Login</label>
                 <input class="input" type="text" v-model="request.login">
-                <ValidationErrors :errors="validationErrors['Login']"/>
+                <ValidationErrors :errors="validationErrors['Login']" />
             </div>
             <div class="control">
                 <label for="" class="label">Password</label>
                 <input type="password" class="input" v-model="request.password">
-                <ValidationErrors :errors="validationErrors['Password']"/>
+                <ValidationErrors :errors="validationErrors['Password']" />
             </div>
             <div class="control">
                 <button class="button is-info" @click="addAccount()">

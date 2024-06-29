@@ -24,7 +24,7 @@ namespace JobBoard.Tests.Integration.RepositoryTests
                 ContactEmail = "email",
                 Country = "ctn",
                 Email = "email",
-                Password = "pass",
+                PasswordHash = "pass",
                 PostalCode = "code"
             };
 

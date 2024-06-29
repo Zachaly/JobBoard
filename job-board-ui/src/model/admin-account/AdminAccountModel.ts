@@ -1,4 +1,4 @@
 export default interface AdminAccountModel {
-    id: number,
-    login: string
+  id: number;
+  login: string;
 }

@@ -46,5 +46,4 @@ const login = () => {
         alert('Invalid login or password')
     })
 }
-
 </script>

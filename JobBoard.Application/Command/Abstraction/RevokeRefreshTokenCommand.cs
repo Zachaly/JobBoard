@@ -1,9 +1,9 @@
 ﻿using JobBoard.Database.Repository.Abstraction;
-using JobBoard.Domain.Entity;
+using JobBoard.Domain;
 using JobBoard.Model.Response;
 using MediatR;
 
-namespace JobBoard.Application.Command
+namespace JobBoard.Application.Command.Abstraction
 {
     public record RevokeRefreshTokenCommand(string Token) : IRequest<ResponseModel>;
 
@@ -22,7 +22,7 @@ namespace JobBoard.Application.Command
         {
             var token = await _tokenRepository.GetByTokenAsync(request.Token);
 
-            if(token is null)
+            if (token is null)
             {
                 return new ResponseModel();
             }

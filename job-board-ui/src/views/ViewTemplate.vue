@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar">
-        
+
     </nav>
     <div class="columns">
         <div class="column is-2">

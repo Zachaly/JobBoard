@@ -1,50 +1,29 @@
-﻿using JobBoard.Application.Service.Abstraction;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Application.Service.Abstraction;
 using JobBoard.Database.Repository.Abstraction;
-using JobBoard.Model;
-using JobBoard.Model.Response;
-using MediatR;
+using JobBoard.Domain.Entity;
 
 namespace JobBoard.Application.Command
 {
-    public class CompanyLoginCommand : LoginRequest, IRequest<LoginResponse>
+    public class CompanyLoginCommand : LoginCommand
     {
     }
 
-    public class CompanyLoginHandler : IRequestHandler<CompanyLoginCommand, LoginResponse>
+    public class CompanyLoginHandler : LoginHandler<CompanyAccount, CompanyLoginCommand>
     {
         private readonly ICompanyAccountRepository _accountRepository;
-        private readonly IHashService _hashService;
-        private readonly ITokenService _tokenService;
-        private readonly IRefreshTokenService _refreshTokenService;
 
-        public CompanyLoginHandler(ICompanyAccountRepository repository, IHashService hashService, ITokenService tokenService,
-            IRefreshTokenService refreshTokenService)
+        public CompanyLoginHandler(ICompanyAccountRepository repository, IHashService hashService, IAccessTokenService tokenService,
+            IRefreshTokenService refreshTokenService) : base(tokenService, refreshTokenService, hashService)
         {
             _accountRepository = repository;
-            _hashService = hashService;
-            _tokenService = tokenService;
-            _refreshTokenService = refreshTokenService;
+            Role = "Company";
         }
 
-        public async Task<LoginResponse> Handle(CompanyLoginCommand request, CancellationToken cancellationToken)
-        {
-            var account = await _accountRepository.GetByEmailAsync(request.Login);
+        protected override Task<string> GenerateRefreshTokenAsync(long accountId)
+            => _refreshTokenService.GenerateCompanyAccountTokenAsync(accountId);
 
-            if(account is null)
-            {
-                return new LoginResponse("Email or password not correct");
-            }
-
-            if (!_hashService.VerifyPassword(request.Password, account.Password))
-            {
-                return new LoginResponse("Email or password not correct");
-            }
-
-
-            var refreshToken = await _refreshTokenService.GenerateCompanyAccountTokenAsync(account.Id);
-            var token = await _tokenService.GenerateTokenAsync(account.Id, "Company");
-
-            return new LoginResponse(account.Id, token, refreshToken);
-        }
+        protected override Task<CompanyAccount?> GetAccountByLoginAsync(string login)
+            => _accountRepository.GetByEmailAsync(login);
     }
 }

@@ -1,4 +1,5 @@
-﻿using JobBoard.Database.Repository.Abstraction;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Domain.Entity;
 
 namespace JobBoard.Application.Command

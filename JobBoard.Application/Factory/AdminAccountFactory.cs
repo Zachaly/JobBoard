@@ -7,10 +7,10 @@ namespace JobBoard.Application.Factory
     public class AdminAccountFactory : IAdminAccountFactory
     {
         public AdminAccount Create(AddAdminAccountRequest request, string passwordHash)
-        => new AdminAccount
-        {
-            Login = request.Login,
-            PasswordHash = passwordHash
-        };
+            => new AdminAccount
+            {
+                Login = request.Login,
+                PasswordHash = passwordHash
+            };
     }
 }

@@ -2,6 +2,7 @@
 using JobBoard.Application.Command;
 using System.Net.Http.Json;
 using JobBoard.Model.Response;
+using JobBoard.Application.Command.Abstraction;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {

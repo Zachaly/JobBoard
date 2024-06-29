@@ -17,20 +17,20 @@ export enum AuthType {
 }
 
 const authTypeToEndpointPart = (type: AuthType) => {
-  if(type == AuthType.Admin) {
-    return 'admin'
+  if (type == AuthType.Admin) {
+    return "admin";
   }
 
-  if(type == AuthType.Company) {
-    return 'company'
+  if (type == AuthType.Company) {
+    return "company";
   }
 
-  if(type == AuthType.Employee) {
-    return 'employee'
+  if (type == AuthType.Employee) {
+    return "employee";
   }
 
-  return ''
-}
+  return "";
+};
 
 const useAuthStore = defineStore("auth", () => {
   const currentAuthType: Ref<AuthType> = ref(AuthType.NotAuthorized);
@@ -52,13 +52,13 @@ const useAuthStore = defineStore("auth", () => {
     tokenStore.registerTokens(loginResponse);
     rememberMe.value = remember;
     axios.defaults.headers.common.Authorization = `Bearer ${tokenStore.getAccessToken()}`;
-    
-    console.log(currentAuthType.value)
+
+    console.log(currentAuthType.value);
 
     axios.interceptors.response.use(
       (response) => response,
       async (error: AxiosError) => {
-        console.log(error)
+        console.log(error);
         if (error.response?.status == 401) {
           const success = await refreshTokens(currentAuthType.value);
           if (!success) {
@@ -100,12 +100,11 @@ const useAuthStore = defineStore("auth", () => {
 
   const refreshTokens = (type: AuthType) =>
     new Promise<LoginResponse | null>((resolve) => {
-
       if (type == AuthType.NotAuthorized) {
         resolve(null);
       }
 
-      const typeString = authTypeToEndpointPart(type)
+      const typeString = authTypeToEndpointPart(type);
 
       const request: RefreshTokenRequest = {
         accessToken: tokenStore.getAccessToken() ?? "",
@@ -123,10 +122,13 @@ const useAuthStore = defineStore("auth", () => {
 
   const logout = () => {
     const revokeTokenRequest: RevokeRefreshTokenRequest = {
-      token: tokenStore.getRefreshToken() ?? ''
-    }
+      token: tokenStore.getRefreshToken() ?? "",
+    };
 
-    axios.patch(`refresh-token/${authTypeToEndpointPart(currentAuthType.value)}/revoke`, revokeTokenRequest)
+    axios.patch(
+      `refresh-token/${authTypeToEndpointPart(currentAuthType.value)}/revoke`,
+      revokeTokenRequest
+    );
 
     currentUserId.value = 0;
     currentAuthType.value = AuthType.NotAuthorized;
