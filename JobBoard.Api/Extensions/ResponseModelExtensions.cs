@@ -17,7 +17,7 @@ namespace JobBoard.Api.Extensions
 
         public static ActionResult<TResult> ReturnOkOrNotFound<TResult>(TResult? res) where TResult : class
         {
-            if (res == null)
+            if (res is null)
             {
                 return new NotFoundResult();
             }

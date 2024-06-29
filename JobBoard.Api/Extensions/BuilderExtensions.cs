@@ -127,7 +127,7 @@ namespace JobBoard.Api.Extensions
                 options.AddPolicy(AuthPolicyNames.Company,
                     pol => pol.RequireClaim(AuthClaimNames.RoleClaim, AuthClaimNames.Company, AuthClaimNames.Admin));
                 options.AddPolicy(AuthPolicyNames.Employee,
-                    pol => pol.RequireClaim(AuthClaimNames.RoleClaim, AuthClaimNames.Employee, AuthClaimNames.Employee));
+                    pol => pol.RequireClaim(AuthClaimNames.RoleClaim, AuthClaimNames.Employee, AuthClaimNames.Admin));
             });
         }
     }
