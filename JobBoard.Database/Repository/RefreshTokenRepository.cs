@@ -1,4 +1,5 @@
 ﻿using JobBoard.Database.Repository.Abstraction;
+using JobBoard.Domain;
 using JobBoard.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 

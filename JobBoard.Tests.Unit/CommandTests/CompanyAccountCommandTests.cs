@@ -9,7 +9,7 @@ using JobBoard.Model.CompanyAccount;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace JobBoard.Tests.Unit.ServiceTests
+namespace JobBoard.Tests.Unit.CommandTests
 {
     public class CompanyAccountCommandTests
     {

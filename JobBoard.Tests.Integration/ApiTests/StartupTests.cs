@@ -3,7 +3,7 @@
     public class StartupTests : ApiTest
     {
         [Fact]
-        public async Task Startup_AdminAccountCreated()
+        public void Startup_AdminAccountCreated()
         {
             Assert.NotEmpty(_dbContext.AdminAccounts);
         }

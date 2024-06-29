@@ -1,4 +1,4 @@
-﻿namespace JobBoard.Domain.Entity
+﻿namespace JobBoard.Domain
 {
     public interface IRefreshToken
     {

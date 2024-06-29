@@ -1,5 +1,5 @@
 ﻿using JobBoard.Database.Repository.Abstraction;
-using JobBoard.Domain.Entity;
+using JobBoard.Domain;
 using JobBoard.Model.Response;
 using MediatR;
 

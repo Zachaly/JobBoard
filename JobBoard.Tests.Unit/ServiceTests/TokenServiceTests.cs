@@ -67,7 +67,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
 
             var token = await _tokenService.GenerateTokenAsync(UserId, Role);
 
-            var res = await _tokenService.GetUserIdAndRoleFromToken(token);
+            var res = await _tokenService.GetUserIdAndRoleFromTokenAsync(token);
 
             Assert.Equal(UserId, res.Id);
             Assert.Equal(Role, res.Role);

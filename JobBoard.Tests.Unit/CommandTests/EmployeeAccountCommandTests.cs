@@ -9,7 +9,7 @@ using JobBoard.Model.EmployeeAccount;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace JobBoard.Tests.Unit.ServiceTests
+namespace JobBoard.Tests.Unit.CommandTests
 {
     public class EmployeeAccountCommandTests
     {
@@ -25,7 +25,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
             var command = new GetEmployeeAccountCommand();
 
             var repository = Substitute.For<IEmployeeAccountRepository>();
-            
+
             repository.GetAsync(command).Returns(list);
 
             var handler = new GetEmployeeAccountHandler(repository);
@@ -56,7 +56,7 @@ namespace JobBoard.Tests.Unit.ServiceTests
         [Fact]
         public async Task AddEmployeeAccountCommand_AddsAccount()
         {
-            var command = new AddEmployeeAccountCommand 
+            var command = new AddEmployeeAccountCommand
             {
                 Password = "pass",
                 Email = "email"

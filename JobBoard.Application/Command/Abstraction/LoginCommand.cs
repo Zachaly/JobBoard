@@ -28,7 +28,6 @@ namespace JobBoard.Application.Command.Abstraction
             _hashService = hashService;
         }
 
-
         public async Task<LoginResponse> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var account = await GetAccountByLoginAsync(request.Login);

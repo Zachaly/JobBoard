@@ -1,7 +1,7 @@
 ﻿using JobBoard.Application.Exception;
 using JobBoard.Application.Service.Abstraction;
 using JobBoard.Database.Repository.Abstraction;
-using JobBoard.Domain.Entity;
+using JobBoard.Domain;
 using JobBoard.Model.Response;
 using MediatR;
 
@@ -34,7 +34,7 @@ namespace JobBoard.Application.Command.Abstraction
 
             try
             {
-                userData = await _tokenService.GetUserIdAndRoleFromToken(request.AccessToken);
+                userData = await _tokenService.GetUserIdAndRoleFromTokenAsync(request.AccessToken);
             }
             catch (InvalidTokenException ex)
             {
