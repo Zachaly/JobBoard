@@ -14,7 +14,6 @@ import { Component } from "vue";
 import {
   createRouter,
   createWebHashHistory,
-  createWebHistory,
   RouteRecordRaw,
 } from "vue-router";
 

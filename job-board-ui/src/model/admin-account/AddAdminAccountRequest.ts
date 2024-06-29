@@ -1,4 +1,4 @@
 export default interface AddAdminAccountRequest {
-    login: string,
-    password: string
+  login: string;
+  password: string;
 }

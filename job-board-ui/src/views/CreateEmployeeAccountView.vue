@@ -79,5 +79,4 @@ const addAccount = () => {
         }
     })
 }
-
 </script>

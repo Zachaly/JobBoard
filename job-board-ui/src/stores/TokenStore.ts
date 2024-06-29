@@ -24,10 +24,10 @@ const useTokenStore = defineStore("token", () => {
   const clearTokens = () => {
     localStorage.setItem(ACCESS_TOKEN_STORAGE, "");
     localStorage.setItem(REFRESH_TOKEN_STORAGE, "");
-    localStorage.setItem("auth_type", '')
+    localStorage.setItem("auth_type", "");
 
-    sessionStorage.setItem(ACCESS_TOKEN_STORAGE, "")
-    sessionStorage.setItem(REFRESH_TOKEN_STORAGE, '')
+    sessionStorage.setItem(ACCESS_TOKEN_STORAGE, "");
+    sessionStorage.setItem(REFRESH_TOKEN_STORAGE, "");
 
     accessToken.value = "";
     refreshToken.value = "";
@@ -46,8 +46,8 @@ const useTokenStore = defineStore("token", () => {
     return AuthType[authType as keyof typeof AuthType];
   };
 
-  const getAccessToken = () => sessionStorage.getItem(ACCESS_TOKEN_STORAGE)
-  const getRefreshToken = () => sessionStorage.getItem(REFRESH_TOKEN_STORAGE)
+  const getAccessToken = () => sessionStorage.getItem(ACCESS_TOKEN_STORAGE);
+  const getRefreshToken = () => sessionStorage.getItem(REFRESH_TOKEN_STORAGE);
 
   return {
     registerTokens,

@@ -6,7 +6,7 @@
                 <RouterLink to="/employee/login" class="button">Login</RouterLink>
             </div>
         </div>
-    </ViewTemplate>    
+    </ViewTemplate>
 </template>
 
 <script setup lang="ts">
