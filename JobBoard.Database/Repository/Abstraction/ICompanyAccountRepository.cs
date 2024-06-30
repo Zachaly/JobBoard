@@ -9,5 +9,7 @@ namespace JobBoard.Database.Repository.Abstraction
         Task<IEnumerable<CompanyModel>> GetAsync(GetCompanyRequest request);
         Task<CompanyModel?> GetByIdAsync(long id);
         Task<CompanyAccount?> GetByEmailAsync(string email);
+        Task UpdateAsync(CompanyAccount account);
+        Task<CompanyAccount?> GetEntityByIdAsync(long id);
     }
 }

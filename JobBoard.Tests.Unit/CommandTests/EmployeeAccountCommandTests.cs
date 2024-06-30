@@ -236,5 +236,83 @@ namespace JobBoard.Tests.Unit.CommandTests
             Assert.Empty(res.AuthToken);
             Assert.Empty(res.RefreshToken);
         }
+
+        [Fact]
+        public async Task UpdateEmployeeAccountCommand_UpdatesEntity()
+        {
+            var command = new UpdateEmployeeAccountCommand
+            {
+                Id = 1,
+                AboutMe = "about",
+                City = "city",
+                Country = "country",
+                FirstName = "fname",
+                LastName = "lname",
+                PhoneNumber = "phone"
+            };
+
+            var account = new EmployeeAccount();
+
+            var repository = Substitute.For<IEmployeeAccountRepository>();
+            repository.GetEntityByIdAsync(command.Id).Returns(account);
+            repository.UpdateAsync(account).Returns(Task.CompletedTask);
+
+            var validator = Substitute.For<IValidator<UpdateEmployeeAccountRequest>>();
+            validator.Validate(command).Returns(new ValidationResult());
+
+            var handler = new UpdateEmployeeAccountHandler(repository, validator);
+
+            var res = await handler.Handle(command, default);
+
+            await repository.Received(1).UpdateAsync(account);
+
+            Assert.True(res.IsSuccess);
+            Assert.Equal(command.AboutMe, account.AboutMe);
+            Assert.Equal(command.LastName, account.LastName);
+            Assert.Equal(command.FirstName, account.FirstName);
+            Assert.Equal(command.Country, account.Country);
+            Assert.Equal(command.PhoneNumber, account.PhoneNumber);
+            Assert.Equal(command.City, account.City);
+        }
+
+        [Fact]
+        public async Task UpdateEmployeeAccountCommand_InvalidRequest_Failure()
+        {
+            var command = new UpdateEmployeeAccountCommand();
+
+            var repository = Substitute.For<IEmployeeAccountRepository>();
+
+            var validator = Substitute.For<IValidator<UpdateEmployeeAccountRequest>>();
+            validator.Validate(command).Returns(new ValidationResult(new List<ValidationFailure>()
+            {
+                new ValidationFailure("prop", "err")
+            }));
+
+            var handler = new UpdateEmployeeAccountHandler(repository, validator);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.False(res.IsSuccess);
+            Assert.NotEmpty(res.ValidationErrors);
+        }
+
+        [Fact]
+        public async Task UpdateEmployeeAccountCommand_EntityNotFound_Failure()
+        {
+            var command = new UpdateEmployeeAccountCommand();
+
+            var repository = Substitute.For<IEmployeeAccountRepository>();
+            repository.GetEntityByIdAsync(command.Id).ReturnsNull();
+
+            var validator = Substitute.For<IValidator<UpdateEmployeeAccountRequest>>();
+            validator.Validate(command).Returns(new ValidationResult());
+
+            var handler = new UpdateEmployeeAccountHandler(repository, validator);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.False(res.IsSuccess);
+            Assert.NotEmpty(res.Error);
+        }
     }
 }
