@@ -44,13 +44,13 @@ namespace JobBoard.Database.Repository
                 .FirstOrDefaultAsync();
 
         public Task<CompanyAccount?> GetEntityByIdAsync(long id)
-        {
-            throw new NotImplementedException();
-        }
+            => _dbContext.CompanyAccounts.FirstOrDefaultAsync(a => a.Id == id);
 
         public Task UpdateAsync(CompanyAccount account)
         {
-            throw new NotImplementedException();
+            _dbContext.Update(account);
+
+            return _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using JobBoard.Api.Extensions;
+﻿using JobBoard.Api.Constants;
+using JobBoard.Api.Extensions;
 using JobBoard.Application.Command;
 using JobBoard.Model.CompanyAccount;
 using JobBoard.Model.Response;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobBoard.Api.Controllers
@@ -73,6 +75,22 @@ namespace JobBoard.Api.Controllers
             var res = await _mediator.Send(command);
 
             return res.ReturnOkOrBadRequest();
+        }
+
+        /// <summary>
+        /// Updates account with specified id with data given in request
+        /// </summary>
+        /// <response code="204">Account updated</response>
+        /// <response code="400">Invalid request</response>
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [Authorize(Policy = AuthPolicyNames.Company)]
+        public async Task<ActionResult<ResponseModel>> Update(UpdateCompanyAccountCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnNoContentOrBadRequest();
         }
     }
 }

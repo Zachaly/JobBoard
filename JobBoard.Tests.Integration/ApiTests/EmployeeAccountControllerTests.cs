@@ -152,5 +152,98 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
+        [Fact]
+        public async Task Update_ValidRequest_EntityUpdated()
+        {
+            await AuthorizeEmployeeAsync();
+
+            var account = FakeDataFactory.CreateEmployeeAccounts(1)[0];
+
+            _dbContext.EmployeeAccounts.Add(account);
+            _dbContext.SaveChanges();
+
+            var request = new UpdateEmployeeAccountRequest
+            {
+                Id = account.Id,
+                AboutMe = account.AboutMe,
+                City = account.City,
+                Country = account.Country,
+                FirstName = account.FirstName,
+                LastName = "got married or smth",
+                PhoneNumber = account.PhoneNumber
+            };
+
+            var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
+
+            _dbContext.Entry(account).Reload();
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(request.Country, account.Country);
+            Assert.Equal(request.AboutMe, account.AboutMe);
+            Assert.Equal(request.City, account.City);
+            Assert.Equal(request.FirstName, account.FirstName);
+            Assert.Equal(request.LastName, account.LastName);
+            Assert.Equal(request.PhoneNumber, account.PhoneNumber);
+        }
+
+        [Fact]
+        public async Task Update_InvalidRequest_ReturnsBadRequest()
+        {
+            await AuthorizeEmployeeAsync();
+
+            var account = FakeDataFactory.CreateEmployeeAccounts(1)[0];
+
+            _dbContext.EmployeeAccounts.Add(account);
+            _dbContext.SaveChanges();
+
+            var request = new UpdateEmployeeAccountRequest
+            {
+                Id = account.Id,
+                AboutMe = account.AboutMe,
+                City = account.City,
+                Country = account.Country,
+                FirstName = account.FirstName,
+                LastName = "got married or smth",
+                PhoneNumber = "way tooooo long for phone num"
+            };
+
+            var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
+
+            _dbContext.Entry(account).Reload();
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Contains(content.ValidationErrors.Keys, k => k == "PhoneNumber");
+            Assert.Equal(request.Country, account.Country);
+            Assert.Equal(request.AboutMe, account.AboutMe);
+            Assert.Equal(request.City, account.City);
+            Assert.Equal(request.FirstName, account.FirstName);
+            Assert.NotEqual(request.LastName, account.LastName);
+            Assert.NotEqual(request.PhoneNumber, account.PhoneNumber);
+        }
+
+        [Fact]
+        public async Task Update_EntityNotFound_ReturnsBadRequest()
+        {
+            await AuthorizeEmployeeAsync();
+
+            var account = FakeDataFactory.CreateEmployeeAccounts(1)[0];
+
+            var request = new UpdateEmployeeAccountRequest
+            {
+                Id = 2137,
+                AboutMe = account.AboutMe,
+                City = account.City,
+                Country = account.Country,
+                FirstName = account.FirstName,
+                LastName = "got married or smth",
+                PhoneNumber = account.PhoneNumber
+            };
+
+            var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
