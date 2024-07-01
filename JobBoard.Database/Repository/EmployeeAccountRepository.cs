@@ -39,5 +39,15 @@ namespace JobBoard.Database.Repository
             => _dbContext.EmployeeAccounts.Where(a => a.Id == id)
                 .Select(EmployeeAccountExpressions.Model)
                 .FirstOrDefaultAsync();
+
+        public Task<EmployeeAccount?> GetEntityByIdAsync(long id)
+            => _dbContext.EmployeeAccounts.FirstOrDefaultAsync(a => a.Id == id);
+
+        public Task UpdateAsync(EmployeeAccount account)
+        {
+            _dbContext.Update(account);
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

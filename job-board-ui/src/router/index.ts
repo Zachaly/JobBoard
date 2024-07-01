@@ -10,12 +10,10 @@ import CompanyLoginView from "@/views/CompanyLoginView.vue";
 import EmployeeLoginView from "@/views/EmployeeLoginView.vue";
 import CompanyProfileView from "@/views/CompanyProfileView.vue";
 import EmployeeProfileView from "@/views/EmployeeProfileView.vue";
+import UpdateCompanyAccountView from '@/views/UpdateCompanyAccountView.vue'
+import UpdateEmployeeAccountView from '@/views/UpdateEmployeeAccountView.vue'
 import { Component } from "vue";
-import {
-  createRouter,
-  createWebHashHistory,
-  RouteRecordRaw,
-} from "vue-router";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 const createRoute = (
   path: string,
@@ -60,6 +58,18 @@ const routes: Array<RouteRecordRaw> = [
     EmployeeProfileView,
     AuthType.Employee
   ),
+  createRoute(
+    "/company/profile/update",
+    "company-profile-update",
+    UpdateCompanyAccountView,
+    AuthType.Company
+  ),
+  createRoute(
+    "/employee/profile/update",
+    "employee-update-profile",
+    UpdateEmployeeAccountView,
+    AuthType.Employee
+  )
 ];
 
 const router = createRouter({

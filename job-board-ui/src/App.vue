@@ -4,10 +4,13 @@
 
 <script setup lang="ts">
 import useAuthStore from './stores/AuthStore';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore()
 
-authStore.loadSavedUser()
+onMounted(async () => {
+  await authStore.loadSavedUser()
+})
 
 </script>
 

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Azure.Core;
+using FluentValidation;
 using FluentValidation.Results;
 using JobBoard.Application.Command;
 using JobBoard.Application.Factory.Abstraction;
@@ -227,6 +228,84 @@ namespace JobBoard.Tests.Unit.CommandTests
             Assert.Equal(0, res.UserId);
             Assert.Empty(res.AuthToken);
             Assert.Empty(res.RefreshToken);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountCommand_UpdatesEntity()
+        {
+            var command = new UpdateCompanyAccountCommand
+            {
+                Id = 1,
+                Address = "addr",
+                City = "ci",
+                ContactEmail = "email@email.com",
+                Country = "ctn",
+                Name = "namee",
+                PostalCode = "postal"
+            };
+
+            var account = new CompanyAccount();
+
+            var repository = Substitute.For<ICompanyAccountRepository>();
+            repository.UpdateAsync(account).Returns(Task.CompletedTask);
+            repository.GetEntityByIdAsync(command.Id).Returns(account);
+
+            var validator = Substitute.For<IValidator<UpdateCompanyAccountRequest>>();
+            validator.Validate(command).Returns(new ValidationResult());
+
+            var handler = new UpdateCompanyAccountHandler(repository, validator);
+
+            var res = await handler.Handle(command, default);
+
+            await repository.Received(1).UpdateAsync(account);
+
+            Assert.True(res.IsSuccess);
+            Assert.Equal(command.Name, account.Name);
+            Assert.Equal(command.Country, account.Country);
+            Assert.Equal(command.City, account.City);
+            Assert.Equal(command.ContactEmail, account.ContactEmail);
+            Assert.Equal(command.PostalCode, account.PostalCode);
+            Assert.Equal(command.Address, account.Address);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountCommand_InvalidCommand_Failure()
+        {
+            var command = new UpdateCompanyAccountCommand();
+
+            var repository = Substitute.For<ICompanyAccountRepository>();
+
+            var validator = Substitute.For<IValidator<UpdateCompanyAccountRequest>>();
+            validator.Validate(command).Returns(new ValidationResult(new List<ValidationFailure>()
+            {
+                new ValidationFailure("prop", "err")
+            }));
+
+            var handler = new UpdateCompanyAccountHandler(repository, validator);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.False(res.IsSuccess);
+            Assert.NotEmpty(res.ValidationErrors);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountCommand_EntityNotFound_Failure()
+        {
+            var command = new UpdateCompanyAccountCommand();
+
+            var repository = Substitute.For<ICompanyAccountRepository>();
+            repository.GetEntityByIdAsync(command.Id).ReturnsNull();
+
+            var validator = Substitute.For<IValidator<UpdateCompanyAccountRequest>>();
+            validator.Validate(command).Returns(new ValidationResult());
+
+            var handler = new UpdateCompanyAccountHandler(repository, validator);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.False(res.IsSuccess);
+            Assert.NotEmpty(res.Error);
         }
     }
 }
