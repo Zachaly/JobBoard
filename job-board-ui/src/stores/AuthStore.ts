@@ -42,7 +42,7 @@ const useAuthStore = defineStore("auth", () => {
 
   const tokenStore = useTokenStore();
 
-  const authorize = (
+  const authorize = async (
     loginResponse: LoginResponse,
     type: AuthType,
     remember = false
@@ -79,19 +79,7 @@ const useAuthStore = defineStore("auth", () => {
     employeeData.value = null;
     companyData.value = null;
 
-    if (type == AuthType.Admin) {
-      axios
-        .get<AdminAccountModel>(`admin-account/${loginResponse.userId}`)
-        .then((res) => (adminData.value = res.data));
-    } else if (type == AuthType.Company) {
-      axios
-        .get<CompanyAccountModel>(`company-account/${loginResponse.userId}`)
-        .then((res) => (companyData.value = res.data));
-    } else if (type == AuthType.Employee) {
-      axios
-        .get<EmployeeAccountModel>(`employee-account/${loginResponse.userId}`)
-        .then((res) => (employeeData.value = res.data));
-    }
+    await updateUserData()
 
     if (remember) {
       tokenStore.saveTokens(type);
@@ -160,7 +148,25 @@ const useAuthStore = defineStore("auth", () => {
     authorize(data, type, true);
   };
 
-  return { authorize, currentAuthType, currentUserId, logout, loadSavedUser };
+  const updateUserData = () => {
+    if (currentAuthType.value == AuthType.Admin) {
+      return axios
+        .get<AdminAccountModel>(`admin-account/${currentUserId.value}`)
+        .then((res) => (adminData.value = res.data));
+    } else if (currentAuthType.value == AuthType.Company) {
+      return axios
+        .get<CompanyAccountModel>(`company-account/${currentUserId.value}`)
+        .then((res) => (companyData.value = res.data));
+    } else if (currentAuthType.value == AuthType.Employee) {
+      return axios
+        .get<EmployeeAccountModel>(`employee-account/${currentUserId.value}`)
+        .then((res) => (employeeData.value = res.data));
+    }
+
+    return Promise.reject()
+  }
+
+  return { authorize, currentAuthType, currentUserId, logout, loadSavedUser, companyData, employeeData, updateUserData };
 });
 
 export default useAuthStore;
