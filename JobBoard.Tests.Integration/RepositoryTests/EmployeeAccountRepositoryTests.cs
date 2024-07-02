@@ -1,4 +1,5 @@
 ﻿using JobBoard.Database.Repository;
+using JobBoard.Domain.Entity;
 using JobBoard.Model.EmployeeAccount;
 
 namespace JobBoard.Tests.Integration.RepositoryTests
@@ -33,6 +34,50 @@ namespace JobBoard.Tests.Integration.RepositoryTests
             var expectedIds = _dbContext.CompanyAccounts.Skip((index ?? 0) * (pageSize ?? 10)).Take(pageSize ?? 10).Select(x => x.Id);
 
             Assert.Equivalent(expectedIds, res.Select(x => x.Id));
+        }
+
+        [Fact]
+        public async Task GetAsync_FilterApplied_ReturnsCorrectEntities()
+        {
+            _dbContext.EmployeeAccounts.AddRange(FakeDataFactory.CreateEmployeeAccounts(5));
+
+            const string City = "city";
+
+            var accounts = new List<EmployeeAccount>()
+            {
+                new EmployeeAccount
+                {
+                    Email = "email@email.com",
+                    City = City,
+                    Country = "ctn1",
+                    FirstName = "fname",
+                    LastName = "lname",
+                    PasswordHash = "pass1",
+                    PhoneNumber = "123456789",
+                },
+                new EmployeeAccount
+                {
+                    Email = "email2@email.com",
+                    City = City,
+                    Country = "ctn2",
+                    FirstName = "fname2",
+                    LastName = "lname2",
+                    PasswordHash = "pass2",
+                    PhoneNumber = "987654321",
+                },
+            };
+
+            _dbContext.EmployeeAccounts.AddRange(accounts);
+            _dbContext.SaveChanges();
+
+            var request = new GetEmployeeAccountRequest
+            {
+                City = City
+            };
+
+            var res = await _repository.GetAsync(request);
+
+            Assert.Equivalent(accounts.Select(x => x.Id), res.Select(x => x.Id));
         }
 
         [Fact]
