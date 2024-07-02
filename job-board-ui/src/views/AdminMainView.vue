@@ -38,6 +38,13 @@
                             <th>City</th>
                             <th>Contact email</th>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td><input class="input" v-model="getCompaniesRequest.Name" @input="loadCompanies()" /></td>
+                            <td><input class="input" v-model="getCompaniesRequest.Country" @input="loadCompanies()"> </td>
+                            <td><input class="input" v-model="getCompaniesRequest.City" @input="loadCompanies()" /></td>
+                            <td></td>
+                        </tr>
                     </thead>
                     <tr v-for="company of companies" :key="company.id">
                         <td>
@@ -71,6 +78,13 @@
                             <th>Country</th>
                             <th>City</th>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input class="input" v-model="getEmployeesRequest.Country" @input="loadEmployees()"></td>
+                            <td><input class="input" v-model="getEmployeesRequest.City" @input="loadEmployees()"></td>
+                        </tr>
                     </thead>
                     <tr v-for="employee of employees" :key="employee.id">
                         <td>
@@ -103,6 +117,8 @@ import CompanyAccountModel from '@/model/company-account/CompanyAccountModel';
 import axios from 'axios';
 import useAuthStore, { AuthType } from '@/stores/AuthStore';
 import { useRouter } from 'vue-router';
+import GetCompanyAccountRequest from '../model/company-account/GetCompanyAccountRequest';
+import GetEmployeeAccountRequest from '../model/employee-account/GetEmployeeAccountRequest';
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -115,11 +131,24 @@ const admins: Ref<AdminAccountModel[]> = ref([])
 const employees: Ref<EmployeeAccountModel[]> = ref([])
 const companies: Ref<CompanyAccountModel[]> = ref([])
 
+const getCompaniesRequest: Ref<GetCompanyAccountRequest> = ref({})
+const getEmployeesRequest: Ref<GetEmployeeAccountRequest> = ref({})
+
 onMounted(() => {
     axios.get<AdminAccountModel[]>('admin-account').then(res => admins.value = res.data)
     axios.get<CompanyAccountModel[]>('company-account').then(res => companies.value = res.data)
     axios.get<EmployeeAccountModel[]>('employee-account').then(res => employees.value = res.data)
 })
+
+const loadEmployees = () => {
+    axios.get<EmployeeAccountModel[]>('employee-account', { params: getEmployeesRequest.value })
+        .then(res => employees.value = res.data)
+}
+
+const loadCompanies = () => {
+    axios.get<CompanyAccountModel[]>('company-account', { params: getCompaniesRequest.value })
+        .then(res => companies.value = res.data)
+}
 
 const logout = () => {
     authStore.logout()
