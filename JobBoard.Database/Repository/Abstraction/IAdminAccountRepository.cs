@@ -3,11 +3,8 @@ using JobBoard.Model.AdminAccount;
 
 namespace JobBoard.Database.Repository.Abstraction
 {
-    public interface IAdminAccountRepository
+    public interface IAdminAccountRepository : IRepositoryBase<AdminAccount, AdminAccountModel, GetAdminAccountRequest>
     {
-        Task AddAsync(AdminAccount entity);
-        Task<IEnumerable<AdminAccountModel>> GetAsync(GetAdminAccountRequest request);
-        Task<AdminAccountModel?> GetByIdAsync(long id);
         Task<AdminAccount?> GetByLoginAsync(string login);
     }
 }
