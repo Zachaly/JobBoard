@@ -10,8 +10,13 @@ import CompanyLoginView from "@/views/CompanyLoginView.vue";
 import EmployeeLoginView from "@/views/EmployeeLoginView.vue";
 import CompanyProfileView from "@/views/CompanyProfileView.vue";
 import EmployeeProfileView from "@/views/EmployeeProfileView.vue";
-import UpdateCompanyAccountView from '@/views/UpdateCompanyAccountView.vue'
-import UpdateEmployeeAccountView from '@/views/UpdateEmployeeAccountView.vue'
+import UpdateCompanyAccountView from "@/views/UpdateCompanyAccountView.vue";
+import UpdateEmployeeAccountView from "@/views/UpdateEmployeeAccountView.vue";
+import AddJobOfferView from "@/views/AddJobOfferView.vue";
+import SearchJobOffersView from "@/views/SearchJobOffersView.vue";
+import JobOfferView from "@/views/JobOfferView.vue";
+import CompanyProfileJobOffersView from "@/views/CompanyProfileJobOffersView.vue";
+import UpdateJobOfferView from "@/views/UpdateJobOfferView.vue";
 import { Component } from "vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
@@ -69,7 +74,27 @@ const routes: Array<RouteRecordRaw> = [
     "employee-update-profile",
     UpdateEmployeeAccountView,
     AuthType.Employee
-  )
+  ),
+  createRoute(
+    "/job-offer/add",
+    "add-job-offer",
+    AddJobOfferView,
+    AuthType.Company
+  ),
+  createRoute("/job-offer/search", "search-job-offers", SearchJobOffersView),
+  createRoute("/job-offer/:id", "job-offer", JobOfferView),
+  createRoute(
+    "/company/profile/offers",
+    "company-profile-job-offers",
+    CompanyProfileJobOffersView,
+    AuthType.Company
+  ),
+  createRoute(
+    "/company/update-offer/:id",
+    "update-job-offer",
+    UpdateJobOfferView,
+    AuthType.Company
+  ),
 ];
 
 const router = createRouter({
