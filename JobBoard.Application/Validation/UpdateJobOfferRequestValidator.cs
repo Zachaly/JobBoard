@@ -3,7 +3,7 @@ using JobBoard.Model.JobOffer;
 
 namespace JobBoard.Application.Validation
 {
-    internal class UpdateJobOfferRequestValidator : AbstractValidator<UpdateJobOfferRequest>
+    public class UpdateJobOfferRequestValidator : AbstractValidator<UpdateJobOfferRequest>
     {
         public UpdateJobOfferRequestValidator()
         {
