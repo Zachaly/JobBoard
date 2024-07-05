@@ -11,6 +11,7 @@ namespace JobBoard.Database
         public DbSet<AdminAccountRefreshToken> AdminAccountRefreshTokens { get; set; }
         public DbSet<CompanyAccountRefreshToken> CompanyAccountRefreshTokens { get; set; }
         public DbSet<EmployeeAccountRefreshToken> EmployeeAccountRefreshTokens { get; set; }
+        public DbSet<JobOffer> JobOffers { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
@@ -65,6 +66,11 @@ namespace JobBoard.Database
                 .HasMany(e => e.RefreshTokens)
                 .WithOne(e => e.Account)
                 .HasForeignKey(e => e.AccountId);
+
+            modelBuilder.Entity<CompanyAccount>()
+                .HasMany(e => e.JobOffers)
+                .WithOne(e => e.Company)
+                .HasForeignKey(e => e.CompanyId);
         }
     }
 }

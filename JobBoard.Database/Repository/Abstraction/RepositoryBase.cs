@@ -15,6 +15,7 @@ namespace JobBoard.Database.Repository.Abstraction
         Task<TEntity?> GetEntityByIdAsync(long id);
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
+        Task DeleteByIdAsync(long id);
     }
 
     public abstract class RepositoryBase<TEntity, TModel, TGetRequest> : IRepositoryBase<TEntity, TModel, TGetRequest>
@@ -33,6 +34,20 @@ namespace JobBoard.Database.Repository.Abstraction
         public async Task AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteByIdAsync(long id)
+        {
+            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+
+            if(entity is null)
+            {
+                return;
+            }
+
+            _dbContext.Set<TEntity>().Remove(entity);
 
             await _dbContext.SaveChangesAsync();
         }

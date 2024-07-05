@@ -13,5 +13,6 @@
         public string ContactEmail { get; set; }
 
         public ICollection<CompanyAccountRefreshToken> RefreshTokens { get; set; }
+        public ICollection<JobOffer> JobOffers { get; set; }
     }
 }

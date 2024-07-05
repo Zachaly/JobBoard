@@ -32,5 +32,16 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.Login, f => f.Name.FirstName())
                 .RuleFor(x => x.PasswordHash, f => f.Random.String())
                 .Generate(count);
+
+        public static List<JobOffer> CreateJobOffers(long companyId, int count)
+            => new Faker<JobOffer>()
+                .RuleFor(x => x.Title, f => f.Random.Words(2))
+                .RuleFor(x => x.CreationDate, _ => DateTimeOffset.UtcNow)
+                .RuleFor(x => x.ExpirationDate, _ => DateTimeOffset.UtcNow.AddDays(1))
+                .RuleFor(x => x.Description, f => f.Random.Words(5))
+                .RuleFor(x => x.Location, f => f.Address.City())
+                .RuleFor(x => x.CompanyId, _ => companyId)
+                .Generate(count);
+            
     }
 }

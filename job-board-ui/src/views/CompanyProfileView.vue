@@ -10,6 +10,7 @@
                 <p class="subtitle">Postal code: {{ profile.postalCode }}</p>
                 <p class="subtitle">Address: {{ profile.address }}</p>
                 <RouterLink to="/company/profile/update" class="button">Update</RouterLink>
+                <RouterLink to="/company/profile/offers" class="button">Job offers</RouterLink>
             </div>
         </div>
     </ViewTemplate>

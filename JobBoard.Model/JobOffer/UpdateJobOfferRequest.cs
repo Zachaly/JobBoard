@@ -1,0 +1,11 @@
+﻿namespace JobBoard.Model.JobOffer
+{
+    public class UpdateJobOfferRequest
+    {
+        public long Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+        public long ExpirationTimestamp { get; set; }
+    }
+}
