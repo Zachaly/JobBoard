@@ -4,4 +4,5 @@ export default interface AddJobOfferRequest {
     title: string,
     description: string,
     location: string,
+    requirements: string[]
 }

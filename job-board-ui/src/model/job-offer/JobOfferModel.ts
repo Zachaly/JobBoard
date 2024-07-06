@@ -1,4 +1,5 @@
 import CompanyAccountModel from "../company-account/CompanyAccountModel";
+import JobOfferRequirementModel from "../job-offer-requirement/JobOfferRequirementModel";
 
 export default interface JobOfferModel {
     id: number,
@@ -7,5 +8,6 @@ export default interface JobOfferModel {
     location: string,
     expirationDate: string,
     creationDate: string,
-    company: CompanyAccountModel
+    company: CompanyAccountModel,
+    requirements: JobOfferRequirementModel[]
 }
