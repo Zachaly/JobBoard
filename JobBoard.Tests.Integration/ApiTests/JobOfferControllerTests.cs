@@ -26,7 +26,7 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             var response = await _httpClient.GetAsync(Endpoint);
             var content = await response.Content.ReadFromJsonAsync<IEnumerable<JobOfferModel>>();
-
+            
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equivalent(offers.Select(x => x.Id), content.Select(x => x.Id));
         }
@@ -74,7 +74,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Description = "desc",
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
                 Location = "loc",
-                Title = "title"
+                Title = "title",
+                Requirements = ["req1", "req2"]
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -85,6 +86,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                  && offer.Title == request.Title
                  && offer.ExpirationDate == DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp)
                  && offer.Location == request.Location);
+            Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(0));
+            Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(1));
         }
 
         [Fact]
@@ -98,7 +101,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 CompanyId = companyData.UserId,
                 Description = "desc",
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
-                Location = "loc"
+                Location = "loc",
+                Requirements = []
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);

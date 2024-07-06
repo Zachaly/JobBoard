@@ -23,6 +23,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 ExpirationTimestamp = 1234,
                 Location = "krk",
                 Title = "title",
+                Requirements = ["req1", "req2"]
             };
 
             var offer = _factory.Create(request);
@@ -32,6 +33,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp), offer.ExpirationDate);
             Assert.Equal(request.Title, offer.Title);
             Assert.Equal(request.Location, offer.Location);
+            Assert.Equivalent(request.Requirements, offer.Requirements.Select(x => x.Content));
         }
 
         [Fact]

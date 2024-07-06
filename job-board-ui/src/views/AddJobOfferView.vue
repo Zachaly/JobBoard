@@ -1,23 +1,23 @@
 <template>
     <ViewTemplate>
         <div class="columns is-centered">
-            <div class="column is-8">
+            <div class="column is-6">
                 <div class="control">
                     <label for="" class="label">Title</label>
                     <input type="text" class="input" v-model="request.title">
-                    <ValidationErrors :errors="validationErrors['Title']"/>
+                    <ValidationErrors :errors="validationErrors['Title']" />
                 </div>
                 <div class="control">
                     <label for="" class="label">Location</label>
                     <input type="text" class="input" v-model="request.location">
-                    <ValidationErrors :errors="validationErrors['Location']"/>
+                    <ValidationErrors :errors="validationErrors['Location']" />
                 </div>
                 <div class="control">
                     <label for="" class="label">Description</label>
                     <textarea name="" id="" cols="30" rows="10" class="textarea" v-model="request.description">
 
                     </textarea>
-                    <ValidationErrors :errors="validationErrors['Description']"/>
+                    <ValidationErrors :errors="validationErrors['Description']" />
                 </div>
                 <div class="control">
                     <label for="" class="label">Expiration date</label>
@@ -28,8 +28,20 @@
                     <button class="button" @click="() => router.back()">Cancel</button>
                 </div>
             </div>
+            <div class="column is-3">
+                <p class="title">Requirements</p>
+                <div>
+                    <input type="text" class="input" v-model="newRequirement">
+                    <button class="button" @click="addRequirement()">Add</button>
+                </div>
+                <div class="is-flex is-align-items-center is-justify-content-space-between"
+                    v-for="req in request.requirements" :key="req">
+                    {{ req }}
+                    <button class="button is-warning" @click="deleteRequirement(req)">Delete</button>
+                </div>
+            </div>
         </div>
-    </ViewTemplate>    
+    </ViewTemplate>
 </template>
 
 <script setup lang="ts">
@@ -50,12 +62,15 @@ const router = useRouter()
 
 const validationErrors: Ref<{ [id: string]: string[] }> = ref({})
 
+const newRequirement = ref('')
+
 const request: Ref<AddJobOfferRequest> = ref({
     companyId,
     title: '',
     description: '',
     location: '',
-    expirationTimestamp: 0
+    expirationTimestamp: 0,
+    requirements: []
 })
 
 const currentDate = ref('')
@@ -64,12 +79,21 @@ const getTimestamp = () => {
     request.value.expirationTimestamp = new Date(currentDate.value).getTime()
 }
 
+const addRequirement = () => {
+    request.value.requirements.push(newRequirement.value)
+    newRequirement.value = ''
+}
+
+const deleteRequirement = (req: string) => {
+    request.value.requirements = request.value.requirements.filter(x => x != req)
+}
+
 const add = () => {
     axios.post('job-offer', request.value).then(() => {
         alert('Offer added')
         router.back()
     }).catch((err: AxiosError<ResponseModel>) => {
-        if(err.response?.data && err.response.data.validationErrors) {
+        if (err.response?.data && err.response.data.validationErrors) {
             validationErrors.value = err.response.data.validationErrors
         }
     })

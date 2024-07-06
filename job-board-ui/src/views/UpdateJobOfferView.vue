@@ -1,30 +1,46 @@
 <template>
     <ViewTemplate>
-        <div class="column is-8">
-            <div class="control">
-                <label for="" class="label">Title</label>
-                <input type="text" class="input" v-model="request.title">
-                <ValidationErrors :errors="validationErrors['Title']" />
-            </div>
-            <div class="control">
-                <label for="" class="label">Location</label>
-                <input type="text" class="input" v-model="request.location">
-                <ValidationErrors :errors="validationErrors['Location']" />
-            </div>
-            <div class="control">
-                <label for="" class="label">Description</label>
-                <textarea name="" id="" cols="30" rows="10" class="textarea" v-model="request.description">
+        <div class="columns">
+
+
+            <div class="column is-6">
+                <div class="control">
+                    <label for="" class="label">Title</label>
+                    <input type="text" class="input" v-model="request.title">
+                    <ValidationErrors :errors="validationErrors['Title']" />
+                </div>
+                <div class="control">
+                    <label for="" class="label">Location</label>
+                    <input type="text" class="input" v-model="request.location">
+                    <ValidationErrors :errors="validationErrors['Location']" />
+                </div>
+                <div class="control">
+                    <label for="" class="label">Description</label>
+                    <textarea name="" id="" cols="30" rows="10" class="textarea" v-model="request.description">
 
                 </textarea>
-                <ValidationErrors :errors="validationErrors['Description']" />
+                    <ValidationErrors :errors="validationErrors['Description']" />
+                </div>
+                <div class="control">
+                    <label for="" class="label">Expiration date</label>
+                    <input type="date" @change="updateTimestamp()" v-model="currentExpirationDate">
+                </div>
+                <div class="control">
+                    <button class="button" @click="update()">Update</button>
+                    <button class="button" @click="() => router.back()">Cancel</button>
+                </div>
             </div>
-            <div class="control">
-                <label for="" class="label">Expiration date</label>
-                <input type="date" @change="updateTimestamp()" v-model="currentExpirationDate">
-            </div>
-            <div class="control">
-                <button class="button" @click="update()">Update</button>
-                <button class="button" @click="() => router.back()">Cancel</button>
+            <div class="column is-3">
+                <p class="title">Requirements</p>
+                <div>
+                    <input type="text" class="input" v-model="newRequirement">
+                    <button class="button" @click="addRequirement()">Add</button>
+                </div>
+                <div class="is-flex is-align-items-center is-justify-content-space-between" v-for="req in requirements"
+                    :key="req.id">
+                    {{ req.content }}
+                    <button class="button is-warning" @click="deleteRequirement(req)">Delete</button>
+                </div>
             </div>
         </div>
     </ViewTemplate>
@@ -40,6 +56,8 @@ import axios from 'axios';
 import UpdateJobOfferRequest from '../model/job-offer/UpdateJobOfferRequest';
 import { AxiosError } from 'axios';
 import ResponseModel from '../model/ResponseModel';
+import JobOfferRequirementModel from '../model/job-offer-requirement/JobOfferRequirementModel';
+import ValidationErrors from '@/components/ValidationErrorsComponent.vue';
 
 const request: Ref<UpdateJobOfferRequest> = ref({
     id: 0,
@@ -48,6 +66,9 @@ const request: Ref<UpdateJobOfferRequest> = ref({
     expirationTimestamp: 0,
     location: ''
 })
+
+const requirements: Ref<JobOfferRequirementModel[]> = ref([])
+const newRequirement = ref('')
 
 const validationErrors: Ref<{ [id: string]: string[] }> = ref({})
 
@@ -71,6 +92,24 @@ const update = () => {
     })
 }
 
+const addRequirement = () => {
+    const requirementRequest = {
+        offerId: request.value.id,
+        content: newRequirement.value
+    }
+
+    axios.post('job-offer-requirement', requirementRequest).then(() => {
+        axios.get<JobOfferRequirementModel[]>('job-offer-requirement', { params: { OfferId: request.value.id } })
+            .then(res => requirements.value = res.data)
+        newRequirement.value = ''
+    })
+}
+
+const deleteRequirement = (req: JobOfferRequirementModel) => {
+    axios.delete(`job-offer-requirement/${req.id}`)
+        .then(() => requirements.value = requirements.value.filter(x => x.id != req.id))
+}
+
 onMounted(() => {
     axios.get<JobOfferModel>(`job-offer/${route.params.id}`).then(res => {
         if (res.data.company.id != authStore.currentUserId) {
@@ -89,6 +128,8 @@ onMounted(() => {
             location: res.data.location,
             description: res.data.description
         }
+
+        requirements.value = res.data.requirements
 
         updateTimestamp()
     })

@@ -6,6 +6,10 @@
                 <p>
                     {{ offer.description }}
                 </p>
+                <p class="title mt-2">
+                    Requirements
+                </p>
+                <p class="subtitle mt-2" v-for="req in offer.requirements" :key="req.id">{{ req.content }}</p>
             </div>
         </div>
     </ViewTemplate>
@@ -36,7 +40,8 @@ const offer: Ref<JobOfferModel> = ref({
         contactEmail: '',
         country: '',
         address: ''
-    }
+    },
+    requirements: []
 })
 
 onMounted(() => {
