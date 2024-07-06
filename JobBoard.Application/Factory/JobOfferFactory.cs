@@ -15,6 +15,10 @@ namespace JobBoard.Application.Factory
                 ExpirationDate = DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp),
                 Location = request.Location,
                 Title = request.Title,
+                Requirements = request.Requirements.Select(req => new JobOfferRequirement
+                {
+                    Content = req,
+                }).ToList()
             };
 
         public void Update(JobOffer offer, UpdateJobOfferRequest request)

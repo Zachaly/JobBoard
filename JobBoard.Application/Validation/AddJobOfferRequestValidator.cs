@@ -11,6 +11,7 @@ namespace JobBoard.Application.Validation
             RuleFor(r => r.Description).Length(1, 1000);
             RuleFor(r => r.ExpirationTimestamp).GreaterThan(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
             RuleFor(r => r.Location).Length(1, 100);
+            RuleForEach(r => r.Requirements).Length(1, 300);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace JobBoard.Expressions
             Description = offer.Description,
             Title = offer.Title,
             Location = offer.Location,
+            Requirements = offer.Requirements.AsQueryable().Select(JobOfferRequirementExpressions.Model)
         };
     }
 }

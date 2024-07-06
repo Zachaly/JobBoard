@@ -31,14 +31,14 @@ namespace JobBoard.Database.Repository.Abstraction
             _dbContext = dbContext;
         }
 
-        public async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
 
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteByIdAsync(long id)
+        public virtual async Task DeleteByIdAsync(long id)
         {
             var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -52,7 +52,7 @@ namespace JobBoard.Database.Repository.Abstraction
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<TModel>> GetAsync(TGetRequest request)
+        public virtual Task<IEnumerable<TModel>> GetAsync(TGetRequest request)
         {
             var query = _dbContext.Set<TEntity>()
                 .FilterWithRequest<TEntity, TGetRequest>(request)
@@ -63,13 +63,13 @@ namespace JobBoard.Database.Repository.Abstraction
             return Task.FromResult(query);
         }
 
-        public Task<TModel?> GetByIdAsync(long id)
+        public virtual Task<TModel?> GetByIdAsync(long id)
             => _dbContext.Set<TEntity>().Where(e => e.Id == id).Select(ModelExpression).FirstOrDefaultAsync();
 
-        public Task<TEntity?> GetEntityByIdAsync(long id)
+        public virtual Task<TEntity?> GetEntityByIdAsync(long id)
             => _dbContext.Set<TEntity>().Where(e => e.Id == id).FirstOrDefaultAsync();
 
-        public Task UpdateAsync(TEntity entity)
+        public virtual Task UpdateAsync(TEntity entity)
         {
             _dbContext.Update(entity);
 
