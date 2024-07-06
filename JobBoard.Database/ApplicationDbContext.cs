@@ -12,6 +12,7 @@ namespace JobBoard.Database
         public DbSet<CompanyAccountRefreshToken> CompanyAccountRefreshTokens { get; set; }
         public DbSet<EmployeeAccountRefreshToken> EmployeeAccountRefreshTokens { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
+        public DbSet<JobOfferRequirement> JobOfferRequirements { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
@@ -71,6 +72,23 @@ namespace JobBoard.Database
                 .HasMany(e => e.JobOffers)
                 .WithOne(e => e.Company)
                 .HasForeignKey(e => e.CompanyId);
+
+            modelBuilder.Entity<JobOffer>()
+                .HasMany(o => o.Requirements)
+                .WithOne(r => r.Offer)
+                .HasForeignKey(r => r.OfferId);
+
+            modelBuilder.Entity<JobOfferRequirement>()
+                .Property(e => e.Content).HasMaxLength(300);
+
+            modelBuilder.Entity<JobOffer>()
+                .Property(e => e.Description).HasMaxLength(1000);
+
+            modelBuilder.Entity<JobOffer>()
+                .Property(e => e.Title).HasMaxLength(100);
+
+            modelBuilder.Entity<JobOffer>()
+                .Property(e => e.Location).HasMaxLength(100);
         }
     }
 }
