@@ -1,6 +1,7 @@
 <template>
-    <ViewTemplate>
+    <ViewTemplate :employee-navbar="true">
         <div class="columns">
+            <div class="column is-2"></div>
             <div class="column is-8">
                 <JobOfferListItem :offer="offer" />
                 <p>

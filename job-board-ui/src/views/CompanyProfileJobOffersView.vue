@@ -1,5 +1,5 @@
 <template>
-    <ViewTemplate>
+    <ViewTemplate :company-navbar="true">
         <div class="columns">
             <div class="column is-8">
                 <JobOfferManagementListItem v-for="offer in offers" :key="offer.id" :offer="offer"

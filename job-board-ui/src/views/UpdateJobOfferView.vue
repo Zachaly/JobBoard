@@ -1,8 +1,6 @@
 <template>
-    <ViewTemplate>
+    <ViewTemplate :company-navbar="true">
         <div class="columns">
-
-
             <div class="column is-6">
                 <div class="control">
                     <label for="" class="label">Title</label>

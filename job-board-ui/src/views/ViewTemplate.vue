@@ -1,13 +1,18 @@
 <template>
-    <nav class="navbar">
-
-    </nav>
-    <div class="columns">
-        <div class="column is-2">
-
-        </div>
-        <div class="column is-10">
-            <slot></slot>
-        </div>
+    <EmployeeNavbar v-if="employeeNavbar"/>
+    <CompanyNavbar v-if="companyNavbar"/>
+    <div>
+        <slot></slot>
     </div>
 </template>
+
+<script setup lang="ts">
+import EmployeeNavbar from "@/components/EmployeeNavbarComponent.vue";
+import CompanyNavbar from "@/components/CompanyNavbarComponent.vue";
+import { defineProps } from 'vue';
+
+const props = defineProps<{
+    companyNavbar?: boolean,
+    employeeNavbar?: boolean
+}>()
+</script>
