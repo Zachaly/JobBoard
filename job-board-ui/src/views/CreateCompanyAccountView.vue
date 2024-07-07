@@ -1,5 +1,5 @@
 <template>
-    <ViewTemplate>
+    <ViewTemplate :company-navbar="true">
         <div class="columns is-centered">
             <div class="column is-6">
                 <div class="control">

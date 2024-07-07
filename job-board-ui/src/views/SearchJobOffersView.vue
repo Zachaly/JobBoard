@@ -1,5 +1,5 @@
 <template>
-    <ViewTemplate>
+    <ViewTemplate :employee-navbar="true">
         <div class="columns">
             <div class="column is-8">
                 <div>
