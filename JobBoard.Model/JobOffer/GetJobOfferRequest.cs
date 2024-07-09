@@ -1,8 +1,15 @@
-﻿namespace JobBoard.Model.JobOffer
+﻿using JobBoard.Model.Attributes;
+using JobBoard.Model.Enum;
+
+namespace JobBoard.Model.JobOffer
 {
     public class GetJobOfferRequest : PagedRequest
     {
         public long? CompanyId { get; set; }
         public string? Location { get; set; }
+        [CustomFilter(Property = "Company", SubProperty = "Name", ComparisonType = ComparisonType.StartsWith)]
+        public string? SearchCompanyName { get; set; }
+        [CustomFilter(Property = "ExpirationDate", ComparisonType = ComparisonType.LesserOrEqual)]
+        public DateTimeOffset? MaxExpirationDate { get; set; }
     }
 }
