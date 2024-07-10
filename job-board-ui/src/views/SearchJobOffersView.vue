@@ -2,11 +2,11 @@
     <ViewTemplate :employee-navbar="true">
         <div class="columns">
             <div class="column is-3">
-                <input placeholder="Location" type="text" class="input" v-model="currentSearchValue">
+                <input placeholder="Location" type="text" class="input" v-model="searchRequest.Location"/>
+                <input placeholder="Company Name" class="input" v-model="searchRequest.SearchCompanyName"/>
                 <button class="button is-info" @click="loadOffers()">Search</button>
             </div>
             <div class="column is-8">
-
                 <JobOfferListItem v-for="offer in offers" :key="offer.id" :offer="offer" />
             </div>
         </div>
@@ -23,14 +23,12 @@ import GetJobOfferRequest from '../model/job-offer/GetJobOfferRequest';
 
 const offers = ref<JobOfferModel[]>([])
 
-const currentSearchValue: Ref<string | undefined> = ref()
+const searchRequest: Ref<GetJobOfferRequest> = ref({
+    MinimalExpirationDate: new Date().toISOString()
+})
 
 const loadOffers = () => {
-    const params: GetJobOfferRequest = {
-        Location: currentSearchValue.value
-    }
-
-    axios.get('job-offer', { params }).then(res => offers.value = res.data)
+    axios.get('job-offer', { params: searchRequest.value }).then(res => offers.value = res.data)
 }
 
 onMounted(() => {
