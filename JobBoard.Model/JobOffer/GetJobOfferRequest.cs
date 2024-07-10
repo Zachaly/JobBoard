@@ -9,7 +9,7 @@ namespace JobBoard.Model.JobOffer
         public string? Location { get; set; }
         [CustomFilter(Property = "Company", SubProperty = "Name", ComparisonType = ComparisonType.StartsWith)]
         public string? SearchCompanyName { get; set; }
-        [CustomFilter(Property = "ExpirationDate", ComparisonType = ComparisonType.LesserOrEqual)]
-        public DateTimeOffset? MaxExpirationDate { get; set; }
+        [CustomFilter(Property = "ExpirationDate", ComparisonType = ComparisonType.GreaterOrEqual)]
+        public DateTimeOffset? MinimalExpirationDate { get; set; }
     }
 }
