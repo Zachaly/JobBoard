@@ -13,5 +13,6 @@ namespace JobBoard.Model.JobOffer
         public DateTimeOffset CreationDate{ get; set; }
         public DateTimeOffset ExpirationDate { get; set; }
         public IEnumerable<JobOfferRequirementModel>? Requirements { get; set; }
+        public string? BusinessName { get; set; }
     }
 }

@@ -11,5 +11,7 @@
         public DateTimeOffset CreationDate { get; set; }
         public DateTimeOffset ExpirationDate { get; set; }
         public ICollection<JobOfferRequirement> Requirements { get; set; }
+        public long? BusinessId { get; set; }
+        public Business? Business { get; set; }
     }
 }

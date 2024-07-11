@@ -18,7 +18,8 @@ namespace JobBoard.Application.Factory
                 Requirements = request.Requirements.Select(req => new JobOfferRequirement
                 {
                     Content = req,
-                }).ToList()
+                }).ToList(),
+                BusinessId = request.BusinessId
             };
 
         public void Update(JobOffer offer, UpdateJobOfferRequest request)
@@ -27,6 +28,7 @@ namespace JobBoard.Application.Factory
             offer.Title = request.Title;
             offer.ExpirationDate = DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp);
             offer.Location = request.Location;
+            offer.BusinessId = request.BusinessId;
         }
     }
 }

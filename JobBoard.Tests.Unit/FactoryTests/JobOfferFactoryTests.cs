@@ -23,7 +23,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 ExpirationTimestamp = 1234,
                 Location = "krk",
                 Title = "title",
-                Requirements = ["req1", "req2"]
+                Requirements = ["req1", "req2"],
+                BusinessId = 2
             };
 
             var offer = _factory.Create(request);
@@ -34,6 +35,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.Title, offer.Title);
             Assert.Equal(request.Location, offer.Location);
             Assert.Equivalent(request.Requirements, offer.Requirements.Select(x => x.Content));
+            Assert.Equal(request.BusinessId, offer.BusinessId);
         }
 
         [Fact]
@@ -47,7 +49,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 CreationDate = DateTimeOffset.Now,
                 ExpirationDate = DateTimeOffset.Now.AddDays(1),
                 Location = "loc",
-                Title = "ttile"
+                Title = "ttile",
+                BusinessId = 2
             };
 
             var request = new UpdateJobOfferRequest
@@ -55,7 +58,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 Description = "new_desc",
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(2).ToUnixTimeMilliseconds(),
                 Location = "loc_new",
-                Title = "title_new"
+                Title = "title_new",
+                BusinessId = 3
             };
 
             _factory.Update(offer, request);
@@ -64,6 +68,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.Location, offer.Location);
             Assert.Equal(request.ExpirationTimestamp, offer.ExpirationDate.ToUnixTimeMilliseconds());
             Assert.Equal(request.Title, offer.Title);
+            Assert.Equal(request.BusinessId, offer.BusinessId);
         }
     }
 }
