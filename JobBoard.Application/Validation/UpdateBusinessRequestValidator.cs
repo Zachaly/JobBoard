@@ -7,7 +7,7 @@ namespace JobBoard.Application.Validation
     {
         public UpdateBusinessRequestValidator()
         {
-            RuleFor(r => r.Name).MaximumLength(100);
+            RuleFor(r => r.Name).Length(1, 100);
         }
     }
 }
