@@ -9,5 +9,7 @@ export default interface JobOfferModel {
     expirationDate: string,
     creationDate: string,
     company: CompanyAccountModel,
-    requirements: JobOfferRequirementModel[]
+    requirements: JobOfferRequirementModel[],
+    businessName?: string,
+    businessId?: number
 }

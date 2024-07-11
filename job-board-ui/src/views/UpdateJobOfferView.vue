@@ -23,6 +23,12 @@
                     <label for="" class="label">Expiration date</label>
                     <input type="date" @change="updateTimestamp()" v-model="currentExpirationDate">
                 </div>
+                <div class="select">
+                    <select v-model="request.businessId" :selected="request.businessId">
+                        <option :value="undefined">None</option>
+                        <option v-for="business in businesses" :key="business.id" :value="business.id">{{ business.name }}</option>
+                    </select>
+                </div>
                 <div class="control">
                     <button class="button" @click="update()">Update</button>
                     <button class="button" @click="() => router.back()">Cancel</button>
@@ -56,6 +62,8 @@ import { AxiosError } from 'axios';
 import ResponseModel from '../model/ResponseModel';
 import JobOfferRequirementModel from '../model/job-offer-requirement/JobOfferRequirementModel';
 import ValidationErrors from '@/components/ValidationErrorsComponent.vue';
+import BusinessModel from '../model/business/BusinessModel';
+import PagedRequest from '../model/PagedRequest';
 
 const request: Ref<UpdateJobOfferRequest> = ref({
     id: 0,
@@ -64,6 +72,8 @@ const request: Ref<UpdateJobOfferRequest> = ref({
     expirationTimestamp: 0,
     location: ''
 })
+
+const businesses: Ref<BusinessModel[]> = ref([])
 
 const requirements: Ref<JobOfferRequirementModel[]> = ref([])
 const newRequirement = ref('')
@@ -124,12 +134,19 @@ onMounted(() => {
             expirationTimestamp: 0,
             title: res.data.title,
             location: res.data.location,
-            description: res.data.description
+            description: res.data.description,
+            businessId: res.data.businessId
         }
 
         requirements.value = res.data.requirements
 
         updateTimestamp()
     })
+
+    const params: PagedRequest = {
+        SkipPagination: true
+    }
+
+    axios.get('business', { params } ).then(res => businesses.value = res.data)
 })
 </script>

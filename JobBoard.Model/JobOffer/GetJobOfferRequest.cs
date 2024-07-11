@@ -12,6 +12,6 @@ namespace JobBoard.Model.JobOffer
         [CustomFilter(Property = "ExpirationDate", ComparisonType = ComparisonType.GreaterOrEqual)]
         public DateTimeOffset? MinimalExpirationDate { get; set; }
         [CustomFilter(ComparisonType = ComparisonType.Contains, Property = "BusinessId")]
-        public IEnumerable<long>? BusinessIds { get; set; }
+        public ICollection<long?>? BusinessIds { get; set; }
     }
 }

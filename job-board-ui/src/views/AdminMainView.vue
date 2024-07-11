@@ -1,7 +1,5 @@
 <template>
-    <div class="container">
-        <RouterLink to="/admin/create-account" class="button">Create account</RouterLink>
-        <button class="button is-danger" @click="logout">Logout</button>
+    <ViewTemplate :admin-navbar="true">
         <div class="columns">
             <div class="column is-2">
                 <p class="title">
@@ -106,7 +104,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </ViewTemplate>
 </template>
 
 <script setup lang="ts">
@@ -119,6 +117,7 @@ import useAuthStore, { AuthType } from '@/stores/AuthStore';
 import { useRouter } from 'vue-router';
 import GetCompanyAccountRequest from '../model/company-account/GetCompanyAccountRequest';
 import GetEmployeeAccountRequest from '../model/employee-account/GetEmployeeAccountRequest';
+import ViewTemplate from '@/views/ViewTemplate.vue';
 
 const authStore = useAuthStore()
 const router = useRouter()
