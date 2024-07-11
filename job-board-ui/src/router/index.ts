@@ -17,6 +17,7 @@ import SearchJobOffersView from "@/views/SearchJobOffersView.vue";
 import JobOfferView from "@/views/JobOfferView.vue";
 import CompanyProfileJobOffersView from "@/views/CompanyProfileJobOffersView.vue";
 import UpdateJobOfferView from "@/views/UpdateJobOfferView.vue";
+import ManageBusinessesView from "@/views/ManageBusinessesView.vue";
 import { Component } from "vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
@@ -94,6 +95,12 @@ const routes: Array<RouteRecordRaw> = [
     "update-job-offer",
     UpdateJobOfferView,
     AuthType.Company
+  ),
+  createRoute(
+    "/admin/businesses",
+    "manage-businesses",
+    ManageBusinessesView,
+    AuthType.Admin
   ),
 ];
 

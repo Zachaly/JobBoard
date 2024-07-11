@@ -48,5 +48,10 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.OfferId, _ => offerId)
                 .RuleFor(x => x.Content, f => f.Random.Words(5))
                 .Generate(count);
+
+        public static List<Business> CreateBusinesses(int count)
+            => new Faker<Business>()
+                .RuleFor(x => x.Name, f => f.Random.Words(2))
+                .Generate(count);
     }
 }

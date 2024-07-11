@@ -6,6 +6,7 @@
                     <p class="title is-3">
                         {{ offer.title }}
                     </p>
+                    <p class="subtitle is-5">{{ offer.businessName }}</p>
                     <p class="subtitle is-5">{{ offer.location }}</p>
                 </div>
                 <div class="media-right">

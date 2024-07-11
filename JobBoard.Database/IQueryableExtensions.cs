@@ -12,6 +12,11 @@ namespace JobBoard.Database
         public static IQueryable<TEntity> AddPagination<TEntity>(this IQueryable<TEntity> query, PagedRequest request)
             where TEntity : IEntity
         {
+            if(request.SkipPagination.GetValueOrDefault())
+            {
+                return query;
+            }
+
             var page = request.PageIndex ?? 0;
             var pageSize = request.PageSize ?? 10;
 

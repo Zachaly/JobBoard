@@ -7,5 +7,6 @@
         public string Description { get; set; }
         public string Location { get; set; }
         public long ExpirationTimestamp { get; set; }
+        public long? BusinessId { get; set; }
     }
 }

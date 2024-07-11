@@ -8,5 +8,6 @@
         public long ExpirationTimestamp { get; set; }
         public string Location { get; set; }
         public IEnumerable<string> Requirements { get; set; }
+        public long? BusinessId { get; set; }
     }
 }

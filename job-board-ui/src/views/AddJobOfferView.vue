@@ -23,6 +23,12 @@
                     <label for="" class="label">Expiration date</label>
                     <input type="date" @change="getTimestamp()" v-model="currentDate">
                 </div>
+                <div class="select">
+                    <select v-model="request.businessId">
+                        <option :value="undefined">None</option>
+                        <option v-for="business in businesses" :key="business.id" :value="business.id">{{ business.name }}</option>
+                    </select>
+                </div>
                 <div class="control">
                     <button class="button" @click="add()">Add</button>
                     <button class="button" @click="() => router.back()">Cancel</button>
@@ -46,7 +52,7 @@
 
 <script setup lang="ts">
 import ViewTemplate from '@/views/ViewTemplate.vue';
-import { Ref, ref } from 'vue';
+import { Ref, ref, onMounted } from 'vue';
 import AddJobOfferRequest from '../model/job-offer/AddJobOfferRequest';
 import useAuthStore from '@/stores/AuthStore';
 import ValidationErrors from '@/components/ValidationErrorsComponent.vue';
@@ -54,6 +60,8 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
 import ResponseModel from '../model/ResponseModel';
+import BusinessModel from '../model/business/BusinessModel';
+import PagedRequest from '../model/PagedRequest';
 
 const authStore = useAuthStore()
 const companyId = authStore.companyData?.id ?? 0
@@ -64,13 +72,16 @@ const validationErrors: Ref<{ [id: string]: string[] }> = ref({})
 
 const newRequirement = ref('')
 
+const businesses: Ref<BusinessModel[]> = ref([])
+
 const request: Ref<AddJobOfferRequest> = ref({
     companyId,
     title: '',
     description: '',
     location: '',
     expirationTimestamp: 0,
-    requirements: []
+    requirements: [],
+    businessId: undefined
 })
 
 const currentDate = ref('')
@@ -99,4 +110,10 @@ const add = () => {
     })
 }
 
+onMounted(() => {
+    const params: PagedRequest = {
+        SkipPagination: true
+    }
+    axios.get('business', { params }).then(res => businesses.value = res.data)
+})
 </script>

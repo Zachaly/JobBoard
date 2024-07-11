@@ -1,23 +1,25 @@
 <template>
-    <div class="columns is-centered">
-        <div class="column is-6 is-centered">
-            <div class="control">
-                <label for="" class="label">Login</label>
-                <input class="input" type="text" v-model="request.login">
-                <ValidationErrors :errors="validationErrors['Login']" />
-            </div>
-            <div class="control">
-                <label for="" class="label">Password</label>
-                <input type="password" class="input" v-model="request.password">
-                <ValidationErrors :errors="validationErrors['Password']" />
-            </div>
-            <div class="control">
-                <button class="button is-info" @click="addAccount()">
-                    Create
-                </button>
+    <ViewTemplate :admin-navbar="true">
+        <div class="columns is-centered">
+            <div class="column is-6 is-centered">
+                <div class="control">
+                    <label for="" class="label">Login</label>
+                    <input class="input" type="text" v-model="request.login">
+                    <ValidationErrors :errors="validationErrors['Login']" />
+                </div>
+                <div class="control">
+                    <label for="" class="label">Password</label>
+                    <input type="password" class="input" v-model="request.password">
+                    <ValidationErrors :errors="validationErrors['Password']" />
+                </div>
+                <div class="control">
+                    <button class="button is-info" @click="addAccount()">
+                        Create
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+    </ViewTemplate>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +30,7 @@ import { AxiosError } from 'axios';
 import ResponseModel from '../model/ResponseModel';
 import { useRouter } from 'vue-router';
 import ValidationErrors from '@/components/ValidationErrorsComponent.vue';
+import ViewTemplate from '@/views/ViewTemplate.vue';
 
 const request: Ref<AddAdminAccountRequest> = ref({
     login: '',

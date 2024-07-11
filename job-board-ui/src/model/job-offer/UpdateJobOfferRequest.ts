@@ -3,5 +3,6 @@ export default interface UpdateJobOfferRequest {
     title: string,
     expirationTimestamp: number,
     description: string,
-    location: string
+    location: string,
+    businessId: number
 }
