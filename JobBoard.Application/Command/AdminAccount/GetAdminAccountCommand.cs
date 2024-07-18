@@ -1,23 +1,17 @@
-﻿using JobBoard.Database.Repository.Abstraction;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Model.AdminAccount;
-using MediatR;
 
 namespace JobBoard.Application.Command
 {
-    public class GetAdminAccountCommand : GetAdminAccountRequest, IRequest<IEnumerable<AdminAccountModel>>
+    public class GetAdminAccountCommand : GetAdminAccountRequest, IGetEntityCommand<AdminAccountModel>
     {
     }
 
-    public class GetAdminAccountHandler : IRequestHandler<GetAdminAccountCommand, IEnumerable<AdminAccountModel>>
+    public class GetAdminAccountHandler : GetEntityHandler<AdminAccountModel, GetAdminAccountRequest, GetAdminAccountCommand>
     {
-        private readonly IAdminAccountRepository _repository;
-
-        public GetAdminAccountHandler(IAdminAccountRepository repository)
+        public GetAdminAccountHandler(IAdminAccountRepository repository) : base(repository)
         {
-            _repository = repository;
         }
-
-        public Task<IEnumerable<AdminAccountModel>> Handle(GetAdminAccountCommand request, CancellationToken cancellationToken)
-            => _repository.GetAsync(request);
     }
 }

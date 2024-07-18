@@ -72,6 +72,7 @@ namespace JobBoard.Tests.Unit.CommandTests
             };
 
             var repository = Substitute.For<IBusinessRepository>();
+            repository.GetByNameAsync(command.Name).ReturnsNull();
 
             var factory = Substitute.For<IBusinessFactory>();
 
@@ -103,7 +104,6 @@ namespace JobBoard.Tests.Unit.CommandTests
             var factory = Substitute.For<IBusinessFactory>();
 
             var validator = Substitute.For<IValidator<AddBusinessRequest>>();
-            validator.Validate(command).Returns(new ValidationResult());
 
             var handler = new AddBusinessHandler(repository, factory, validator);
 
@@ -154,6 +154,7 @@ namespace JobBoard.Tests.Unit.CommandTests
             };
 
             var repository = Substitute.For<IBusinessRepository>();
+            repository.GetByNameAsync(command.Name).ReturnsNull();
 
             var factory = Substitute.For<IBusinessFactory>();
 
@@ -211,7 +212,6 @@ namespace JobBoard.Tests.Unit.CommandTests
             var factory = Substitute.For<IBusinessFactory>();
 
             var validator = Substitute.For<IValidator<UpdateBusinessRequest>>();
-            validator.Validate(command).Returns(new ValidationResult());
 
             var handler = new UpdateBusinessHandler(repository, factory, validator);
 

@@ -18,5 +18,15 @@ namespace JobBoard.Application.Factory
                 PasswordHash = passwordHash,
                 PhoneNumber = request.PhoneNumber,
             };
+
+        public void Update(EmployeeAccount entity, UpdateEmployeeAccountRequest request)
+        {
+            entity.AboutMe = request.AboutMe;
+            entity.PhoneNumber = request.PhoneNumber;
+            entity.FirstName = request.FirstName;
+            entity.LastName = request.LastName;
+            entity.City = request.City;
+            entity.Country = request.Country;
+        }
     }
 }

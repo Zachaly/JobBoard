@@ -3,9 +3,7 @@ using JobBoard.Model.Business;
 
 namespace JobBoard.Application.Factory.Abstraction
 {
-    public interface IBusinessFactory
+    public interface IBusinessFactory : IEntityFactory<Business, AddBusinessRequest, UpdateBusinessRequest>
     {
-        Business Create(AddBusinessRequest request);
-        void Update(Business entity, UpdateBusinessRequest request);
     }
 }

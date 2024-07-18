@@ -1,23 +1,15 @@
-﻿using JobBoard.Database.Repository.Abstraction;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Model.CompanyAccount;
-using MediatR;
 
 namespace JobBoard.Application.Command
 {
-    public record GetCompanyAccountByIdCommand(long Id) : IRequest<CompanyModel?>
-    {
-    }
+    public record GetCompanyAccountByIdCommand(long Id) : GetByIdCommand<CompanyModel>(Id);
 
-    public class GetCompanyAccountByIdHandler : IRequestHandler<GetCompanyAccountByIdCommand, CompanyModel?>
+    public class GetCompanyAccountByIdHandler : GetByIdHandler<CompanyModel, GetCompanyRequest, GetCompanyAccountByIdCommand>
     {
-        private readonly ICompanyAccountRepository _repository;
-
-        public GetCompanyAccountByIdHandler(ICompanyAccountRepository repository)
+        public GetCompanyAccountByIdHandler(ICompanyAccountRepository repository) : base(repository)
         {
-            _repository = repository;
         }
-
-        public Task<CompanyModel?> Handle(GetCompanyAccountByIdCommand request, CancellationToken cancellationToken)
-            => _repository.GetByIdAsync(request.Id);
     }
 }

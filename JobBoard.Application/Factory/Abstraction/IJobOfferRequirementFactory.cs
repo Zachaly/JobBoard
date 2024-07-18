@@ -3,9 +3,7 @@ using JobBoard.Model.JobOfferRequirement;
 
 namespace JobBoard.Application.Factory.Abstraction
 {
-    public interface IJobOfferRequirementFactory
+    public interface IJobOfferRequirementFactory : IEntityFactory<JobOfferRequirement, AddJobOfferRequirementRequest, UpdateJobOfferRequirementRequest> 
     {
-        JobOfferRequirement Create(AddJobOfferRequirementRequest request);
-        void Update(JobOfferRequirement entity, UpdateJobOfferRequirementRequest request);
     }
 }

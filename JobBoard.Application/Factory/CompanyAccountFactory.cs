@@ -18,5 +18,15 @@ namespace JobBoard.Application.Factory
                 Name = request.Name,
                 PostalCode = request.PostalCode,
             };
+
+        public void Update(CompanyAccount entity, UpdateCompanyAccountRequest request)
+        {
+            entity.Address = request.Address;
+            entity.City = request.City;
+            entity.PostalCode = request.PostalCode;
+            entity.Name = request.Name;
+            entity.ContactEmail = request.ContactEmail;
+            entity.Country = request.Country;
+        }
     }
 }

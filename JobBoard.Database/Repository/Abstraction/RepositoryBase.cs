@@ -5,17 +5,28 @@ using System.Linq.Expressions;
 
 namespace JobBoard.Database.Repository.Abstraction
 {
-    public interface IRepositoryBase<TEntity, TModel, TGetRequest>
-        where TEntity : IEntity
+    public interface IGetRepositoryBase<TModel, TGetRequest>
         where TModel : class
         where TGetRequest : PagedRequest
     {
         Task<IEnumerable<TModel>> GetAsync(TGetRequest request);
         Task<TModel?> GetByIdAsync(long id);
+    } 
+
+    public interface IUpdateRepositoryBase<TEntity>
+        where TEntity : IEntity
+    {
         Task<TEntity?> GetEntityByIdAsync(long id);
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteByIdAsync(long id);
+    }
+
+    public interface IRepositoryBase<TEntity, TModel, TGetRequest> : IGetRepositoryBase<TModel, TGetRequest>, IUpdateRepositoryBase<TEntity>
+        where TEntity : IEntity
+        where TModel : class
+        where TGetRequest : PagedRequest
+    {
     }
 
     public abstract class RepositoryBase<TEntity, TModel, TGetRequest> : IRepositoryBase<TEntity, TModel, TGetRequest>

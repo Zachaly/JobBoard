@@ -1,23 +1,17 @@
-﻿using JobBoard.Database.Repository.Abstraction;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
 using JobBoard.Model.Business;
-using MediatR;
 
 namespace JobBoard.Application.Command
 {
-    public class GetBusinessCommand : GetBusinessRequest, IRequest<IEnumerable<BusinessModel>>
+    public class GetBusinessCommand : GetBusinessRequest, IGetEntityCommand<BusinessModel>
     {
     }
 
-    public class GetBusinessHandler : IRequestHandler<GetBusinessCommand, IEnumerable<BusinessModel>>
+    public class GetBusinessHandler : GetEntityHandler<BusinessModel, GetBusinessRequest, GetBusinessCommand>
     {
-        private readonly IBusinessRepository _repository;
-
-        public GetBusinessHandler(IBusinessRepository repository)
+        public GetBusinessHandler(IBusinessRepository repository) : base(repository)
         {
-            _repository = repository;
         }
-
-        public Task<IEnumerable<BusinessModel>> Handle(GetBusinessCommand request, CancellationToken cancellationToken)
-            => _repository.GetAsync(request);
     }
 }

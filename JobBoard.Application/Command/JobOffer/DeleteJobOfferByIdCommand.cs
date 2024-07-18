@@ -1,32 +1,15 @@
-﻿using JobBoard.Database.Repository.Abstraction;
-using JobBoard.Model.Response;
-using MediatR;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
+using JobBoard.Domain.Entity;
 
 namespace JobBoard.Application.Command
 {
-    public record DeleteJobOfferByIdCommand(long Id) : IRequest<ResponseModel>;
+    public record DeleteJobOfferByIdCommand(long Id) : DeleteEntityByIdCommand(Id);
 
-    public class DeleteJobOfferByIdHandler : IRequestHandler<DeleteJobOfferByIdCommand, ResponseModel>
+    public class DeleteJobOfferByIdHandler : DeleteEntityByIdHandler<JobOffer, DeleteJobOfferByIdCommand>
     {
-        private readonly IJobOfferRepository _repository;
-
-        public DeleteJobOfferByIdHandler(IJobOfferRepository repository)
+        public DeleteJobOfferByIdHandler(IJobOfferRepository repository) : base(repository)
         {
-            _repository = repository;
-        }
-
-        public async Task<ResponseModel> Handle(DeleteJobOfferByIdCommand request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                await _repository.DeleteByIdAsync(request.Id);
-
-                return new ResponseModel();
-            }
-            catch(System.Exception ex)
-            {
-                return new ResponseModel(ex.Message);
-            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace JobBoard.Model.JobOffer
 {
-    public class UpdateJobOfferRequest
+    public class UpdateJobOfferRequest : IUpdateRequest
     {
         public long Id { get; set; }
         public string Title { get; set; }
