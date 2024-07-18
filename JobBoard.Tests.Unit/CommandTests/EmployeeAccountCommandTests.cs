@@ -257,22 +257,19 @@ namespace JobBoard.Tests.Unit.CommandTests
             repository.GetEntityByIdAsync(command.Id).Returns(account);
             repository.UpdateAsync(account).Returns(Task.CompletedTask);
 
+            var factory = Substitute.For<IEmployeeAccountFactory>();
+
             var validator = Substitute.For<IValidator<UpdateEmployeeAccountRequest>>();
             validator.Validate(command).Returns(new ValidationResult());
 
-            var handler = new UpdateEmployeeAccountHandler(repository, validator);
+            var handler = new UpdateEmployeeAccountHandler(repository, factory, validator);
 
             var res = await handler.Handle(command, default);
 
             await repository.Received(1).UpdateAsync(account);
+            factory.Received(1).Update(account, command);
 
-            Assert.True(res.IsSuccess);
-            Assert.Equal(command.AboutMe, account.AboutMe);
-            Assert.Equal(command.LastName, account.LastName);
-            Assert.Equal(command.FirstName, account.FirstName);
-            Assert.Equal(command.Country, account.Country);
-            Assert.Equal(command.PhoneNumber, account.PhoneNumber);
-            Assert.Equal(command.City, account.City);
+            Assert.True(res.IsSuccess); ;
         }
 
         [Fact]
@@ -282,13 +279,15 @@ namespace JobBoard.Tests.Unit.CommandTests
 
             var repository = Substitute.For<IEmployeeAccountRepository>();
 
+            var factory = Substitute.For<IEmployeeAccountFactory>();
+
             var validator = Substitute.For<IValidator<UpdateEmployeeAccountRequest>>();
             validator.Validate(command).Returns(new ValidationResult(new List<ValidationFailure>()
             {
                 new ValidationFailure("prop", "err")
             }));
 
-            var handler = new UpdateEmployeeAccountHandler(repository, validator);
+            var handler = new UpdateEmployeeAccountHandler(repository, factory, validator);
 
             var res = await handler.Handle(command, default);
 
@@ -304,10 +303,12 @@ namespace JobBoard.Tests.Unit.CommandTests
             var repository = Substitute.For<IEmployeeAccountRepository>();
             repository.GetEntityByIdAsync(command.Id).ReturnsNull();
 
+            var factory = Substitute.For<IEmployeeAccountFactory>();
+
             var validator = Substitute.For<IValidator<UpdateEmployeeAccountRequest>>();
             validator.Validate(command).Returns(new ValidationResult());
 
-            var handler = new UpdateEmployeeAccountHandler(repository, validator);
+            var handler = new UpdateEmployeeAccountHandler(repository, factory, validator);
 
             var res = await handler.Handle(command, default);
 
