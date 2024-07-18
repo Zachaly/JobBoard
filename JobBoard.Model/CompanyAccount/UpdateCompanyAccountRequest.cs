@@ -1,6 +1,6 @@
 ﻿namespace JobBoard.Model.CompanyAccount
 {
-    public class UpdateCompanyAccountRequest
+    public class UpdateCompanyAccountRequest : IUpdateRequest
     {
         public long Id { get; set; }
         public string Name { get; set; }

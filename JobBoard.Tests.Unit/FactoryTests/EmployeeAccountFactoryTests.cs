@@ -1,4 +1,5 @@
 ﻿using JobBoard.Application.Factory;
+using JobBoard.Domain.Entity;
 using JobBoard.Model.EmployeeAccount;
 
 namespace JobBoard.Tests.Unit.FactoryTests
@@ -39,6 +40,40 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.LastName, account.LastName);
             Assert.Equal(request.PhoneNumber, account.PhoneNumber);
             Assert.Equal(Hash, account.PasswordHash);
+        }
+
+        [Fact]
+        public void Update_ProperlyUpdatesEntity()
+        {
+            var entity = new EmployeeAccount
+            {
+                Id = 1,
+                AboutMe = "about",
+                City = "city",
+                Country = "cnt",
+                FirstName = "fname",
+                LastName = "lname",
+                PhoneNumber = "1234567890",
+            };
+
+            var request = new UpdateEmployeeAccountRequest
+            {
+                AboutMe = "me",
+                City = "ytic",
+                Country = "tnc",
+                FirstName = "namef",
+                LastName = "namel",
+                PhoneNumber = "0987654321"
+            };
+
+            _factory.Update(entity, request);
+
+            Assert.Equal(request.AboutMe, entity.AboutMe);
+            Assert.Equal(request.City, entity.City);
+            Assert.Equal(request.Country, entity.Country);
+            Assert.Equal(request.FirstName, entity.FirstName);
+            Assert.Equal(request.LastName, entity.LastName);
+            Assert.Equal(request.PhoneNumber, entity.PhoneNumber);
         }
     }
 }
