@@ -29,7 +29,7 @@ namespace JobBoard.Application.Command.Abstraction
             _validator = validator;
         }
 
-        public async Task<ResponseModel> Handle(TCommand request, CancellationToken cancellationToken)
+        public virtual async Task<ResponseModel> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var validation = _validator.Validate(request);
 
