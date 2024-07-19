@@ -78,5 +78,18 @@ namespace JobBoard.Api.Controllers
 
             return res.ReturnOkOrBadRequest();
         }
+
+        /// <summary>
+        /// Returns number of admin accounts filtered by request
+        /// </summary>
+        /// <response code="200">Number of accounts</response>
+        [HttpGet("count")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<int>> GetCount([FromQuery] GetAdminAccountCountCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return Ok(res);
+        }
     }
 }

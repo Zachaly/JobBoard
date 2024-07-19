@@ -1,12 +1,7 @@
 ﻿using JobBoard.Model.JobOffer;
 using JobBoard.Model.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
@@ -187,6 +182,24 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
             Assert.DoesNotContain(_dbContext.JobOffers, x => x.Id == deletedId);
+        }
+
+        [Fact]
+        public async Task GetCount_ReturnsProperCount()
+        {
+            var company = FakeDataFactory.CreateCompanyAccounts(1)[0];
+
+            _dbContext.CompanyAccounts.Add(company);
+            _dbContext.SaveChanges();
+
+            _dbContext.AddRange(FakeDataFactory.CreateJobOffers(company.Id, 20));
+            _dbContext.SaveChanges();
+
+            var response = await _httpClient.GetAsync($"{Endpoint}/count");
+            var content = await response.Content.ReadFromJsonAsync<int>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(_dbContext.JobOffers.Count(), content);
         }
     }
 }
