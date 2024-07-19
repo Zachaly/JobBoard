@@ -3,7 +3,7 @@
         <div class="columns">
             <div class="column is-2">
                 <p class="title">
-                    Admins
+                    Admins ({{ adminCount }})
                 </p>
                 <table class="table">
                     <thead>
@@ -25,7 +25,7 @@
             </div>
             <div class="column">
                 <p class="title">
-                    Companies
+                    Companies ({{ companyCount }})
                 </p>
                 <table class="table">
                     <thead>
@@ -65,7 +65,7 @@
             </div>
             <div class="column">
                 <p class="title">
-                    Employees
+                    Employees ({{ employeeCount }})
                 </p>
                 <table class="table">
                     <thead>
@@ -127,8 +127,11 @@ if (authStore.currentAuthType != AuthType.Admin) {
 }
 
 const admins: Ref<AdminAccountModel[]> = ref([])
+const adminCount = ref(0)
 const employees: Ref<EmployeeAccountModel[]> = ref([])
+const employeeCount = ref(0)
 const companies: Ref<CompanyAccountModel[]> = ref([])
+const companyCount = ref(0)
 
 const getCompaniesRequest: Ref<GetCompanyAccountRequest> = ref({})
 const getEmployeesRequest: Ref<GetEmployeeAccountRequest> = ref({})
@@ -137,20 +140,25 @@ onMounted(() => {
     axios.get<AdminAccountModel[]>('admin-account').then(res => admins.value = res.data)
     axios.get<CompanyAccountModel[]>('company-account').then(res => companies.value = res.data)
     axios.get<EmployeeAccountModel[]>('employee-account').then(res => employees.value = res.data)
+
+    axios.get<number>('admin-account/count').then(res => adminCount.value = res.data)
+    axios.get<number>('company-account/count').then(res => companyCount.value = res.data)
+    axios.get<number>('employee-account/count').then(res => employeeCount.value = res.data)
 })
 
 const loadEmployees = () => {
     axios.get<EmployeeAccountModel[]>('employee-account', { params: getEmployeesRequest.value })
         .then(res => employees.value = res.data)
+
+    axios.get<number>('employee-account/count', { params: getEmployeesRequest.value })
+        .then(res => employeeCount.value = res.data)
 }
 
 const loadCompanies = () => {
     axios.get<CompanyAccountModel[]>('company-account', { params: getCompaniesRequest.value })
         .then(res => companies.value = res.data)
-}
 
-const logout = () => {
-    authStore.logout()
-    router.push('/admin/login')
+    axios.get<number>('company-account/count', { params: getCompaniesRequest.value })
+        .then(res => companyCount.value = res.data)
 }
 </script>
