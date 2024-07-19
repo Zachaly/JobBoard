@@ -11,6 +11,7 @@ namespace JobBoard.Database.Repository.Abstraction
     {
         Task<IEnumerable<TModel>> GetAsync(TGetRequest request);
         Task<TModel?> GetByIdAsync(long id);
+        Task<int> GetCountAsync(TGetRequest request);
     } 
 
     public interface IUpdateRepositoryBase<TEntity>
@@ -76,6 +77,15 @@ namespace JobBoard.Database.Repository.Abstraction
 
         public virtual Task<TModel?> GetByIdAsync(long id)
             => _dbContext.Set<TEntity>().Where(e => e.Id == id).Select(ModelExpression).FirstOrDefaultAsync();
+
+        public Task<int> GetCountAsync(TGetRequest request)
+        {
+            var count = _dbContext.Set<TEntity>()
+                .FilterWithRequest<TEntity, TGetRequest>(request)
+                .Count();
+
+            return Task.FromResult(count);
+        }
 
         public virtual Task<TEntity?> GetEntityByIdAsync(long id)
             => _dbContext.Set<TEntity>().Where(e => e.Id == id).FirstOrDefaultAsync();

@@ -175,5 +175,18 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.Equal(_dbContext.JobOffers.Count(), jobOffers.Count);
             Assert.All(jobOffers, o => Assert.Null(o.BusinessId));
         }
+
+        [Fact]
+        public async Task GetCount_ReturnsCorrectCount()
+        {
+            _dbContext.Businesses.AddRange(FakeDataFactory.CreateBusinesses(20));
+            _dbContext.SaveChanges();
+
+            var response = await _httpClient.GetAsync($"{Endpoint}/count");
+            var content = await response.Content.ReadFromJsonAsync<int>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(_dbContext.Businesses.Count(), content);
+        }
     }
 }

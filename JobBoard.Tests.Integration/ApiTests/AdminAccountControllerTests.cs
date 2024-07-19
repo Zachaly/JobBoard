@@ -143,5 +143,20 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
+        [Fact]
+        public async Task GetCount_ReturnsCorrectCount()
+        {
+            await AuthorizeAdminAsync();
+
+            _dbContext.AddRange(FakeDataFactory.CreateAdminAccounts(20));
+            _dbContext.SaveChanges();
+
+            var response = await _httpClient.GetAsync($"{Endpoint}/count");
+            var content = await response.Content.ReadFromJsonAsync<int>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(_dbContext.AdminAccounts.Count(), content);
+        }
     }
 }

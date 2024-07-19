@@ -14,6 +14,9 @@
                 <button class="button is-info" @click="loadOffers()">Search</button>
             </div>
             <div class="column is-8">
+                <p>
+                    {{ offerCount }} offers found
+                </p>
                 <JobOfferListItem v-for="offer in offers" :key="offer.id" :offer="offer" />
             </div>
         </div>
@@ -30,6 +33,7 @@ import GetJobOfferRequest from '../model/job-offer/GetJobOfferRequest';
 import BusinessModel from '../model/business/BusinessModel';
 
 const offers = ref<JobOfferModel[]>([])
+const offerCount = ref(0)
 const businesses = ref<BusinessModel[]>([])
 
 const searchRequest: Ref<GetJobOfferRequest> = ref({
@@ -47,6 +51,7 @@ const changeBusinesses = (id: number) => {
 
 const loadOffers = () => {
     axios.get('job-offer', { params: searchRequest.value }).then(res => offers.value = res.data)
+    axios.get('job-offer/count', { params: searchRequest.value }).then(res => offerCount.value = res.data)
 }
 
 onMounted(() => {

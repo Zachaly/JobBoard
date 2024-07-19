@@ -79,5 +79,18 @@ namespace JobBoard.Api.Controllers
 
             return res.ReturnNoContentOrBadRequest();
         }
+
+        /// <summary>
+        /// Returns number of businesses filtered by request
+        /// </summary>
+        /// <response code="200">Number of businesses</response>
+        [HttpGet("count")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<int>> GetCount([FromQuery] GetBusinessCountCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return Ok(res);
+        }
     }
 }

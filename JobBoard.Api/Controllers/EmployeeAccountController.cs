@@ -92,5 +92,18 @@ namespace JobBoard.Api.Controllers
 
             return res.ReturnNoContentOrBadRequest();
         }
+
+        /// <summary>
+        /// Returns number of employee accounts filtered by request
+        /// </summary>
+        /// <response code="200">Number of employee accounts</response>
+        [HttpGet("count")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<int>> GetCount([FromQuery] GetEmployeeAccountCountCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return Ok(res);
+        }
     }
 }
