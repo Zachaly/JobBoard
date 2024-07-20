@@ -31,6 +31,7 @@ namespace JobBoard.Database
             var requestProps = typeof(TRequest)
                 .GetProperties()
                 .Where(p => entityProps.Any(x => x.Name == p.Name) || p.GetCustomAttribute<CustomFilterAttribute>() is not null)
+                .Where(p => p.GetCustomAttribute<SkipFilterAttribute>() is null)
                 .Where(p => p.GetValue(request) is not null);
 
             var entityParam = Expression.Parameter(typeof(TEntity), "entity");
