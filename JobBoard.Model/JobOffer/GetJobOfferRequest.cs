@@ -13,5 +13,7 @@ namespace JobBoard.Model.JobOffer
         public DateTimeOffset? MinimalExpirationDate { get; set; }
         [CustomFilter(ComparisonType = ComparisonType.Contains, Property = "BusinessId")]
         public ICollection<long?>? BusinessIds { get; set; }
+        [SkipFilter]
+        public ICollection<string>? Tags { get; set; }
     }
 }

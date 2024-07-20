@@ -5,5 +5,6 @@ export default interface GetJobOfferRequest extends PagedRequest {
     Location?: string,
     SearchCompanyName?: string,
     MinimalExpirationDate?: string,
-    BusinessIds?: number[]
+    BusinessIds?: number[],
+    Tags?: string[]
 }

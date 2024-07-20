@@ -34,6 +34,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IJobOfferRepository, JobOfferRepository>();
             builder.Services.AddScoped<IJobOfferRequirementRepository, JobOfferRequirementRepository>();
             builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
+            builder.Services.AddScoped<IJobOfferTagRepository, JobOfferTagRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder builder)
@@ -48,6 +49,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IJobOfferFactory, JobOfferFactory>();
             builder.Services.AddScoped<IJobOfferRequirementFactory, JobOfferRequirementFactory>();
             builder.Services.AddScoped<IBusinessFactory, BusinessFactory>();
+            builder.Services.AddScoped<IJobOfferTagFactory, JobOfferTagFactory>();
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         }

@@ -14,6 +14,7 @@ namespace JobBoard.Database
         public DbSet<JobOffer> JobOffers { get; set; }
         public DbSet<JobOfferRequirement> JobOfferRequirements { get; set; }
         public DbSet<Business> Businesses { get; set; }
+        public DbSet<JobOfferTag> JobOfferTags { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
@@ -96,6 +97,15 @@ namespace JobBoard.Database
                 .WithOne(e => e.Business)
                 .HasForeignKey(e => e.BusinessId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<JobOffer>()
+                .HasMany(o => o.Tags)
+                .WithOne(t => t.Offer)
+                .HasForeignKey(t => t.OfferId);
+
+            modelBuilder.Entity<JobOfferTag>()
+                .Property(p => p.Tag)
+                .HasMaxLength(50);
         }
     }
 }

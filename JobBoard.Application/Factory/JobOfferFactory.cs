@@ -19,7 +19,8 @@ namespace JobBoard.Application.Factory
                 {
                     Content = req,
                 }).ToList(),
-                BusinessId = request.BusinessId
+                BusinessId = request.BusinessId,
+                Tags = request.Tags.Select(tag => new JobOfferTag { Tag = tag }).ToList()
             };
 
         public void Update(JobOffer offer, UpdateJobOfferRequest request)

@@ -24,7 +24,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 Location = "krk",
                 Title = "title",
                 Requirements = ["req1", "req2"],
-                BusinessId = 2
+                BusinessId = 2,
+                Tags = ["tag1", "tag2"]
             };
 
             var offer = _factory.Create(request);
@@ -36,6 +37,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.Location, offer.Location);
             Assert.Equivalent(request.Requirements, offer.Requirements.Select(x => x.Content));
             Assert.Equal(request.BusinessId, offer.BusinessId);
+            Assert.Equivalent(request.Tags, offer.Tags.Select(x => x.Tag));
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 ﻿using JobBoard.Model.CompanyAccount;
 using JobBoard.Model.JobOfferRequirement;
+using JobBoard.Model.JobOfferTag;
 
 namespace JobBoard.Model.JobOffer
 {
@@ -15,5 +16,6 @@ namespace JobBoard.Model.JobOffer
         public IEnumerable<JobOfferRequirementModel>? Requirements { get; set; }
         public long? BusinessId { get; set; }
         public string? BusinessName { get; set; }
+        public IEnumerable<JobOfferTagModel> Tags { get; set; }
     }
 }

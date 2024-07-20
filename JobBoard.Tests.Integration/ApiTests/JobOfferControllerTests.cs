@@ -70,7 +70,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
                 Location = "loc",
                 Title = "title",
-                Requirements = ["req1", "req2"]
+                Requirements = ["req1", "req2"],
+                Tags = []
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -97,7 +98,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Description = "desc",
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
                 Location = "loc",
-                Requirements = []
+                Requirements = [],
+                Tags = []
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -167,7 +169,7 @@ namespace JobBoard.Tests.Integration.ApiTests
         }
 
         [Fact]
-        public async Task DeleteById_DeletesSpecifiedEntity()
+        public async Task DeleteById_DeletesSpecifiedEntityAndChildren()
         {
             var companyData = await AuthorizeCompanyAsync();
 
@@ -176,12 +178,19 @@ namespace JobBoard.Tests.Integration.ApiTests
             _dbContext.JobOffers.AddRange(offers);
             _dbContext.SaveChanges();
 
-            var deletedId = offers.Last().Id;
+            var deletedEntity = offers.Last();
 
-            var response = await _httpClient.DeleteAsync($"{Endpoint}/{deletedId}");
+            _dbContext.AddRange(FakeDataFactory.CreateJobOfferTags(deletedEntity.Id, 5));
+            _dbContext.AddRange(FakeDataFactory.CreateJobOfferRequirements(deletedEntity.Id, 5));
+
+            _dbContext.SaveChanges();
+
+            var response = await _httpClient.DeleteAsync($"{Endpoint}/{deletedEntity.Id}");
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            Assert.DoesNotContain(_dbContext.JobOffers, x => x.Id == deletedId);
+            Assert.DoesNotContain(_dbContext.JobOffers, x => x.Id == deletedEntity.Id);
+            Assert.DoesNotContain(_dbContext.JobOfferRequirements, req => req.OfferId == deletedEntity.Id);
+            Assert.DoesNotContain(_dbContext.JobOfferTags, tag => tag.OfferId == deletedEntity.Id);
         }
 
         [Fact]
