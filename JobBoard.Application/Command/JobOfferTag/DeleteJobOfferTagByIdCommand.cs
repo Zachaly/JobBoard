@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
+using JobBoard.Domain.Entity;
 
-namespace JobBoard.Application.Command.JobOfferTag
+namespace JobBoard.Application.Command
 {
-    internal class DeleteJobOfferTagByIdCommand
+    public record DeleteJobOfferTagByIdCommand(long Id) : DeleteEntityByIdCommand(Id);
+
+    public class DeleteJobOfferTagByIdHandler : DeleteEntityByIdHandler<JobOfferTag, DeleteJobOfferTagByIdCommand>
     {
+        public DeleteJobOfferTagByIdHandler(IJobOfferTagRepository repository) : base(repository)
+        {
+        }
     }
 }

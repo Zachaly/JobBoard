@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JobBoard.Application.Command.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
+using JobBoard.Model.JobOfferTag;
 
-namespace JobBoard.Application.Command.JobOfferTag
+namespace JobBoard.Application.Command
 {
-    internal class GetJobOfferTagCommand
+    public class GetJobOfferTagCommand : GetJobOfferTagRequest, IGetEntityCommand<JobOfferTagModel>
     {
+    }
+
+    public class GetJobOfferTagHandler : GetEntityHandler<JobOfferTagModel, GetJobOfferTagRequest, GetJobOfferTagCommand>
+    {
+        public GetJobOfferTagHandler(IJobOfferTagRepository repository) : base(repository)
+        {
+        }
     }
 }

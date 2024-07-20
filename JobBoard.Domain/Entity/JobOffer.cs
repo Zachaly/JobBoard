@@ -13,5 +13,6 @@
         public ICollection<JobOfferRequirement> Requirements { get; set; }
         public long? BusinessId { get; set; }
         public Business? Business { get; set; }
+        public ICollection<JobOfferTag> Tags { get; set; }
     }
 }

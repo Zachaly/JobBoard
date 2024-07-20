@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JobBoard.Domain.Entity;
+using JobBoard.Model.JobOfferTag;
 
 namespace JobBoard.Application.Factory.Abstraction
 {
-    internal interface IJobOfferTagFactory
+    public interface IJobOfferTagFactory : ICreateFactory<JobOfferTag, AddJobOfferTagRequest>
     {
     }
 }

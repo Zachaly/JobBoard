@@ -17,7 +17,8 @@ namespace JobBoard.Expressions
             Location = offer.Location,
             Requirements = offer.Requirements.AsQueryable().Select(JobOfferRequirementExpressions.Model).ToList(),
             BusinessName = offer.Business == null ? null : offer.Business.Name,
-            BusinessId = offer.BusinessId
+            BusinessId = offer.BusinessId,
+            Tags = offer.Tags.Select(t => t.Tag)
         };
     }
 }

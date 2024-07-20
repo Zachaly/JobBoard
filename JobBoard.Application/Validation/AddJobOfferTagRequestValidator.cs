@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+using JobBoard.Model.JobOfferTag;
 
 namespace JobBoard.Application.Validation
 {
-    internal class AddJobOfferTagRequestValidator
+    public class AddJobOfferTagRequestValidator : AbstractValidator<AddJobOfferTagRequest>
     {
+        public AddJobOfferTagRequestValidator()
+        {
+            RuleFor(t => t.Tag).Length(1, 50);
+        }
     }
 }

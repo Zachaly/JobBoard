@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+using JobBoard.Application.Command.Abstraction;
+using JobBoard.Application.Factory.Abstraction;
+using JobBoard.Database.Repository.Abstraction;
+using JobBoard.Domain.Entity;
+using JobBoard.Model.JobOfferTag;
 
-namespace JobBoard.Application.Command.JobOfferTag
+namespace JobBoard.Application.Command
 {
-    internal class AddJobOfferTagCommand
+    public class AddJobOfferTagCommand : AddJobOfferTagRequest, IAddEntityCommand
     {
+    }
+
+    public class AddJobOfferTagHandler : AddEntityHandler<JobOfferTag, AddJobOfferTagRequest, AddJobOfferTagCommand>
+    {
+        public AddJobOfferTagHandler(IJobOfferTagRepository repository, IJobOfferTagFactory factory, IValidator<AddJobOfferTagRequest> validator)
+            : base(repository, factory, validator)
+        {
+        }
     }
 }

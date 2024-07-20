@@ -70,7 +70,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
                 Location = "loc",
                 Title = "title",
-                Requirements = ["req1", "req2"]
+                Requirements = ["req1", "req2"],
+                Tags = []
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -97,7 +98,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Description = "desc",
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
                 Location = "loc",
-                Requirements = []
+                Requirements = [],
+                Tags = []
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);

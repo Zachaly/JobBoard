@@ -15,5 +15,6 @@ namespace JobBoard.Model.JobOffer
         public IEnumerable<JobOfferRequirementModel>? Requirements { get; set; }
         public long? BusinessId { get; set; }
         public string? BusinessName { get; set; }
+        public IEnumerable<string> Tags { get; set; }
     }
 }
