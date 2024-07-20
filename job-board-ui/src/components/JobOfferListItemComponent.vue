@@ -6,7 +6,7 @@
                     <RouterLink :to="`/job-offer/${offer.id}`" class="title is-3">
                         {{ offer.title }}
                     </RouterLink>
-                    <p class="subtitle is-5">{{ offer.businessName }}</p>
+                    <p class="subtitle is-5">{{ offer.businessName }} - <span v-for="tag in offer.tags" :key="tag.id">{{tag.tag}} &nbsp;</span></p>
                     <p class="subtitle is-5">{{ offer.location }}</p>
                 </div>
             </div>

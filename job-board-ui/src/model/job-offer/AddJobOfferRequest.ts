@@ -5,5 +5,6 @@ export default interface AddJobOfferRequest {
     description: string,
     location: string,
     requirements: string[],
-    businessId?: number
+    businessId?: number,
+    tags: string[]
 }

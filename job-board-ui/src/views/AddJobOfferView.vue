@@ -45,6 +45,14 @@
                     {{ req }}
                     <button class="button is-warning" @click="deleteRequirement(req)">Delete</button>
                 </div>
+                <p class="title">Tags</p>
+                <div>
+                    <input type="text" class="input" v-model="newTag">
+                    <button class="button" @click="addTag()">Add</button>
+                </div>
+                <div class="is-flex">
+                    <div class="m-1" v-for="tag in request.tags" :key="tag" @click="deleteTag(tag)">{{ tag }}</div>
+                </div>
             </div>
         </div>
     </ViewTemplate>
@@ -71,6 +79,7 @@ const router = useRouter()
 const validationErrors: Ref<{ [id: string]: string[] }> = ref({})
 
 const newRequirement = ref('')
+const newTag = ref('')
 
 const businesses: Ref<BusinessModel[]> = ref([])
 
@@ -81,13 +90,27 @@ const request: Ref<AddJobOfferRequest> = ref({
     location: '',
     expirationTimestamp: 0,
     requirements: [],
-    businessId: undefined
+    businessId: undefined,
+    tags: []
 })
 
 const currentDate = ref('')
 
 const getTimestamp = () => {
     request.value.expirationTimestamp = new Date(currentDate.value).getTime()
+}
+
+const addTag = () => {
+    if(request.value.tags.includes(newTag.value)) {
+        return;
+    }
+
+    request.value.tags.push(newTag.value)
+    newTag.value = ''
+}
+
+const deleteTag = (tag: string) => {
+    request.value.tags = request.value.tags.filter(x => x !== tag);
 }
 
 const addRequirement = () => {
