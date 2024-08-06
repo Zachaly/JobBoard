@@ -6,4 +6,5 @@ export default interface UpdateCompanyAccountRequest {
   address: string;
   country: string;
   contactEmail: string;
+  about?: string;
 }

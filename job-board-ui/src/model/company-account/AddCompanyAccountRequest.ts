@@ -7,4 +7,5 @@ export default interface AddCompanyAccountRequest {
   address: string;
   country: string;
   contactEmail: string;
+  about?: string;
 }

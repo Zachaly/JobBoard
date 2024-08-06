@@ -5,6 +5,14 @@
                 <p class="title has-text-centered">{{ company?.name }}</p>
                 <section class="section">
                     <h2 class="subtitle">
+                        About us
+                    </h2>
+                    <p>
+                        {{ company?.about }}
+                    </p>
+                </section>
+                <section class="section">
+                    <h2 class="subtitle">
                         Address
                     </h2>
                     <p>
@@ -19,7 +27,7 @@
                 </section>
                 <section class="section">
                     <h2 class="subtitle">Job offers</h2>
-                    <JobOfferListItem v-for="offer in jobOffers" :key="offer.id" :offer="offer"/>
+                    <JobOfferListItem v-for="offer in jobOffers" :key="offer.id" :offer="offer" />
                 </section>
             </div>
         </div>
