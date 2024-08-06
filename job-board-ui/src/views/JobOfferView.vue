@@ -42,7 +42,8 @@ const offer: Ref<JobOfferModel> = ref({
         country: '',
         address: ''
     },
-    requirements: []
+    requirements: [],
+    tags: []
 })
 
 onMounted(() => {

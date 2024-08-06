@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="content">
-                <p class="title is-3">Company: {{ offer.company.name }} </p>
+                <p class="title is-3">Company: <RouterLink :to="`/employee/company/${offer.company.id}`">{{ offer.company.name }}</RouterLink> </p>
                 <p class="subtitle is-5">Created: {{ $fromUtcDate(offer.creationDate)}}</p>
                 <p class="subtitle is-5">Expires: {{ $fromUtcDate(offer.expirationDate)}}</p>
             </div>
