@@ -15,6 +15,7 @@ namespace JobBoard.Application.Validation
             RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
             RuleFor(x => x.Country).NotEmpty();
             RuleFor(x => x.Password).NotEmpty().Length(8, 100);
+            RuleFor(x => x.About).MaximumLength(1000);
         }
     }
 }

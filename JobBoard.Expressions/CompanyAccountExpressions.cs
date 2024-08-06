@@ -15,6 +15,7 @@ namespace JobBoard.Expressions
             Id = account.Id,
             Name = account.Name,
             PostalCode = account.PostalCode,
+            About = account.About,
         };
     }
 }

@@ -9,5 +9,6 @@
         public string Address { get; set; }
         public string Country { get; set; }
         public string ContactEmail { get; set; }
+        public string? About { get; set; }
     }
 }

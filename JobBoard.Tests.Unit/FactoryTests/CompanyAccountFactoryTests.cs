@@ -25,7 +25,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 PostalCode = "postal-code",
                 Address = "addr",
                 Country = "ctn",
-                ContactEmail = "contactemail"
+                ContactEmail = "contactemail",
+                About = "about"
             };
 
             var passwordHash = "hash";
@@ -39,6 +40,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.ContactEmail, account.ContactEmail);
             Assert.Equal(request.Address, account.Address);
             Assert.Equal(request.Email, account.Email);
+            Assert.Equal(request.About, account.About);
         }
 
         [Fact]
@@ -53,7 +55,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 ContactEmail = "email@email.com",
                 Country = "ctn",
                 Name = "naam",
-                PostalCode = "postal"
+                PostalCode = "postal",
+                About = "about"
             };
 
             _factory.Update(account, request);
@@ -64,6 +67,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.ContactEmail, account.ContactEmail);
             Assert.Equal(request.PostalCode, account.PostalCode);
             Assert.Equal(request.Address, account.Address);
+            Assert.Equal(request.About, account.About);
         }
     }
 }
