@@ -6,4 +6,5 @@ export default interface CompanyAccountModel {
   address: string;
   country: string;
   contactEmail: string;
+  about?: string;
 }

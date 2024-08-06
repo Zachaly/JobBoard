@@ -106,6 +106,10 @@ namespace JobBoard.Database
             modelBuilder.Entity<JobOfferTag>()
                 .Property(p => p.Tag)
                 .HasMaxLength(50);
+
+            modelBuilder.Entity<CompanyAccount>()
+                .Property(e => e.About)
+                .HasMaxLength(1000);
         }
     }
 }

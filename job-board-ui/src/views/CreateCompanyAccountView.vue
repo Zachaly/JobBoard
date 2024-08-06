@@ -43,6 +43,13 @@
                     <ValidationErrorsComponent :errors="validationErrors['ContactEmail']" />
                 </div>
                 <div class="control">
+                    <label class="label">About</label>
+                    <textarea v-model="request.about" class="textarea">
+
+                    </textarea>
+                    <ValidationErrorsComponent :errors="validationErrors['About']" />
+                </div>
+                <div class="control">
                     <button @click="addAccount" class="button">Create account</button>
                 </div>
             </div>

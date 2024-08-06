@@ -32,6 +32,11 @@
                     <input type="text" class="input" v-model="request.address">
                     <ValidationErrors :errors="validationErrors['Address']" />
                 </div>
+                <div class="control">
+                    <label class="label">About</label>
+                    <textarea class="textarea" v-model="request.about"></textarea>
+                    <ValidationErrors :errors="validationErrors['About']" />
+                </div>
                 <div class="buttons">
                     <button class="button is-info" @click="update()">Confirm</button>
                     <button class="button is-warning" @click="cancel()">Cancel</button>
@@ -64,7 +69,8 @@ const request: Ref<UpdateCompanyAccountRequest> = ref({
     name: account.name,
     contactEmail: account.contactEmail,
     country: account.country,
-    city: account.city
+    city: account.city,
+    about: account.about
 })
 
 const update = () => {

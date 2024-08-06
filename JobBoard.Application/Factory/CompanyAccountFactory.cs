@@ -17,6 +17,7 @@ namespace JobBoard.Application.Factory
                 PasswordHash = passwordHash,
                 Name = request.Name,
                 PostalCode = request.PostalCode,
+                About = request.About,
             };
 
         public void Update(CompanyAccount entity, UpdateCompanyAccountRequest request)
@@ -27,6 +28,7 @@ namespace JobBoard.Application.Factory
             entity.Name = request.Name;
             entity.ContactEmail = request.ContactEmail;
             entity.Country = request.Country;
+            entity.About = request.About;
         }
     }
 }
