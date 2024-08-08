@@ -52,6 +52,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IJobOfferTagFactory, JobOfferTagFactory>();
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            builder.Services.AddScoped<IFileService, FileService>();
         }
 
         public static void ConfigureSwagger(this WebApplicationBuilder builder)

@@ -1,4 +1,5 @@
 using JobBoard.Api.Extensions;
+using JobBoard.Application.Service;
 using JobBoard.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ builder.ConfigureSwagger();
 builder.AddServices();
 builder.Services.AddCors();
 builder.ConfigureAuthorization();
+builder.Services.Configure<FileConfiguration>(builder.Configuration.GetSection("File"));
 
 var app = builder.Build();
 

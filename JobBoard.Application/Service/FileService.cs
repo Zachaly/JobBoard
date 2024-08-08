@@ -1,4 +1,5 @@
 ﻿using JobBoard.Application.Service.Abstraction;
+using Microsoft.Extensions.Options;
 
 namespace JobBoard.Application.Service
 {
@@ -12,9 +13,9 @@ namespace JobBoard.Application.Service
     {
         private readonly FileConfiguration _config;
 
-        public FileService(FileConfiguration config)
+        public FileService(IOptions<FileConfiguration> config)
         {
-            _config = config;
+            _config = config.Value;
         }
 
         public Task DeleteCompanyProfilePictureAsync(string? fileName)
