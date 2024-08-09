@@ -8,6 +8,7 @@ using JobBoard.Domain.Entity;
 using JobBoard.Model.CompanyAccount;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System.Text;
 
 namespace JobBoard.Tests.Unit.CommandTests
 {
@@ -306,6 +307,105 @@ namespace JobBoard.Tests.Unit.CommandTests
 
             Assert.False(res.IsSuccess);
             Assert.NotEmpty(res.Error);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountPictureCommand_PictureSend_Success()
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("mock"));
+
+            var command = new UpdateCompanyAccountProfilePictureCommand(1, stream, "jpg");
+
+            var company = new CompanyAccount();
+            const string FileName = "filename";
+
+            var fileService = Substitute.For<IFileService>();
+
+            fileService.SaveCompanyProfilePictureAsync(command.Picture).Returns(FileName);
+            fileService.DeleteCompanyProfilePictureAsync(null).Returns(Task.CompletedTask);
+
+            var repository = Substitute.For<ICompanyAccountRepository>();
+            repository.GetEntityByIdAsync(command.CompanyId).Returns(company);
+            repository.UpdateAsync(company).Returns(Task.CompletedTask);
+
+            var handler = new UpdateCompanyAccountProfilePictureHandler(repository, fileService);
+
+            var res = await handler.Handle(command, default);
+
+            await repository.Received(1).UpdateAsync(company);
+            await fileService.Received(1).DeleteCompanyProfilePictureAsync(null);
+
+            Assert.True(res.IsSuccess);
+            Assert.Equal(FileName, company.ProfilePicture);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountPictureCommand_PictureSend_InvalidMimeType_Failure()
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("mock"));
+
+            var command = new UpdateCompanyAccountProfilePictureCommand(1, stream, "mp3");
+
+            var company = new CompanyAccount();
+            const string FileName = "filename";
+
+            var fileService = Substitute.For<IFileService>();
+            var repository = Substitute.For<ICompanyAccountRepository>();
+
+            repository.GetEntityByIdAsync(command.CompanyId).Returns(company);
+
+            var handler = new UpdateCompanyAccountProfilePictureHandler(repository, fileService);
+
+            var res = await handler.Handle(command, default);
+
+            await repository.Received(0).UpdateAsync(company);
+            await fileService.Received(0).DeleteCompanyProfilePictureAsync(null);
+
+            Assert.False(res.IsSuccess);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountPictureCommand_NoPictureSend_Success()
+        {
+            var command = new UpdateCompanyAccountProfilePictureCommand(1, null, null);
+
+            const string FileName = "filename";
+            var company = new CompanyAccount() { ProfilePicture = FileName };
+
+            var fileService = Substitute.For<IFileService>();
+
+            fileService.DeleteCompanyProfilePictureAsync(FileName).Returns(Task.CompletedTask);
+
+            var repository = Substitute.For<ICompanyAccountRepository>();
+            repository.GetEntityByIdAsync(command.CompanyId).Returns(company);
+            repository.UpdateAsync(company).Returns(Task.CompletedTask);
+
+            var handler = new UpdateCompanyAccountProfilePictureHandler(repository, fileService);
+
+            var res = await handler.Handle(command, default);
+
+            await repository.Received(1).UpdateAsync(company);
+            await fileService.Received(1).DeleteCompanyProfilePictureAsync(FileName);
+
+            Assert.True(res.IsSuccess);
+            Assert.Null(company.ProfilePicture);
+        }
+
+        [Fact]
+        public async Task UpdateCompanyAccountPictureCommand_EntityNotFound_Failure()
+        {
+            var command = new UpdateCompanyAccountProfilePictureCommand(1, null, "jpg");
+
+            var fileService = Substitute.For<IFileService>();
+
+            var repository = Substitute.For<ICompanyAccountRepository>();
+            repository.GetEntityByIdAsync(command.CompanyId).ReturnsNull();
+
+            var handler = new UpdateCompanyAccountProfilePictureHandler(repository, fileService);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.False(res.IsSuccess);
         }
     }
 }

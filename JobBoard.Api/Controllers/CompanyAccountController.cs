@@ -1,4 +1,5 @@
 ﻿using JobBoard.Api.Constants;
+using JobBoard.Api.Dto;
 using JobBoard.Api.Extensions;
 using JobBoard.Application.Command;
 using JobBoard.Model.CompanyAccount;
@@ -104,6 +105,34 @@ namespace JobBoard.Api.Controllers
             var res = await _mediator.Send(command);
 
             return Ok(res);
-        } 
+        }
+
+        /// <summary>
+        /// Updates profile picture of company with given id
+        /// </summary>
+        /// <response code="204">Picture updated successfully</response>
+        /// <response code="400">Invalid request</response>
+        /// <param name="request">Send null picture to reset it to default</param>
+        [HttpPost("image")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<ResponseModel>> UpdatePictureAsync([FromForm] UpdateCompanyProfilePictureRequest request)
+        {
+            var response = await _mediator.Send(request.ToCommand());
+
+            return response.ReturnNoContentOrBadRequest();
+        }
+
+        /// <summary>
+        /// Returns profile picture of company with specified id or default one
+        /// </summary>
+        [HttpGet("{id}/image")]
+        [ProducesResponseType(200)]
+        public async Task<FileStreamResult> GetImage(long id)
+        {
+            var stream = await _mediator.Send(new GetCompanyProfilePictureByIdCommand(id));
+
+            return new FileStreamResult(stream, "image/png");
+        }
     }
 }

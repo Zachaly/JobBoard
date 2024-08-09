@@ -23,4 +23,8 @@
     <ProjectReference Include="..\JobBoard.Database\JobBoard.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\company\" />
+  </ItemGroup>
+
 </Project>

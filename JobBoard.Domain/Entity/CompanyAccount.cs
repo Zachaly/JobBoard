@@ -12,6 +12,7 @@
         public string Country { get; set; }
         public string ContactEmail { get; set; }
         public string? About { get; set; }
+        public string? ProfilePicture { get; set; }
 
         public ICollection<CompanyAccountRefreshToken> RefreshTokens { get; set; }
         public ICollection<JobOffer> JobOffers { get; set; }
