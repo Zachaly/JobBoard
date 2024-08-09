@@ -2,7 +2,15 @@
     <ViewTemplate :employee-navbar="true">
         <div class="columns is-centered">
             <div class="column is-8">
-                <p class="title has-text-centered">{{ company?.name }}</p>
+                <section class="section is-flex is-align-items-center">
+                    <figure class="image is-128x128">
+                        <img :src="$companyImage(company?.id)" alt="">
+                    </figure>
+                    <p class="title ml-5">
+                        {{ company?.name }}
+                    </p>
+                </section>
+
                 <section class="section">
                     <h2 class="subtitle">
                         About us
