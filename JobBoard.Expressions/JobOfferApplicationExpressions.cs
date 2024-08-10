@@ -13,6 +13,7 @@ namespace JobBoard.Expressions
             State = application.State,
             Employee = EmployeeAccountExpressions.Model.Compile().Invoke(application.Employee),
             OfferId = application.OfferId,
+            OfferTitle = application.Offer.Title
         };
     }
 }

@@ -1,6 +1,5 @@
 ﻿using JobBoard.Domain.Enum;
 using JobBoard.Model.EmployeeAccount;
-using JobBoard.Model.JobOffer;
 
 namespace JobBoard.Model.JobOfferApplication
 {
@@ -11,5 +10,6 @@ namespace JobBoard.Model.JobOfferApplication
         public JobOfferApplicationState State { get; set; }
         public EmployeeAccountModel Employee { get; set; }
         public long OfferId { get; set; }
+        public string OfferTitle { get; set; }
     }
 }

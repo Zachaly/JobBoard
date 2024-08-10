@@ -10,8 +10,13 @@
                     <p class="subtitle is-5">{{ offer.location }}</p>
                 </div>
                 <div class="media-right">
-                    <button class="button is-danger" @click="$emit('delete')">Delete</button>
-                    <button class="button is-warning" @click="$emit('update')">Update</button>
+                    <div>
+                        <button class="button is-danger" @click="$emit('delete')">Delete</button>
+                        <button class="button is-warning" @click="$emit('update')">Update</button>
+                    </div>
+                    <div>
+                        <RouterLink :to="`/job-offer/${offer.id}/applications`" class="button is-info">See applications</RouterLink>
+                    </div>
                 </div>
             </div>
             <div class="content">

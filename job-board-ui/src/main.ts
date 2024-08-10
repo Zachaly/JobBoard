@@ -6,6 +6,7 @@ import { createPinia } from "pinia";
 import datePlugin from "./plugins/date-plugin";
 import imagePlugin from "./plugins/image-plugin";
 import QueryString from "qs";
+import resumePlugin from "./plugins/resume-plugin";
 
 axios.defaults.baseURL = "https://localhost:5001/api/";
 axios.defaults.paramsSerializer = (params: any) => QueryString.stringify(params);
@@ -17,4 +18,5 @@ createApp(App)
   .use(router)
   .use(datePlugin)
   .use(imagePlugin)
+  .use(resumePlugin)
   .mount("#app");

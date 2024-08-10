@@ -1,12 +1,8 @@
-﻿using JobBoard.Domain.Entity;
+﻿using JobBoard.Domain.Enum;
 using JobBoard.Model.JobOfferApplication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using JobBoard.Model.Response;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
@@ -92,6 +88,97 @@ namespace JobBoard.Tests.Integration.ApiTests
             var response = await _httpClient.GetAsync($"{Endpoint}/2137");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetCount_ReturnsProperCount()
+        {
+            await AuthorizeEmployeeAsync();
+
+            var employees = FakeDataFactory.CreateEmployeeAccounts(5);
+
+            _dbContext.AddRange(employees);
+            _dbContext.SaveChanges();
+
+            var company = FakeDataFactory.CreateCompanyAccounts(1)[0];
+            _dbContext.Add(company);
+            _dbContext.SaveChanges();
+
+            var offer = FakeDataFactory.CreateJobOffers(company.Id, 1)[0];
+
+            _dbContext.Add(offer);
+            _dbContext.SaveChanges();
+
+            var applications = FakeDataFactory.CreateJobOfferApplications(offer.Id, employees.Select(x => x.Id));
+
+            _dbContext.AddRange(applications);
+            _dbContext.SaveChanges();
+
+            var response = await _httpClient.GetAsync($"{Endpoint}/count");
+
+            var content = await response.Content.ReadFromJsonAsync<int>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(_dbContext.Applications.Count(), content);
+        }
+
+        [Fact]
+        public async Task Update_UpdatesCorrectEntity()
+        {
+            await AuthorizeEmployeeAsync();
+
+            var employees = FakeDataFactory.CreateEmployeeAccounts(5);
+
+            _dbContext.AddRange(employees);
+            _dbContext.SaveChanges();
+
+            var company = FakeDataFactory.CreateCompanyAccounts(1)[0];
+            _dbContext.Add(company);
+            _dbContext.SaveChanges();
+
+            var offer = FakeDataFactory.CreateJobOffers(company.Id, 1)[0];
+
+            _dbContext.Add(offer);
+            _dbContext.SaveChanges();
+
+            var applications = FakeDataFactory.CreateJobOfferApplications(offer.Id, employees.Select(x => x.Id));
+
+            _dbContext.AddRange(applications);
+            _dbContext.SaveChanges();
+
+            var updatedEntity = applications.Last();
+
+            var request = new UpdateJobOfferApplicationRequest
+            {
+                Id = updatedEntity.Id,
+                State = JobOfferApplicationState.Accepted
+            };
+
+            var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
+
+            _dbContext.Entry(updatedEntity).Reload();
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(request.State, updatedEntity.State);
+        }
+
+        [Fact]
+        public async Task Update_EntityNotFound_ReturnsBadRequest()
+        {
+            await AuthorizeCompanyAsync();
+
+            var request = new UpdateJobOfferApplicationRequest
+            {
+                Id = 2137,
+                State = JobOfferApplicationState.Sent
+            };
+
+            var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
+
+            var content = await GetContentFromBadRequestAsync<ResponseModel>(response);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotEmpty(content.Error);
         }
     }
 }

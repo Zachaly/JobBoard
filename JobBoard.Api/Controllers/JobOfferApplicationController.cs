@@ -98,5 +98,33 @@ namespace JobBoard.Api.Controllers
 
             return new FileStreamResult(res, "application/pdf");
         }
+
+        /// <summary>
+        /// Returns number of job offer applications filtered by query
+        /// </summary>
+        /// <response code="200">Number of applications</response>
+        [HttpGet("count")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<int>> GetCount([FromQuery] GetJobOfferApplicationCountCommand query)
+        {
+            var res = await _mediator.Send(query);
+
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Updates application with data given in request
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<ResponseModel>> Update(UpdateJobOfferApplicationCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return res.ReturnNoContentOrBadRequest();
+        }
     }
 }
