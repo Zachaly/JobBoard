@@ -59,5 +59,23 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.OfferId, _ => offerId)
                 .RuleFor(x => x.Tag, f => f.Random.Word())
                 .Generate(count);
+
+        public static List<JobOfferApplication> CreateJobOfferApplications(long offerId, IEnumerable<long> employeeIds)
+        {
+            var list = new List<JobOfferApplication>();
+            foreach(var id in employeeIds)
+            {
+                list.Add(new JobOfferApplication
+                {
+                    ApplicationDate = DateTimeOffset.UtcNow,
+                    EmployeeId = id,
+                    OfferId = offerId,
+                    ResumeFileName = "file.pdf",
+                    State = Domain.Enum.JobOfferApplicationState.Sent
+                });
+            }
+
+            return list;
+        }
     }
 }

@@ -14,5 +14,6 @@
         public long? BusinessId { get; set; }
         public Business? Business { get; set; }
         public ICollection<JobOfferTag> Tags { get; set; }
+        public ICollection<JobOfferApplication> Applications { get; set; }
     }
 }

@@ -6,5 +6,9 @@
         Task<FileStream> GetCompanyProfilePictureAsync(string fileName);
         Task<FileStream> GetCompanyDefaultPictureAsync();
         Task DeleteCompanyProfilePictureAsync(string? fileName);
+
+        Task<string> SaveResumeFile(Stream stream);
+        Task<FileStream> GetResumeFile(string fileName);
+        Task DeleteResumeFileAsync(string fileName);
     }
 }
