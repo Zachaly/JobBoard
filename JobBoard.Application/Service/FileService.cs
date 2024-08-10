@@ -66,6 +66,8 @@ namespace JobBoard.Application.Service
 
         public async Task<string> SaveResumeFile(Stream stream)
         {
+            Directory.CreateDirectory(_config.ResumeFilePath);
+
             var fileName = Guid.NewGuid().ToString() + ".pdf";
 
             var filePath = Path.Combine(_config.ResumeFilePath, fileName);
