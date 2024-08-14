@@ -34,7 +34,7 @@ namespace JobBoard.Application.Command
                 return new ResponseModel("File must be pdf");
             }
 
-            var file = await _fileService.SaveResumeFile(request.Resume);
+            var file = await _fileService.SaveResumeFileAsync(request.Resume);
 
             var application = _factory.Create(request, file);
 

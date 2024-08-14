@@ -36,6 +36,7 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
             builder.Services.AddScoped<IJobOfferTagRepository, JobOfferTagRepository>();
             builder.Services.AddScoped<IJobOfferApplicationRepository, JobOfferApplicationRepository>();
+            builder.Services.AddScoped<IEmployeeResumeRepository, EmployeeResumeRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder builder)

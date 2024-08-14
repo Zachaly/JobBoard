@@ -77,5 +77,12 @@ namespace JobBoard.Tests.Integration
 
             return list;
         }
+
+        public static List<EmployeeResume> CreateEmployeeResumes(long employeeId, int count)
+            => new Faker<EmployeeResume>()
+                .RuleFor(x => x.EmployeeId, _ => employeeId)
+                .RuleFor(x => x.FileName, f => f.Random.Word())
+                .RuleFor(x => x.Name, f => f.Random.Words(2))
+                .Generate(count);
     }
 }
