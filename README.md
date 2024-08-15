@@ -9,6 +9,7 @@
   * MediatR
   * FluentValidation
   * XUnit
+  * Migradoc
 * Frontend
   * Vue3
   * Vue Router
