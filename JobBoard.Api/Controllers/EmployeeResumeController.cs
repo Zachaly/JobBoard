@@ -66,7 +66,7 @@ namespace JobBoard.Api.Controllers
                 return new NotFoundResult();
             }
 
-            return File(res.File, "application/pdf", res.Name);
+            return File(res.File, "application/pdf", $"{res.Name}.pdf");
         }
 
         /// <summary>

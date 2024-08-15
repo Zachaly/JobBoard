@@ -7,16 +7,22 @@ import datePlugin from "./plugins/date-plugin";
 import imagePlugin from "./plugins/image-plugin";
 import QueryString from "qs";
 import resumePlugin from "./plugins/resume-plugin";
+import "@vuepic/vue-datepicker/dist/main.css";
+import VueDatePicker from '@vuepic/vue-datepicker';
+
 
 axios.defaults.baseURL = "https://localhost:5001/api/";
-axios.defaults.paramsSerializer = (params: any) => QueryString.stringify(params);
+axios.defaults.paramsSerializer = (params: any) =>
+  QueryString.stringify(params);
 
 const pinia = createPinia();
 
-createApp(App)
+const app = createApp(App)
   .use(pinia)
   .use(router)
   .use(datePlugin)
   .use(imagePlugin)
-  .use(resumePlugin)
-  .mount("#app");
+  .use(resumePlugin);
+
+app.component("VueDatePicker", VueDatePicker);
+app.mount("#app");

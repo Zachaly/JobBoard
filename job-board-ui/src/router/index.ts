@@ -23,6 +23,8 @@ import EmployeeApplicationListView from "@/views/EmployeeApplicationListView.vue
 import EmployeeApplicationView from "@/views/EmployeeApplicationView.vue";
 import JobOfferApplicationList from "@/views/JobOfferApplicationListView.vue";
 import JobOfferApplicationView from "@/views/JobOfferApplicationView.vue";
+import AddEmployeeResumeView from "@/views/AddEmployeeResumeView.vue";
+import EmployeeResumeListView from "@/views/EmployeeResumeListView.vue";
 import { Component } from "vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
@@ -131,6 +133,18 @@ const routes: Array<RouteRecordRaw> = [
     "job-offer-application",
     JobOfferApplicationView,
     AuthType.Company
+  ),
+  createRoute(
+    "/employee/resume/add",
+    "add-employee-resume",
+    AddEmployeeResumeView,
+    AuthType.Employee
+  ),
+  createRoute(
+    "/employee/resume",
+    "employee-resume",
+    EmployeeResumeListView,
+    AuthType.Employee
   ),
 ];
 
