@@ -1,3 +1,4 @@
+import JobOfferApplicationState from "../enum/JobOfferApplicationState";
 import PagedRequest from "../PagedRequest";
 
 export default interface GetJobOfferApplicationRequest extends PagedRequest {

@@ -35,7 +35,7 @@ namespace JobBoard.Tests.Unit.CommandTests
             factory.Create(command, FileName).Returns(createdEntity);
 
             var fileService = Substitute.For<IFileService>();
-            fileService.SaveResumeFile(command.Resume).Returns(FileName);
+            fileService.SaveResumeFileAsync(command.Resume).Returns(FileName);
 
             var handler = new AddJobOfferApplicationHandler(repository, factory, fileService);
 

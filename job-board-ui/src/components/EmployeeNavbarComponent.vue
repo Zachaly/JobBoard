@@ -17,6 +17,8 @@
             </div>
             <div class="navbar-item">
                 <div class="buttons">
+                    <router-link class="button" to="/employee/resume/add">Resume creator</router-link>
+                    <router-link class="button" to="/employee/resume">Resumes</router-link>
                     <router-link class="button" to="/employee/profile">Profile</router-link>
                     <button class="button is-danger" @click="logout()">Logout</button>
                 </div>

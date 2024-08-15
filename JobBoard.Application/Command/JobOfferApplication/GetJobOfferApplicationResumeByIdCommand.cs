@@ -26,7 +26,7 @@ namespace JobBoard.Application.Command
                 return null;
             }
 
-            return await _fileService.GetResumeFile(application.ResumeFileName);
+            return await _fileService.GetResumeFileAsync(application.ResumeFileName);
         }
     }
 }

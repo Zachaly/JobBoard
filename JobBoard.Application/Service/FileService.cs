@@ -1,5 +1,6 @@
 ﻿using JobBoard.Application.Service.Abstraction;
 using Microsoft.Extensions.Options;
+using MigraDoc.Rendering;
 
 namespace JobBoard.Application.Service
 {
@@ -8,6 +9,7 @@ namespace JobBoard.Application.Service
         public string DefaultFileName { get; set; }
         public string CompanyProfilePath { get; init; }
         public string ResumeFilePath { get; init; }
+        public string EmployeeResumeFilePath { get; init; }
     }
 
     public class FileService : IFileService
@@ -33,6 +35,15 @@ namespace JobBoard.Application.Service
             return Task.CompletedTask;
         }
 
+        public Task DeleteEmployeeResumeFileAsync(string fileName)
+        {
+            var path = Path.Combine(_config.EmployeeResumeFilePath, fileName);
+
+            File.Delete(path);
+
+            return Task.CompletedTask;
+        }
+
         public Task DeleteResumeFileAsync(string fileName)
         {
             var path = Path.Combine(_config.ResumeFilePath, fileName);
@@ -48,7 +59,10 @@ namespace JobBoard.Application.Service
         public Task<FileStream> GetCompanyProfilePictureAsync(string fileName)
             => Task.FromResult(File.OpenRead(Path.Combine(_config.CompanyProfilePath, fileName)));
 
-        public Task<FileStream> GetResumeFile(string fileName)
+        public Task<FileStream> GetEmployeeResumeFileAsync(string fileName)
+            => Task.FromResult(File.OpenRead(Path.Combine(_config.EmployeeResumeFilePath, fileName)));
+
+        public Task<FileStream> GetResumeFileAsync(string fileName)
             => Task.FromResult(File.OpenRead(Path.Combine(_config.ResumeFilePath, fileName)));
 
         public async Task<string> SaveCompanyProfilePictureAsync(Stream stream)
@@ -64,7 +78,20 @@ namespace JobBoard.Application.Service
             return fileName;
         }
 
-        public async Task<string> SaveResumeFile(Stream stream)
+        public Task<string> SaveEmployeeResumeFileAsync(PdfDocumentRenderer renderer)
+        {
+            Directory.CreateDirectory(_config.EmployeeResumeFilePath);
+
+            var fileName = Guid.NewGuid().ToString() + ".pdf";
+            var path = Path.Combine(_config.EmployeeResumeFilePath, fileName);
+
+            renderer.RenderDocument();
+            renderer.Save(path);
+
+            return Task.FromResult(fileName);
+        }
+
+        public async Task<string> SaveResumeFileAsync(Stream stream)
         {
             Directory.CreateDirectory(_config.ResumeFilePath);
 

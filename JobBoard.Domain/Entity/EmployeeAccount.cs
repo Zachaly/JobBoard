@@ -14,5 +14,6 @@
 
         public ICollection<EmployeeAccountRefreshToken> RefreshTokens { get; set; }
         public ICollection<JobOfferApplication> Applications { get; set; }
+        public ICollection<EmployeeResume> Resumes { get; set; }
     }
 }
