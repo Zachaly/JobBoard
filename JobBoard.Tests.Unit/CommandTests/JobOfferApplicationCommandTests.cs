@@ -12,7 +12,7 @@ namespace JobBoard.Tests.Unit.CommandTests
     public class JobOfferApplicationCommandTests
     {
         [Fact]
-        public async Task AddJobOfferApplicationCommand_Success()
+        public async Task AddJobOfferApplicationCommand_ResumeFileAttached_Success()
         {
             using var mockStream = new MemoryStream(Encoding.UTF8.GetBytes("mock"));
 
@@ -37,13 +37,93 @@ namespace JobBoard.Tests.Unit.CommandTests
             var fileService = Substitute.For<IFileService>();
             fileService.SaveResumeFileAsync(command.Resume).Returns(FileName);
 
-            var handler = new AddJobOfferApplicationHandler(repository, factory, fileService);
+            var employeeResumeRepository = Substitute.For<IEmployeeResumeRepository>();
+
+            var handler = new AddJobOfferApplicationHandler(repository, factory, fileService, employeeResumeRepository);
 
             var res = await handler.Handle(command, default);
 
             await repository.Received(1).AddAsync(createdEntity);
 
             Assert.True(res.IsSuccess);
+        }
+
+        [Fact]
+        public async Task AddJobOfferApplication_EmployeeResumeAttached_Success()
+        {
+
+            var command = new AddJobOfferApplicationCommand
+            {
+                EmployeeId = 1,
+                OfferId = 2,
+                ResumeMimeType = null,
+                Resume = null,
+                ResumeId = 3,
+            };
+
+            var resume = new EmployeeResume
+            {
+                FileName = "file"
+            };
+
+            var createdEntity = new JobOfferApplication();
+            const string FileName = "file";
+
+            var repository = Substitute.For<IJobOfferApplicationRepository>();
+
+            repository.AddAsync(createdEntity).Returns(Task.CompletedTask);
+
+            var factory = Substitute.For<IJobOfferApplicationFactory>();
+            factory.Create(command, FileName).Returns(createdEntity);
+
+            var fileService = Substitute.For<IFileService>();
+            fileService.CopyEmployeeResumeToApplicationAsync(resume.FileName).Returns(FileName);
+
+            var employeeResumeRepository = Substitute.For<IEmployeeResumeRepository>();
+            employeeResumeRepository.GetEntityByIdAsync(command.ResumeId.Value).Returns(resume);
+
+            var handler = new AddJobOfferApplicationHandler(repository, factory, fileService, employeeResumeRepository);
+
+            var res = await handler.Handle(command, default);
+
+            await repository.Received(1).AddAsync(createdEntity);
+
+            Assert.True(res.IsSuccess);
+        }
+
+        [Fact]
+        public async Task AddJobOfferApplication_EmployeeResumeAttached_EntityNotFound_Failure()
+        {
+
+            var command = new AddJobOfferApplicationCommand
+            {
+                EmployeeId = 1,
+                OfferId = 2,
+                ResumeMimeType = null,
+                Resume = null,
+                ResumeId = 3,
+            };
+
+            var createdEntity = new JobOfferApplication();
+            const string FileName = "file";
+
+            var repository = Substitute.For<IJobOfferApplicationRepository>();
+
+            repository.AddAsync(createdEntity).Returns(Task.CompletedTask);
+
+            var factory = Substitute.For<IJobOfferApplicationFactory>();
+            factory.Create(command, FileName).Returns(createdEntity);
+
+            var fileService = Substitute.For<IFileService>();
+
+            var employeeResumeRepository = Substitute.For<IEmployeeResumeRepository>();
+            employeeResumeRepository.GetEntityByIdAsync(command.ResumeId.Value).ReturnsNull();
+
+            var handler = new AddJobOfferApplicationHandler(repository, factory, fileService, employeeResumeRepository);
+
+            var res = await handler.Handle(command, default);
+
+            Assert.False(res.IsSuccess);
         }
 
         [Fact]
@@ -63,7 +143,9 @@ namespace JobBoard.Tests.Unit.CommandTests
 
             var fileService = Substitute.For<IFileService>();
 
-            var handler = new AddJobOfferApplicationHandler(repository, factory, fileService);
+            var employeeResumeRepository = Substitute.For<IEmployeeResumeRepository>();
+
+            var handler = new AddJobOfferApplicationHandler(repository, factory, fileService, employeeResumeRepository);
 
             var res = await handler.Handle(command, default);
 

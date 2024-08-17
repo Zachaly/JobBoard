@@ -21,6 +21,15 @@ namespace JobBoard.Application.Service
             _config = config.Value;
         }
 
+        public Task<string> CopyEmployeeResumeToApplicationAsync(string fileName)
+        {
+            var newFileName = $"{Guid.NewGuid()}.pdf";
+
+            File.Copy(Path.Combine(_config.EmployeeResumeFilePath, fileName), Path.Combine(_config.ResumeFilePath, newFileName));
+
+            return Task.FromResult(newFileName);
+        }
+
         public Task DeleteCompanyProfilePictureAsync(string? fileName)
         {
             if(fileName is null)
