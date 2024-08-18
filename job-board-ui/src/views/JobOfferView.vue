@@ -14,14 +14,23 @@
             </div>
             <div class="column is-2" v-if="isAuthorized">
                 <div class="mt-1">
-                    <div class="file">
-                        <label class="file-label">
-                          <input class="file-input" type="file" @change="changeFile"/>
-                          <span class="file-cta">
-                            <span class="file-label"> Attach resume </span>
-                          </span>
-                        </label>
-                      </div>
+                    <div class="control">
+                        <div class="file">
+                            <label class="file-label">
+                                <input class="file-input" type="file" @change="changeFile" />
+                                <span class="file-cta">
+                                    <span class="file-label"> Attach resume </span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="select">
+                        <select v-model="selectedResumeId">
+                            <option :value="undefined"></option>
+                            <option v-for="resume in resumes" :key="resume.id" :value="resume.id">{{ resume.name }}
+                            </option>
+                        </select>
+                    </div>
                     <button class="button" @click="apply">Apply</button>
                 </div>
             </div>
@@ -38,11 +47,15 @@ import JobOfferListItem from '@/components/JobOfferListItemComponent.vue';
 import { useRoute } from 'vue-router';
 import useAuthStore from '@/stores/AuthStore';
 import { AuthType } from '../stores/AuthStore';
+import GetEmployeeResumeRequest from '../model/employee-resume/GetEmployeeResumeRequest';
+import EmployeeResumeModel from '../model/employee-resume/EmployeeResumeModel';
 
 const route = useRoute()
 const authStore = useAuthStore()
 const isAuthorized = authStore.currentAuthType == AuthType.Employee
 const currentFile = ref<File | null>()
+const resumes = ref<EmployeeResumeModel[]>([])
+const selectedResumeId = ref<number>()
 
 const offer: Ref<JobOfferModel> = ref({
     id: 0,
@@ -71,7 +84,7 @@ const changeFile = (e: Event) => {
 }
 
 const apply = () => {
-    if(!currentFile.value) {
+    if (!currentFile.value && !selectedResumeId.value) {
         alert("You must attach your resume")
         return;
     }
@@ -79,13 +92,31 @@ const apply = () => {
 
     form.append("EmployeeId", authStore.currentUserId.toString())
     form.append("OfferId", offer.value.id.toString())
-    form.append("Resume", currentFile.value)
+
+    if (currentFile.value) {
+        form.append("Resume", currentFile.value)
+    }
+
+    if (selectedResumeId.value) {
+        form.append('ResumeId', selectedResumeId.value.toString())
+    }
+
+    console.log(selectedResumeId.value)
 
     axios.post("job-offer-application", form).then(() => alert("Application sent!"))
 }
 
 onMounted(() => {
     axios.get(`job-offer/${route.params.id}`).then(res => offer.value = res.data)
+
+    if (isAuthorized) {
+        const params: GetEmployeeResumeRequest = {
+            EmployeeId: authStore.currentUserId
+        }
+        axios.get<EmployeeResumeModel[]>('employee-resume', { params }).then(res => resumes.value = res.data)
+    }
 })
+
+
 
 </script>

@@ -16,5 +16,7 @@ namespace JobBoard.Application.Service.Abstraction
         Task DeleteEmployeeResumeFileAsync(string fileName);
         Task<string> SaveEmployeeResumeFileAsync(PdfDocumentRenderer renderer);
         Task<FileStream> GetEmployeeResumeFileAsync(string fileName);
+
+        Task<string> CopyEmployeeResumeToApplicationAsync(string fileName);
     }
 }
