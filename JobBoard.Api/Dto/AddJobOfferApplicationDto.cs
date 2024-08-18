@@ -5,18 +5,20 @@ namespace JobBoard.Api.Dto
 {
     public class AddJobOfferApplicationDto : AddJobOfferApplicationRequest
     {
-        public IFormFile Resume { get; set; }
+        public IFormFile? Resume { get; set; }
+        public long? ResumeId { get; set; }
 
         public AddJobOfferApplicationCommand ToCommand()
         {
-            var mime = Resume.FileName.Split(".").LastOrDefault();
+            var mime = Resume?.FileName.Split(".").LastOrDefault();
 
             return new AddJobOfferApplicationCommand
             {
                 EmployeeId = EmployeeId,
                 OfferId = OfferId,
-                Resume = Resume.OpenReadStream(),
-                ResumeMimeType = mime ?? ""
+                Resume = Resume?.OpenReadStream(),
+                ResumeMimeType = mime ?? "",
+                ResumeId = ResumeId
             };
         }
     }
