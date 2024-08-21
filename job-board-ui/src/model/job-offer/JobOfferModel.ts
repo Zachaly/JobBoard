@@ -1,4 +1,5 @@
 import CompanyAccountModel from "../company-account/CompanyAccountModel";
+import JobOfferWorkType from "../enum/JobOfferWorkType";
 import JobOfferRequirementModel from "../job-offer-requirement/JobOfferRequirementModel";
 import JobOfferTagModel from "../job-offer-tag/JobOfferTagModel";
 
@@ -13,5 +14,6 @@ export default interface JobOfferModel {
     requirements: JobOfferRequirementModel[],
     businessName?: string,
     businessId?: number,
-    tags: JobOfferTagModel[]
+    tags: JobOfferTagModel[],
+    workType: JobOfferWorkType
 }

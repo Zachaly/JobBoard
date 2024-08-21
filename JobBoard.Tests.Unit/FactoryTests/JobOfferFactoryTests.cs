@@ -1,5 +1,6 @@
 ﻿using JobBoard.Application.Factory;
 using JobBoard.Domain.Entity;
+using JobBoard.Domain.Enum;
 using JobBoard.Model.JobOffer;
 
 namespace JobBoard.Tests.Unit.FactoryTests
@@ -25,7 +26,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 Title = "title",
                 Requirements = ["req1", "req2"],
                 BusinessId = 2,
-                Tags = ["tag1", "tag2"]
+                Tags = ["tag1", "tag2"],
+                WorkType = JobOfferWorkType.Hybrid,
             };
 
             var offer = _factory.Create(request);
@@ -38,6 +40,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equivalent(request.Requirements, offer.Requirements.Select(x => x.Content));
             Assert.Equal(request.BusinessId, offer.BusinessId);
             Assert.Equivalent(request.Tags, offer.Tags.Select(x => x.Tag));
+            Assert.Equal(request.WorkType, offer.WorkType);
         }
 
         [Fact]
@@ -52,7 +55,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 ExpirationDate = DateTimeOffset.Now.AddDays(1),
                 Location = "loc",
                 Title = "ttile",
-                BusinessId = 2
+                BusinessId = 2,
+                WorkType = JobOfferWorkType.Onsite,
             };
 
             var request = new UpdateJobOfferRequest
@@ -61,7 +65,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(2).ToUnixTimeMilliseconds(),
                 Location = "loc_new",
                 Title = "title_new",
-                BusinessId = 3
+                BusinessId = 3,
+                WorkType = JobOfferWorkType.Hybrid,
             };
 
             _factory.Update(offer, request);
@@ -71,6 +76,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.ExpirationTimestamp, offer.ExpirationDate.ToUnixTimeMilliseconds());
             Assert.Equal(request.Title, offer.Title);
             Assert.Equal(request.BusinessId, offer.BusinessId);
+            Assert.Equal(request.WorkType, offer.WorkType);
         }
     }
 }

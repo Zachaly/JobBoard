@@ -7,7 +7,7 @@
                         {{ offer.title }}
                     </p>
                     <p class="subtitle is-5">{{ offer.businessName }}</p>
-                    <p class="subtitle is-5">{{ offer.location }}</p>
+                    <p class="subtitle is-5">{{ offer.location }} | {{ JobOfferWorkType[offer.workType]}}</p>
                 </div>
                 <div class="media-right">
                     <div>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import JobOfferModel from '../model/job-offer/JobOfferModel';
+import JobOfferWorkType from '../model/enum/JobOfferWorkType'
 const props = defineProps<{
     offer: JobOfferModel
 }>()

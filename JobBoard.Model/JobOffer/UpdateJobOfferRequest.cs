@@ -1,4 +1,6 @@
-﻿namespace JobBoard.Model.JobOffer
+﻿using JobBoard.Domain.Enum;
+
+namespace JobBoard.Model.JobOffer
 {
     public class UpdateJobOfferRequest : IUpdateRequest
     {
@@ -8,5 +10,6 @@
         public string Location { get; set; }
         public long ExpirationTimestamp { get; set; }
         public long? BusinessId { get; set; }
+        public JobOfferWorkType WorkType { get; set; }
     }
 }

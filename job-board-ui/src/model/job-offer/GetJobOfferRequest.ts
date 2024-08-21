@@ -1,3 +1,4 @@
+import JobOfferWorkType from "../enum/JobOfferWorkType";
 import PagedRequest from "../PagedRequest";
 
 export default interface GetJobOfferRequest extends PagedRequest {
@@ -6,5 +7,6 @@ export default interface GetJobOfferRequest extends PagedRequest {
     SearchCompanyName?: string,
     MinimalExpirationDate?: string,
     BusinessIds?: number[],
-    Tags?: string[]
+    Tags?: string[],
+    WorkType?: JobOfferWorkType
 }

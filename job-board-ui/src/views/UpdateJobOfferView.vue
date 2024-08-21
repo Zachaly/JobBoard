@@ -23,11 +23,24 @@
                     <label for="" class="label">Expiration date</label>
                     <input type="date" @change="updateTimestamp()" v-model="currentExpirationDate">
                 </div>
-                <div class="select">
-                    <select v-model="request.businessId" :selected="request.businessId">
-                        <option :value="undefined">None</option>
-                        <option v-for="business in businesses" :key="business.id" :value="business.id">{{ business.name }}</option>
-                    </select>
+                <div class="control">
+                    <div class="select">
+                        <select v-model="request.workType">
+                            <option :value="JobOfferWorkType.Onsite">Onsite</option>
+                            <option :value="JobOfferWorkType.Hybrid">Hybrid</option>
+                            <option :value="JobOfferWorkType.Remote">Remote</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <div class="select">
+                        <select v-model="request.businessId">
+                            <option :value="undefined">None</option>
+                            <option v-for="business in businesses" :key="business.id" :value="business.id">{{ business.name
+                            }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="control">
                     <button class="button" @click="update()">Update</button>
@@ -77,13 +90,15 @@ import PagedRequest from '../model/PagedRequest';
 import JobOfferTagModel from '../model/job-offer-tag/JobOfferTagModel';
 import AddJobOfferTagRequest from '../model/job-offer-tag/AddJobOfferTagRequest';
 import GetJobOfferTagRequest from '../model/job-offer-tag/GetJobOfferTagRequest';
+import JobOfferWorkType from '../model/enum/JobOfferWorkType';
 
 const request: Ref<UpdateJobOfferRequest> = ref({
     id: 0,
     title: '',
     description: '',
     expirationTimestamp: 0,
-    location: ''
+    location: '',
+    workType: JobOfferWorkType.Onsite
 })
 
 const businesses: Ref<BusinessModel[]> = ref([])
@@ -135,7 +150,7 @@ const deleteRequirement = (req: JobOfferRequirementModel) => {
 }
 
 const addTag = () => {
-    if(tags.value.some(t => t.tag == newTag.value)) {
+    if (tags.value.some(t => t.tag == newTag.value)) {
         return;
     }
 
@@ -177,7 +192,8 @@ onMounted(() => {
             title: res.data.title,
             location: res.data.location,
             description: res.data.description,
-            businessId: res.data.businessId            
+            businessId: res.data.businessId,
+            workType: res.data.workType
         }
 
         requirements.value = res.data.requirements
@@ -190,6 +206,6 @@ onMounted(() => {
         SkipPagination: true
     }
 
-    axios.get('business', { params } ).then(res => businesses.value = res.data)
+    axios.get('business', { params }).then(res => businesses.value = res.data)
 })
 </script>

@@ -48,6 +48,7 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.Equal(expected.ExpirationDate, content.ExpirationDate);
             Assert.Equal(expected.CreationDate, content.CreationDate);
             Assert.Equal(expected.CompanyId, content.Company.Id);
+            Assert.Equal(expected.WorkType, content.WorkType);
         }
 
         [Fact]
@@ -71,7 +72,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Location = "loc",
                 Title = "title",
                 Requirements = ["req1", "req2"],
-                Tags = []
+                Tags = [],
+                WorkType = Domain.Enum.JobOfferWorkType.Remote,
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -81,7 +83,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                  && offer.Description == request.Description
                  && offer.Title == request.Title
                  && offer.ExpirationDate == DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp)
-                 && offer.Location == request.Location);
+                 && offer.Location == request.Location
+                 && offer.WorkType == request.WorkType);
             Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(0));
             Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(1));
         }
@@ -99,7 +102,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 ExpirationTimestamp = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeMilliseconds(),
                 Location = "loc",
                 Requirements = [],
-                Tags = []
+                Tags = [],
+                WorkType = Domain.Enum.JobOfferWorkType.Remote,
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -125,7 +129,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Description = "new_desc",
                 ExpirationTimestamp = offer.ExpirationDate.ToUnixTimeMilliseconds(),
                 Location = "new_loc",
-                Title = "title"
+                Title = "title",
+                WorkType = Domain.Enum.JobOfferWorkType.Remote
             };
 
             var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
@@ -137,6 +142,7 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.Equal(request.ExpirationTimestamp, offer.ExpirationDate.ToUnixTimeMilliseconds());
             Assert.Equal(request.Location, offer.Location);
             Assert.Equal(request.Title, offer.Title);
+            Assert.Equal(request.WorkType, offer.WorkType);
         }
 
         [Fact]
@@ -155,7 +161,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Description = "new_desc",
                 ExpirationTimestamp = offer.ExpirationDate.ToUnixTimeMilliseconds(),
                 Location = "new_loc",
-                Title = ""
+                Title = "",
+                WorkType = Domain.Enum.JobOfferWorkType.Hybrid,
             };
 
             var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
@@ -166,6 +173,7 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.NotEqual(request.Description, offer.Description);
             Assert.NotEqual(request.Location, offer.Location);
             Assert.NotEqual(request.Title, offer.Title);
+            Assert.NotEqual(request.WorkType, offer.WorkType);
         }
 
         [Fact]

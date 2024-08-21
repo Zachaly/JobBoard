@@ -1,4 +1,5 @@
-﻿using JobBoard.Model.Attributes;
+﻿using JobBoard.Domain.Enum;
+using JobBoard.Model.Attributes;
 using JobBoard.Model.Enum;
 
 namespace JobBoard.Model.JobOffer
@@ -15,5 +16,6 @@ namespace JobBoard.Model.JobOffer
         public ICollection<long?>? BusinessIds { get; set; }
         [SkipFilter]
         public ICollection<string>? Tags { get; set; }
+        public JobOfferWorkType? WorkType { get; set; }
     }
 }
