@@ -20,7 +20,8 @@ namespace JobBoard.Application.Factory
                     Content = req,
                 }).ToList(),
                 BusinessId = request.BusinessId,
-                Tags = request.Tags.Select(tag => new JobOfferTag { Tag = tag }).ToList()
+                Tags = request.Tags.Select(tag => new JobOfferTag { Tag = tag }).ToList(),
+                WorkType = request.WorkType,
             };
 
         public void Update(JobOffer offer, UpdateJobOfferRequest request)
@@ -30,6 +31,7 @@ namespace JobBoard.Application.Factory
             offer.ExpirationDate = DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp);
             offer.Location = request.Location;
             offer.BusinessId = request.BusinessId;
+            offer.WorkType = request.WorkType;
         }
     }
 }

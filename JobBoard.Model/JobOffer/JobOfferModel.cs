@@ -1,4 +1,5 @@
-﻿using JobBoard.Model.CompanyAccount;
+﻿using JobBoard.Domain.Enum;
+using JobBoard.Model.CompanyAccount;
 using JobBoard.Model.JobOfferRequirement;
 using JobBoard.Model.JobOfferTag;
 
@@ -17,5 +18,6 @@ namespace JobBoard.Model.JobOffer
         public long? BusinessId { get; set; }
         public string? BusinessName { get; set; }
         public IEnumerable<JobOfferTagModel> Tags { get; set; }
+        public JobOfferWorkType WorkType { get; set; }
     }
 }

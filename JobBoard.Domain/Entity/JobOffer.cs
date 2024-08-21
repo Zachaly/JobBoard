@@ -1,4 +1,6 @@
-﻿namespace JobBoard.Domain.Entity
+﻿using JobBoard.Domain.Enum;
+
+namespace JobBoard.Domain.Entity
 {
     public class JobOffer : IEntity
     {
@@ -15,5 +17,6 @@
         public Business? Business { get; set; }
         public ICollection<JobOfferTag> Tags { get; set; }
         public ICollection<JobOfferApplication> Applications { get; set; }
+        public JobOfferWorkType WorkType { get; set; }
     }
 }
