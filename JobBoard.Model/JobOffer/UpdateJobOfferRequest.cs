@@ -11,5 +11,8 @@ namespace JobBoard.Model.JobOffer
         public long ExpirationTimestamp { get; set; }
         public long? BusinessId { get; set; }
         public JobOfferWorkType WorkType { get; set; }
+        public int? MinSalary { get; set; }
+        public int? MaxSalary { get; set; }
+        public SalaryType? SalaryType { get; set; }
     }
 }

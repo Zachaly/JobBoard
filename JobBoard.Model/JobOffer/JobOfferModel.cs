@@ -19,5 +19,8 @@ namespace JobBoard.Model.JobOffer
         public string? BusinessName { get; set; }
         public IEnumerable<JobOfferTagModel> Tags { get; set; }
         public JobOfferWorkType WorkType { get; set; }
+        public int? MinSalary { get; set; }
+        public int? MaxSalary { get; set; }
+        public SalaryType SalaryType { get; set; }
     }
 }

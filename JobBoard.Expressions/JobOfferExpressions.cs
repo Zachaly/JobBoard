@@ -19,7 +19,10 @@ namespace JobBoard.Expressions
             BusinessName = offer.Business == null ? null : offer.Business.Name,
             BusinessId = offer.BusinessId,
             Tags = offer.Tags.AsQueryable().Select(JobOfferTagExpressions.Model).ToList(),
-            WorkType = offer.WorkType
+            WorkType = offer.WorkType,
+            MinSalary = offer.MinSalary,
+            MaxSalary = offer.MaxSalary,
+            SalaryType = offer.SalaryType,
         };
     }
 }

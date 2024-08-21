@@ -49,6 +49,9 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.Equal(expected.CreationDate, content.CreationDate);
             Assert.Equal(expected.CompanyId, content.Company.Id);
             Assert.Equal(expected.WorkType, content.WorkType);
+            Assert.Equal(expected.SalaryType, content.SalaryType);
+            Assert.Equal(expected.MinSalary, content.MinSalary);
+            Assert.Equal(expected.MaxSalary, content.MaxSalary);
         }
 
         [Fact]
@@ -74,6 +77,9 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Requirements = ["req1", "req2"],
                 Tags = [],
                 WorkType = Domain.Enum.JobOfferWorkType.Remote,
+                SalaryType = Domain.Enum.SalaryType.Monthly,
+                MinSalary = 5000,
+                MaxSalary = 6000,
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -84,7 +90,10 @@ namespace JobBoard.Tests.Integration.ApiTests
                  && offer.Title == request.Title
                  && offer.ExpirationDate == DateTimeOffset.FromUnixTimeMilliseconds(request.ExpirationTimestamp)
                  && offer.Location == request.Location
-                 && offer.WorkType == request.WorkType);
+                 && offer.WorkType == request.WorkType
+                 && offer.SalaryType == request.SalaryType
+                 && offer.MaxSalary == request.MaxSalary
+                 && offer.MinSalary == request.MinSalary);
             Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(0));
             Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(1));
         }
@@ -104,6 +113,7 @@ namespace JobBoard.Tests.Integration.ApiTests
                 Requirements = [],
                 Tags = [],
                 WorkType = Domain.Enum.JobOfferWorkType.Remote,
+                SalaryType = Domain.Enum.SalaryType.Hourly,
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -130,7 +140,10 @@ namespace JobBoard.Tests.Integration.ApiTests
                 ExpirationTimestamp = offer.ExpirationDate.ToUnixTimeMilliseconds(),
                 Location = "new_loc",
                 Title = "title",
-                WorkType = Domain.Enum.JobOfferWorkType.Remote
+                WorkType = Domain.Enum.JobOfferWorkType.Remote,
+                SalaryType = Domain.Enum.SalaryType.Yearly,
+                MinSalary = 1000,
+                MaxSalary = 2000
             };
 
             var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
@@ -143,6 +156,9 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.Equal(request.Location, offer.Location);
             Assert.Equal(request.Title, offer.Title);
             Assert.Equal(request.WorkType, offer.WorkType);
+            Assert.Equal(request.SalaryType, offer.SalaryType);
+            Assert.Equal(request.MinSalary, offer.MinSalary);
+            Assert.Equal(request.MaxSalary, offer.MaxSalary);
         }
 
         [Fact]

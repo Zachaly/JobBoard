@@ -28,6 +28,9 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 BusinessId = 2,
                 Tags = ["tag1", "tag2"],
                 WorkType = JobOfferWorkType.Hybrid,
+                SalaryType = SalaryType.Daily,
+                MaxSalary = 100,
+                MinSalary = 10
             };
 
             var offer = _factory.Create(request);
@@ -41,6 +44,9 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.BusinessId, offer.BusinessId);
             Assert.Equivalent(request.Tags, offer.Tags.Select(x => x.Tag));
             Assert.Equal(request.WorkType, offer.WorkType);
+            Assert.Equal(request.MaxSalary, offer.MaxSalary);
+            Assert.Equal(request.MinSalary, offer.MinSalary);
+            Assert.Equal(request.SalaryType.GetValueOrDefault(), offer.SalaryType);
         }
 
         [Fact]
@@ -57,6 +63,9 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 Title = "ttile",
                 BusinessId = 2,
                 WorkType = JobOfferWorkType.Onsite,
+                MinSalary = 1,
+                MaxSalary = 2,
+                SalaryType = SalaryType.Hourly,
             };
 
             var request = new UpdateJobOfferRequest
@@ -67,6 +76,9 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 Title = "title_new",
                 BusinessId = 3,
                 WorkType = JobOfferWorkType.Hybrid,
+                SalaryType = SalaryType.Daily,
+                MaxSalary = 5,
+                MinSalary = 4
             };
 
             _factory.Update(offer, request);
@@ -77,6 +89,9 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.Title, offer.Title);
             Assert.Equal(request.BusinessId, offer.BusinessId);
             Assert.Equal(request.WorkType, offer.WorkType);
+            Assert.Equal(request.MaxSalary, offer.MaxSalary);
+            Assert.Equal(request.MinSalary, offer.MinSalary);
+            Assert.Equal(request.SalaryType.GetValueOrDefault(), offer.SalaryType);
         }
     }
 }
