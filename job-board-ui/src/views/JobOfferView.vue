@@ -49,6 +49,7 @@ import useAuthStore from '@/stores/AuthStore';
 import { AuthType } from '../stores/AuthStore';
 import GetEmployeeResumeRequest from '../model/employee-resume/GetEmployeeResumeRequest';
 import EmployeeResumeModel from '../model/employee-resume/EmployeeResumeModel';
+import JobOfferWorkType from '../model/enum/JobOfferWorkType';
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -74,7 +75,8 @@ const offer: Ref<JobOfferModel> = ref({
         address: ''
     },
     requirements: [],
-    tags: []
+    tags: [],
+    workType: JobOfferWorkType.Onsite
 })
 
 const changeFile = (e: Event) => {

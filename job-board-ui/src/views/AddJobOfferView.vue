@@ -23,12 +23,26 @@
                     <label for="" class="label">Expiration date</label>
                     <input type="date" @change="getTimestamp()" v-model="currentDate">
                 </div>
-                <div class="select">
-                    <select v-model="request.businessId">
-                        <option :value="undefined">None</option>
-                        <option v-for="business in businesses" :key="business.id" :value="business.id">{{ business.name }}</option>
-                    </select>
+                <div class="control">
+                    <div class="select">
+                        <select v-model="request.workType">
+                            <option :value="JobOfferWorkType.Onsite">Onsite</option>
+                            <option :value="JobOfferWorkType.Hybrid">Hybrid</option>
+                            <option :value="JobOfferWorkType.Remote">Remote</option>
+                        </select>
+                    </div>
                 </div>
+                <div class="control">
+                    <div class="select">
+                        <select v-model="request.businessId">
+                            <option :value="undefined">None</option>
+                            <option v-for="business in businesses" :key="business.id" :value="business.id">{{ business.name
+                            }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="control">
                     <button class="button" @click="add()">Add</button>
                     <button class="button" @click="() => router.back()">Cancel</button>
@@ -70,6 +84,7 @@ import { AxiosError } from 'axios';
 import ResponseModel from '../model/ResponseModel';
 import BusinessModel from '../model/business/BusinessModel';
 import PagedRequest from '../model/PagedRequest';
+import JobOfferWorkType from '../model/enum/JobOfferWorkType';
 
 const authStore = useAuthStore()
 const companyId = authStore.companyData?.id ?? 0
@@ -91,7 +106,8 @@ const request: Ref<AddJobOfferRequest> = ref({
     expirationTimestamp: 0,
     requirements: [],
     businessId: undefined,
-    tags: []
+    tags: [],
+    workType: JobOfferWorkType.Onsite
 })
 
 const currentDate = ref('')
@@ -101,7 +117,7 @@ const getTimestamp = () => {
 }
 
 const addTag = () => {
-    if(request.value.tags.includes(newTag.value)) {
+    if (request.value.tags.includes(newTag.value)) {
         return;
     }
 

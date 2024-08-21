@@ -1,3 +1,5 @@
+import JobOfferWorkType from "../enum/JobOfferWorkType";
+
 export default interface AddJobOfferRequest {
     companyId: number,
     expirationTimestamp: number,
@@ -6,5 +8,6 @@ export default interface AddJobOfferRequest {
     location: string,
     requirements: string[],
     businessId?: number,
-    tags: string[]
+    tags: string[],
+    workType: JobOfferWorkType
 }

@@ -11,6 +11,16 @@
                         {{ business.name }}
                     </label>
                 </div>
+                <p class="title">Work type</p>
+                <div class="select">
+                    
+                    <select v-model="searchRequest.WorkType">
+                        <option :value="undefined"></option>
+                        <option :value="JobOfferWorkType.Onsite">Onsite</option>
+                        <option :value="JobOfferWorkType.Hybrid">Hybrid</option>
+                        <option :value="JobOfferWorkType.Remote">Remote</option>
+                    </select>
+                </div>
                 <p class="title">Tags</p>
                 <input type="text" v-model="newTag" class="input">
                 <button class="button" @click="addTag()">Add tag</button>
@@ -39,10 +49,13 @@ import JobOfferModel from '../model/job-offer/JobOfferModel';
 import axios from 'axios';
 import GetJobOfferRequest from '../model/job-offer/GetJobOfferRequest';
 import BusinessModel from '../model/business/BusinessModel';
+import JobOfferWorkType from '../model/enum/JobOfferWorkType'
 
 const offers = ref<JobOfferModel[]>([])
 const offerCount = ref(0)
 const businesses = ref<BusinessModel[]>([])
+
+console.log(Object.entries(JobOfferWorkType))
 
 const searchRequest: Ref<GetJobOfferRequest> = ref({
     MinimalExpirationDate: new Date().toISOString(),
