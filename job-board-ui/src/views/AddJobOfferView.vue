@@ -33,6 +33,22 @@
                     </div>
                 </div>
                 <div class="control">
+                    <button class="button" @click="clearSalary">Clear</button>
+                    <label class="label">Min salary</label>
+                    <input class="input" v-model="request.minSalary" type="number"/>
+                    <label class="label">Max salary</label>
+                    <input class="input" v-model="request.maxSalary" type="number"/>
+                    <div class="select">
+                        <select v-model="request.salaryType">
+                            <option :value="undefined"></option>
+                            <option :value="SalaryType.Hourly">Hourly</option>
+                            <option :value="SalaryType.Daily">Daily</option>
+                            <option :value="SalaryType.Monthly">Monthly</option>
+                            <option :value="SalaryType.Yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
                     <div class="select">
                         <select v-model="request.businessId">
                             <option :value="undefined">None</option>
@@ -85,6 +101,7 @@ import ResponseModel from '../model/ResponseModel';
 import BusinessModel from '../model/business/BusinessModel';
 import PagedRequest from '../model/PagedRequest';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType';
+import SalaryType from '../model/enum/SalaryType'
 
 const authStore = useAuthStore()
 const companyId = authStore.companyData?.id ?? 0
@@ -147,6 +164,12 @@ const add = () => {
             validationErrors.value = err.response.data.validationErrors
         }
     })
+}
+
+const clearSalary = () => {
+    request.value.minSalary = undefined
+    request.value.maxSalary = undefined
+    request.value.salaryType = undefined
 }
 
 onMounted(() => {

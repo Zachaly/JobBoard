@@ -1,4 +1,5 @@
 import JobOfferWorkType from "../enum/JobOfferWorkType";
+import SalaryType from "../enum/SalaryType";
 
 export default interface UpdateJobOfferRequest {
     id: number,
@@ -8,4 +9,7 @@ export default interface UpdateJobOfferRequest {
     location: string,
     businessId?: number,
     workType: JobOfferWorkType
+    minSalary?: number,
+    maxSalary?: number,
+    salaryType?: SalaryType
 }

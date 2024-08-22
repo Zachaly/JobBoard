@@ -33,6 +33,22 @@
                     </div>
                 </div>
                 <div class="control">
+                    <button class="button" @click="clearSalary">Clear</button>
+                    <label class="label">Min salary</label>
+                    <input class="input" v-model="request.minSalary" type="number"/>
+                    <label class="label">Max salary</label>
+                    <input class="input" v-model="request.maxSalary" type="number"/>
+                    <div class="select">
+                        <select v-model="request.salaryType">
+                            <option :value="undefined"></option>
+                            <option :value="SalaryType.Hourly">Hourly</option>
+                            <option :value="SalaryType.Daily">Daily</option>
+                            <option :value="SalaryType.Monthly">Monthly</option>
+                            <option :value="SalaryType.Yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
                     <div class="select">
                         <select v-model="request.businessId">
                             <option :value="undefined">None</option>
@@ -91,6 +107,7 @@ import JobOfferTagModel from '../model/job-offer-tag/JobOfferTagModel';
 import AddJobOfferTagRequest from '../model/job-offer-tag/AddJobOfferTagRequest';
 import GetJobOfferTagRequest from '../model/job-offer-tag/GetJobOfferTagRequest';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType';
+import SalaryType from '../model/enum/SalaryType';
 
 const request: Ref<UpdateJobOfferRequest> = ref({
     id: 0,
@@ -175,6 +192,12 @@ const deleteTag = (tag: JobOfferTagModel) => {
     axios.delete(`job-offer-tag/${tag.id}`).then(() => tags.value = tags.value.filter(x => x.id !== tag.id))
 }
 
+const clearSalary = () => {
+    request.value.minSalary = undefined
+    request.value.maxSalary = undefined
+    request.value.salaryType = undefined
+}
+
 onMounted(() => {
     axios.get<JobOfferModel>(`job-offer/${route.params.id}`).then(res => {
         if (res.data.company.id != authStore.currentUserId) {
@@ -193,7 +216,10 @@ onMounted(() => {
             location: res.data.location,
             description: res.data.description,
             businessId: res.data.businessId,
-            workType: res.data.workType
+            workType: res.data.workType,
+            minSalary: res.data.minSalary,
+            maxSalary: res.data.maxSalary,
+            salaryType: res.data.salaryType
         }
 
         requirements.value = res.data.requirements
