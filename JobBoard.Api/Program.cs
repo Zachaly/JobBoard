@@ -3,6 +3,7 @@ using JobBoard.Application.Service;
 using JobBoard.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 [assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);

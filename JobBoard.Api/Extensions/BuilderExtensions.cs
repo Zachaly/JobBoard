@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using JobBoard.Api.Constants;
+using JobBoard.Api.Infrastructure;
 using JobBoard.Application.Command;
 using JobBoard.Application.Factory;
 using JobBoard.Application.Factory.Abstraction;
@@ -9,10 +10,12 @@ using JobBoard.Application.Validation;
 using JobBoard.Database;
 using JobBoard.Database.Repository;
 using JobBoard.Database.Repository.Abstraction;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Reflection;
 using System.Text;
 
@@ -42,6 +45,7 @@ namespace JobBoard.Api.Extensions
         public static void AddServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssemblyContaining<AddCompanyAccountCommand>());
+            builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipeline<,>));
             builder.Services.AddValidatorsFromAssemblyContaining<AddCompanyAccountRequestValidator>();
 
             builder.Services.AddScoped<IHashService, HashService>();
@@ -56,6 +60,9 @@ namespace JobBoard.Api.Extensions
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddSerilog(opt => opt.ReadFrom.Configuration(builder.Configuration));
+            builder.Services.AddLogging();
+            builder.Services.AddHttpContextAccessor();
         }
 
         public static void ConfigureSwagger(this WebApplicationBuilder builder)
