@@ -22,6 +22,9 @@ namespace JobBoard.Application.Factory
                 BusinessId = request.BusinessId,
                 Tags = request.Tags.Select(tag => new JobOfferTag { Tag = tag }).ToList(),
                 WorkType = request.WorkType,
+                MinSalary = request.MinSalary,
+                MaxSalary = request.MaxSalary,
+                SalaryType = request.SalaryType.GetValueOrDefault(),
             };
 
         public void Update(JobOffer offer, UpdateJobOfferRequest request)
@@ -32,6 +35,9 @@ namespace JobBoard.Application.Factory
             offer.Location = request.Location;
             offer.BusinessId = request.BusinessId;
             offer.WorkType = request.WorkType;
+            offer.SalaryType = request.SalaryType.GetValueOrDefault();
+            offer.MaxSalary = request.MaxSalary;
+            offer.MinSalary = request.MinSalary;
         }
     }
 }

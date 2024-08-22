@@ -42,6 +42,7 @@ namespace JobBoard.Tests.Integration
                 .RuleFor(x => x.Location, f => f.Address.City())
                 .RuleFor(x => x.CompanyId, _ => companyId)
                 .RuleFor(x => x.WorkType, _ => Domain.Enum.JobOfferWorkType.Onsite)
+                .RuleFor(x => x.SalaryType, _ => Domain.Enum.SalaryType.Hourly)
                 .Generate(count);
 
         public static List<JobOfferRequirement> CreateJobOfferRequirements(long offerId, int count)

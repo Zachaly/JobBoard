@@ -13,6 +13,8 @@ namespace JobBoard.Application.Validation
             RuleFor(r => r.Location).Length(1, 100);
             RuleForEach(r => r.Requirements).Length(1, 300);
             RuleForEach(r => r.Tags).Length(1, 50);
+            RuleFor(r => r.MinSalary).GreaterThan(0);
+            RuleFor(r => r.MaxSalary).GreaterThan(0);
         }
     }
 }
