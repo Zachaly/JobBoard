@@ -15,6 +15,7 @@
                         tag.tag }} &nbsp;</span></p>
                     <p class="subtitle is-5">{{ offer.location }} | {{ JobOfferWorkType[offer.workType] }}</p>
                     <p class="subtitle is-5" v-if="offer.minSalary || offer.maxSalary">{{ salary }}</p>
+                    <p class="subtitle is-5">{{ experience }}</p>
                     <p class="title is-3">Company: <RouterLink :to="`/employee/company/${offer.company.id}`">{{
                         offer.company.name }}</RouterLink>
                     </p>
@@ -31,6 +32,8 @@ import { defineProps, computed } from 'vue';
 import JobOfferModel from '../model/job-offer/JobOfferModel';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType'
 import SalaryType from '../model/enum/SalaryType';
+import WorkExperienceLevel from '../model/enum/WorkExperienceLevel'
+
 const props = defineProps<{
     offer: JobOfferModel
 }>()
@@ -61,6 +64,22 @@ const salary = computed(() => {
     }
 
     return `${props.offer.minSalary} - ${props.offer.maxSalary} / ${period}`
+})
+
+const experience = computed(() => {
+    if(props.offer.experienceLevel == WorkExperienceLevel.None) {
+        return 'None'
+    }
+    if(props.offer.experienceLevel == WorkExperienceLevel.Intern) {
+        return 'Intern'
+    }
+    if(props.offer.experienceLevel == WorkExperienceLevel.Junior) {
+        return 'Junior'
+    }
+    if(props.offer.experienceLevel == WorkExperienceLevel.Mid) {
+        return 'Mid'
+    }
+    return 'Senior'
 })
 
 </script>

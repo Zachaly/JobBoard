@@ -1,5 +1,6 @@
 import JobOfferWorkType from "../enum/JobOfferWorkType";
 import SalaryType from "../enum/SalaryType";
+import WorkExperienceLevel from "../enum/WorkExperienceLevel";
 
 export default interface UpdateJobOfferRequest {
     id: number,
@@ -11,5 +12,6 @@ export default interface UpdateJobOfferRequest {
     workType: JobOfferWorkType
     minSalary?: number,
     maxSalary?: number,
-    salaryType?: SalaryType
+    salaryType?: SalaryType,
+    experienceLevel?: WorkExperienceLevel
 }
