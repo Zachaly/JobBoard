@@ -23,6 +23,7 @@ namespace JobBoard.Expressions
             MinSalary = offer.MinSalary,
             MaxSalary = offer.MaxSalary,
             SalaryType = offer.SalaryType,
+            ExperienceLevel = offer.ExperienceLevel,
         };
     }
 }

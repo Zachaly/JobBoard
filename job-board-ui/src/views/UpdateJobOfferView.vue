@@ -59,6 +59,18 @@
                     </div>
                 </div>
                 <div class="control">
+                    <div class="select">
+                        <select v-model="request.experienceLevel">
+                            <option :value="undefined"></option>
+                            <option :value="WorkExperienceLevel.None">None</option>
+                            <option :value="WorkExperienceLevel.Intern">Intern</option>
+                            <option :value="WorkExperienceLevel.Junior">Junior</option>
+                            <option :value="WorkExperienceLevel.Mid">Mid</option>
+                            <option :value="WorkExperienceLevel.Senior">Senior</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
                     <button class="button" @click="update()">Update</button>
                     <button class="button" @click="() => router.back()">Cancel</button>
                 </div>
@@ -108,6 +120,7 @@ import AddJobOfferTagRequest from '../model/job-offer-tag/AddJobOfferTagRequest'
 import GetJobOfferTagRequest from '../model/job-offer-tag/GetJobOfferTagRequest';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType';
 import SalaryType from '../model/enum/SalaryType';
+import WorkExperienceLevel from '../model/enum/WorkExperienceLevel'
 
 const request: Ref<UpdateJobOfferRequest> = ref({
     id: 0,
@@ -219,7 +232,8 @@ onMounted(() => {
             workType: res.data.workType,
             minSalary: res.data.minSalary,
             maxSalary: res.data.maxSalary,
-            salaryType: res.data.salaryType
+            salaryType: res.data.salaryType,
+            experienceLevel: res.data.experienceLevel
         }
 
         requirements.value = res.data.requirements

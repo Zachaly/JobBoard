@@ -4,16 +4,46 @@
             <div class="column is-3">
                 <input placeholder="Location" type="text" class="input" v-model="searchRequest.Location" />
                 <input placeholder="Company Name" class="input" v-model="searchRequest.SearchCompanyName" />
-                <p class="title">Businesses</p>   
+                <p class="title">Businesses</p>
                 <div v-for="business in businesses" :key="business.id">
                     <label class="checkbox">
                         <input type="checkbox" class="checkbox" @change="changeBusinesses(business.id)">
                         {{ business.name }}
                     </label>
                 </div>
+                <p class="title">Work experience</p>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" class="checkbox" @change="changeExperienceLevel(WorkExperienceLevel.None)">
+                        None
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" class="checkbox" @change="changeExperienceLevel(WorkExperienceLevel.Intern)">
+                        Intern
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" class="checkbox" @change="changeExperienceLevel(WorkExperienceLevel.Junior)">
+                        Junior
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" class="checkbox" @change="changeExperienceLevel(WorkExperienceLevel.Mid)">
+                        Mid
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" class="checkbox" @change="changeExperienceLevel(WorkExperienceLevel.Senior)">
+                        Senior
+                    </label>
+                </div>
                 <p class="title">Work type</p>
                 <div class="select">
-                    
                     <select v-model="searchRequest.WorkType">
                         <option :value="undefined"></option>
                         <option :value="JobOfferWorkType.Onsite">Onsite</option>
@@ -50,6 +80,7 @@ import axios from 'axios';
 import GetJobOfferRequest from '../model/job-offer/GetJobOfferRequest';
 import BusinessModel from '../model/business/BusinessModel';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType'
+import WorkExperienceLevel from '../model/enum/WorkExperienceLevel';
 
 const offers = ref<JobOfferModel[]>([])
 const offerCount = ref(0)
@@ -60,7 +91,8 @@ console.log(Object.entries(JobOfferWorkType))
 const searchRequest: Ref<GetJobOfferRequest> = ref({
     MinimalExpirationDate: new Date().toISOString(),
     BusinessIds: [],
-    Tags: []
+    Tags: [],
+    ExperienceLevel: []
 })
 
 const changeBusinesses = (id: number) => {
@@ -79,7 +111,7 @@ const loadOffers = () => {
 const newTag = ref('')
 
 const addTag = () => {
-    if(!newTag.value) {
+    if (!newTag.value) {
         return;
     }
 
@@ -89,6 +121,14 @@ const addTag = () => {
 
 const deleteTag = (tag: string) => {
     searchRequest.value.Tags = searchRequest.value.Tags?.filter(x => x != tag)
+}
+
+const changeExperienceLevel = (exp: WorkExperienceLevel) => {
+    if (searchRequest.value.ExperienceLevel?.includes(exp)) {
+        searchRequest.value.ExperienceLevel = searchRequest.value.ExperienceLevel.filter(x => x != exp)
+    } else {
+        searchRequest.value.ExperienceLevel?.push(exp)
+    }
 }
 
 onMounted(() => {

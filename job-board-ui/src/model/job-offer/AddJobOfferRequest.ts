@@ -1,5 +1,6 @@
 import JobOfferWorkType from "../enum/JobOfferWorkType";
 import SalaryType from "../enum/SalaryType";
+import WorkExperienceLevel from "../enum/WorkExperienceLevel";
 
 export default interface AddJobOfferRequest {
     companyId: number,
@@ -13,5 +14,6 @@ export default interface AddJobOfferRequest {
     workType: JobOfferWorkType,
     minSalary?: number,
     maxSalary?: number,
-    salaryType?: SalaryType
+    salaryType?: SalaryType,
+    experienceLevel?: WorkExperienceLevel
 }

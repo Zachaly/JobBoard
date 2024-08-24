@@ -30,7 +30,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 WorkType = JobOfferWorkType.Hybrid,
                 SalaryType = SalaryType.Daily,
                 MaxSalary = 100,
-                MinSalary = 10
+                MinSalary = 10,
+                ExperienceLevel = WorkExperienceLevel.Mid
             };
 
             var offer = _factory.Create(request);
@@ -47,6 +48,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.MaxSalary, offer.MaxSalary);
             Assert.Equal(request.MinSalary, offer.MinSalary);
             Assert.Equal(request.SalaryType.GetValueOrDefault(), offer.SalaryType);
+            Assert.Equal(request.ExperienceLevel, offer.ExperienceLevel);
         }
 
         [Fact]
@@ -66,6 +68,7 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 MinSalary = 1,
                 MaxSalary = 2,
                 SalaryType = SalaryType.Hourly,
+                ExperienceLevel = WorkExperienceLevel.Senior,
             };
 
             var request = new UpdateJobOfferRequest
@@ -78,7 +81,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
                 WorkType = JobOfferWorkType.Hybrid,
                 SalaryType = SalaryType.Daily,
                 MaxSalary = 5,
-                MinSalary = 4
+                MinSalary = 4,
+                ExperienceLevel = WorkExperienceLevel.Mid
             };
 
             _factory.Update(offer, request);
@@ -91,7 +95,8 @@ namespace JobBoard.Tests.Unit.FactoryTests
             Assert.Equal(request.WorkType, offer.WorkType);
             Assert.Equal(request.MaxSalary, offer.MaxSalary);
             Assert.Equal(request.MinSalary, offer.MinSalary);
-            Assert.Equal(request.SalaryType.GetValueOrDefault(), offer.SalaryType);
+            Assert.Equal(request.SalaryType, offer.SalaryType);
+            Assert.Equal(request.ExperienceLevel, offer.ExperienceLevel);
         }
     }
 }

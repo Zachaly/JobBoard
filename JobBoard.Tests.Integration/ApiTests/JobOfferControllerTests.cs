@@ -80,6 +80,7 @@ namespace JobBoard.Tests.Integration.ApiTests
                 SalaryType = Domain.Enum.SalaryType.Monthly,
                 MinSalary = 5000,
                 MaxSalary = 6000,
+                ExperienceLevel = Domain.Enum.WorkExperienceLevel.Mid
             };
 
             var response = await _httpClient.PostAsJsonAsync(Endpoint, request);
@@ -93,7 +94,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                  && offer.WorkType == request.WorkType
                  && offer.SalaryType == request.SalaryType
                  && offer.MaxSalary == request.MaxSalary
-                 && offer.MinSalary == request.MinSalary);
+                 && offer.MinSalary == request.MinSalary
+                 && offer.ExperienceLevel == request.ExperienceLevel);
             Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(0));
             Assert.Contains(_dbContext.JobOfferRequirements, x => x.Content == request.Requirements.ElementAt(1));
         }
@@ -143,7 +145,8 @@ namespace JobBoard.Tests.Integration.ApiTests
                 WorkType = Domain.Enum.JobOfferWorkType.Remote,
                 SalaryType = Domain.Enum.SalaryType.Yearly,
                 MinSalary = 1000,
-                MaxSalary = 2000
+                MaxSalary = 2000,
+                ExperienceLevel = Domain.Enum.WorkExperienceLevel.Mid,
             };
 
             var response = await _httpClient.PutAsJsonAsync(Endpoint, request);
@@ -159,6 +162,8 @@ namespace JobBoard.Tests.Integration.ApiTests
             Assert.Equal(request.SalaryType, offer.SalaryType);
             Assert.Equal(request.MinSalary, offer.MinSalary);
             Assert.Equal(request.MaxSalary, offer.MaxSalary);
+            Assert.Equal(request.SalaryType, offer.SalaryType);
+            Assert.Equal(request.ExperienceLevel, offer.ExperienceLevel);
         }
 
         [Fact]

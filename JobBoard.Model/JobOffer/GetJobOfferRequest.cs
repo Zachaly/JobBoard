@@ -17,5 +17,7 @@ namespace JobBoard.Model.JobOffer
         [SkipFilter]
         public ICollection<string>? Tags { get; set; }
         public JobOfferWorkType? WorkType { get; set; }
+        [CustomFilter(Property = "ExperienceLevel", ComparisonType = ComparisonType.Contains)]
+        public ICollection<WorkExperienceLevel>? ExperienceLEvel { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 import CompanyAccountModel from "../company-account/CompanyAccountModel";
 import JobOfferWorkType from "../enum/JobOfferWorkType";
 import SalaryType from "../enum/SalaryType";
+import WorkExperienceLevel from "../enum/WorkExperienceLevel";
 import JobOfferRequirementModel from "../job-offer-requirement/JobOfferRequirementModel";
 import JobOfferTagModel from "../job-offer-tag/JobOfferTagModel";
 
@@ -19,5 +20,6 @@ export default interface JobOfferModel {
     workType: JobOfferWorkType,
     minSalary?: number,
     maxSalary?: number,
-    salaryType: SalaryType
+    salaryType: SalaryType,
+    experienceLevel: WorkExperienceLevel
 }

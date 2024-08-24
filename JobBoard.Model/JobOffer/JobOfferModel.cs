@@ -22,5 +22,6 @@ namespace JobBoard.Model.JobOffer
         public int? MinSalary { get; set; }
         public int? MaxSalary { get; set; }
         public SalaryType SalaryType { get; set; }
+        public WorkExperienceLevel ExperienceLevel { get; set; }
     }
 }

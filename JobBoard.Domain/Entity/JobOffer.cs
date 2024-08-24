@@ -18,6 +18,7 @@ namespace JobBoard.Domain.Entity
         public int? MinSalary { get; set; }
         public int? MaxSalary { get; set; }
         public SalaryType SalaryType { get; set; }
+        public WorkExperienceLevel ExperienceLevel { get; set; }
 
         public ICollection<JobOfferRequirement> Requirements { get; set; }
         public ICollection<JobOfferTag> Tags { get; set; }

@@ -58,7 +58,18 @@
                         </select>
                     </div>
                 </div>
-
+                <div class="control">
+                    <div class="select">
+                        <select v-model="request.experienceLevel">
+                            <option :value="undefined"></option>
+                            <option :value="WorkExperienceLevel.None">None</option>
+                            <option :value="WorkExperienceLevel.Intern">Intern</option>
+                            <option :value="WorkExperienceLevel.Junior">Junior</option>
+                            <option :value="WorkExperienceLevel.Mid">Mid</option>
+                            <option :value="WorkExperienceLevel.Senior">Senior</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="control">
                     <button class="button" @click="add()">Add</button>
                     <button class="button" @click="() => router.back()">Cancel</button>
@@ -102,6 +113,7 @@ import BusinessModel from '../model/business/BusinessModel';
 import PagedRequest from '../model/PagedRequest';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType';
 import SalaryType from '../model/enum/SalaryType'
+import WorkExperienceLevel from '../model/enum/WorkExperienceLevel'
 
 const authStore = useAuthStore()
 const companyId = authStore.companyData?.id ?? 0
