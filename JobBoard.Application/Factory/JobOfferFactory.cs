@@ -25,6 +25,7 @@ namespace JobBoard.Application.Factory
                 MinSalary = request.MinSalary,
                 MaxSalary = request.MaxSalary,
                 SalaryType = request.SalaryType.GetValueOrDefault(),
+                ExperienceLevel = request.ExperienceLevel.GetValueOrDefault(),
             };
 
         public void Update(JobOffer offer, UpdateJobOfferRequest request)
@@ -38,6 +39,7 @@ namespace JobBoard.Application.Factory
             offer.SalaryType = request.SalaryType.GetValueOrDefault();
             offer.MaxSalary = request.MaxSalary;
             offer.MinSalary = request.MinSalary;
+            offer.ExperienceLevel = request.ExperienceLevel.GetValueOrDefault();
         }
     }
 }
