@@ -25,4 +25,13 @@ services:
       - 1433:1433
     volumes:
       - ./.containers/jobboard-database:/var/opt/mssql/data
+  jobboard.frontend:
+    image: ${DOCKER_REGISTRY-}jobboardui
+    container_name: jobboard.frontend
+    build:
+      context: ./job-board-ui
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
 
