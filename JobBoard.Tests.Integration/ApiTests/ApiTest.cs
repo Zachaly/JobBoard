@@ -3,6 +3,7 @@ using JobBoard.Model.Response;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Serilog;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -23,6 +24,10 @@ namespace JobBoard.Tests.Integration.ApiTests
                         {
                             ["ConnectionStrings:SqlServer"] = Constants.ConnectionString,
                         });
+                    });
+                    builder.ConfigureServices(config =>
+                    {
+                        config.AddSerilog((_, _) => { });
                     });
                 });
 
