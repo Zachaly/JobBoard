@@ -3,10 +3,17 @@ using JobBoard.Application.Service;
 using JobBoard.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PdfSharp;
+using PdfSharp.Fonts;
+using PdfSharp.Snippets.Font;
 using Serilog;
 [assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (Capabilities.Build.IsCoreBuild)
+    GlobalFontSettings.FontResolver = new FailsafeFontResolver();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
