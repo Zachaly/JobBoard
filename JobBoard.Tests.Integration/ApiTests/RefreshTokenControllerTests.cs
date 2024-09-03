@@ -6,9 +6,12 @@ using JobBoard.Application.Command.Abstraction;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection5)]
     public class RefreshTokenControllerTests : ApiTest
     {
         const string Endpoint = "api/refresh-token";
+
+        public RefreshTokenControllerTests(DatabaseContainerFixture fixture) : base(fixture) { }
 
         [Fact]
         public async Task RefreshAdminToken_Success_ReturnsNewTokens()

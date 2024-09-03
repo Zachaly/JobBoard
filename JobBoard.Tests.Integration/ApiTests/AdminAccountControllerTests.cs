@@ -6,9 +6,15 @@ using JobBoard.Application.Command;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection1)]
     public class AdminAccountControllerTests : ApiTest
     {
         const string Endpoint = "api/admin-account";
+
+        public AdminAccountControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
 
         [Fact]
         public async Task Get_ReturnAccounts()

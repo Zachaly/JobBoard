@@ -6,9 +6,15 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection2)]
     public class EmployeeAccountControllerTests : ApiTest
     {
         const string Endpoint = "/api/employee-account";
+
+        public EmployeeAccountControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
 
         [Fact]
         public async Task Post_ValidRequest_AddsAccount()

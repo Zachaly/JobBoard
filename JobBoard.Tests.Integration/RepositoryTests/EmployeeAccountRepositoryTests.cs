@@ -4,11 +4,12 @@ using JobBoard.Model.EmployeeAccount;
 
 namespace JobBoard.Tests.Integration.RepositoryTests
 {
+    [Collection(Collections.RepositoryCollection2)]
     public class EmployeeAccountRepositoryTests : DatabaseTest
     {
         private readonly EmployeeAccountRepository _repository;
 
-        public EmployeeAccountRepositoryTests()
+        public EmployeeAccountRepositoryTests(DatabaseContainerFixture fixture) : base(fixture)
         {
             _repository = new EmployeeAccountRepository(_dbContext);
         }

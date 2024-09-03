@@ -5,9 +5,15 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection4)]
     public class JobOfferRequirementControllerTests : ApiTest
     {
         const string Endpoint = "api/job-offer-requirement";
+
+        public JobOfferRequirementControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
 
         [Fact]
         public async Task Get_ReturnsRequirements()

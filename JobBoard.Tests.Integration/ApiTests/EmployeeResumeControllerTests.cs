@@ -4,9 +4,15 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection3)]
     public class EmployeeResumeControllerTests : ApiTest
     {
         const string Endpoint = "api/employee-resume";
+
+        public EmployeeResumeControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
 
         [Fact]
         public async Task Get_ReturnsListOfResumes()

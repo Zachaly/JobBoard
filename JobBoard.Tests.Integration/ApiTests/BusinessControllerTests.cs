@@ -6,9 +6,15 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection1)]
     public class BusinessControllerTests : ApiTest
     {
         const string Endpoint = "api/business";
+
+        public BusinessControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
 
         [Fact]
         public async Task Get_ReturnsBusinesses()

@@ -5,9 +5,15 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection5)]
     public class JobOfferTagControllerTests : ApiTest
     {
         const string Endpoint = "api/job-offer-tag";
+
+        public JobOfferTagControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
 
         [Fact]
         public async Task Get_ReturnsTags()
