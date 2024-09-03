@@ -3,12 +3,15 @@ using JobBoard.Application.Command;
 using System.Net.Http.Json;
 using JobBoard.Model.Response;
 using JobBoard.Application.Command.Abstraction;
+using PdfSharp.Quality;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
     public class RefreshTokenControllerTests : ApiTest
     {
         const string Endpoint = "api/refresh-token";
+
+        public RefreshTokenControllerTests(DatabaseContainerFixture fixture) : base(fixture) { }
 
         [Fact]
         public async Task RefreshAdminToken_Success_ReturnsNewTokens()

@@ -10,6 +10,11 @@ namespace JobBoard.Tests.Integration.ApiTests
     {
         const string Endpoint = "/api/employee-account";
 
+        public EmployeeAccountControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
+
         [Fact]
         public async Task Post_ValidRequest_AddsAccount()
         {

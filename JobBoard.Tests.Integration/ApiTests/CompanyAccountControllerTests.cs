@@ -10,6 +10,11 @@ namespace JobBoard.Tests.Integration.ApiTests
     {
         const string Endpoint = "api/company-account";
 
+        public CompanyAccountControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
+
         [Fact]
         public async Task Get_ReturnsListOfCompanies()
         {

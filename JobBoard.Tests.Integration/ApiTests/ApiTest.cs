@@ -1,6 +1,8 @@
 ﻿using JobBoard.Application.Command;
+using JobBoard.Database;
 using JobBoard.Model.Response;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Serilog;
@@ -9,11 +11,12 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
-    public class ApiTest : DatabaseTest
+    public class ApiTest : IClassFixture<DatabaseContainerFixture>, IDisposable
     {
         protected readonly HttpClient _httpClient;
+        protected readonly ApplicationDbContext _dbContext;
 
-        public ApiTest()
+        public ApiTest(DatabaseContainerFixture fixture)
         {
             var webFactory = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
@@ -22,7 +25,7 @@ namespace JobBoard.Tests.Integration.ApiTests
                     {
                         config.AddInMemoryCollection(new Dictionary<string, string?>
                         {
-                            ["ConnectionStrings:SqlServer"] = Constants.ConnectionString,
+                            ["ConnectionStrings:SqlServer"] = fixture.ConnectionString,
                         });
                     });
                     builder.ConfigureServices(config =>
@@ -32,6 +35,11 @@ namespace JobBoard.Tests.Integration.ApiTests
                 });
 
             _httpClient = webFactory.CreateClient();
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseSqlServer(fixture.ConnectionString).Options;
+
+            _dbContext = new ApplicationDbContext(options);
         }
 
         protected async Task<T?> GetContentFromBadRequestAsync<T>(HttpResponseMessage response)
@@ -112,6 +120,11 @@ namespace JobBoard.Tests.Integration.ApiTests
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", content.AuthToken);
 
             return content;
+        }
+
+        public void Dispose()
+        {
+            _dbContext.Database.EnsureDeleted();
         }
     }
 }

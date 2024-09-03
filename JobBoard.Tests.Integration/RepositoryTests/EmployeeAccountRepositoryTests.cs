@@ -8,7 +8,7 @@ namespace JobBoard.Tests.Integration.RepositoryTests
     {
         private readonly EmployeeAccountRepository _repository;
 
-        public EmployeeAccountRepositoryTests()
+        public EmployeeAccountRepositoryTests(DatabaseContainerFixture fixture) : base(fixture)
         {
             _repository = new EmployeeAccountRepository(_dbContext);
         }

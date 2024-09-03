@@ -8,7 +8,7 @@ namespace JobBoard.Tests.Integration.RepositoryTests
     {
         private readonly JobOfferRepository _repository;
 
-        public JobOfferRepositoryTests() : base()
+        public JobOfferRepositoryTests(DatabaseContainerFixture fixture) : base(fixture)
         {
             _repository = new JobOfferRepository(_dbContext);
         }

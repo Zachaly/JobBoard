@@ -9,6 +9,11 @@ namespace JobBoard.Tests.Integration.ApiTests
     {
         const string Endpoint = "api/job-offer-requirement";
 
+        public JobOfferRequirementControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
+
         [Fact]
         public async Task Get_ReturnsRequirements()
         {

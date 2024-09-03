@@ -8,7 +8,7 @@ namespace JobBoard.Tests.Integration.RepositoryTests
     {
         private readonly AdminAccountRepository _repository;
 
-        public AdminAccountRepositoryTests() : base()
+        public AdminAccountRepositoryTests(DatabaseContainerFixture fixture) : base(fixture)
         {
             _repository = new AdminAccountRepository(_dbContext);
         }

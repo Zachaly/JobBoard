@@ -10,6 +10,11 @@ namespace JobBoard.Tests.Integration.ApiTests
     {
         const string Endpoint = "api/job-offer-application";
 
+        public JobOfferApplicationControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
+
         [Fact]
         public async Task Get_ReturnsListOfApplications()
         {

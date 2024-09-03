@@ -8,6 +8,11 @@ namespace JobBoard.Tests.Integration.ApiTests
     {
         const string Endpoint = "api/employee-resume";
 
+        public EmployeeResumeControllerTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
+
         [Fact]
         public async Task Get_ReturnsListOfResumes()
         {

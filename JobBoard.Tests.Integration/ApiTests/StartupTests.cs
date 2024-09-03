@@ -2,6 +2,11 @@
 {
     public class StartupTests : ApiTest
     {
+        public StartupTests(DatabaseContainerFixture fixture) : base(fixture)
+        {
+            
+        }
+
         [Fact]
         public void Startup_AdminAccountCreated()
         {
