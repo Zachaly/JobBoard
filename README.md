@@ -8,11 +8,17 @@
   * EntityFramework Core
   * MediatR
   * FluentValidation
-  * XUnit
   * Migradoc
+  * Serilog
+  * SQL Server
 * Frontend
   * Vue3
   * Vue Router
   * Axios
   * Pinia
   * Bulma
+* Tests
+  * XUnit
+  * TestContainers
+  * Bogus
+  * NSubstitute 
