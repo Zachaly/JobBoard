@@ -6,6 +6,7 @@ using JobBoard.Application.Command;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection1)]
     public class AdminAccountControllerTests : ApiTest
     {
         const string Endpoint = "api/admin-account";

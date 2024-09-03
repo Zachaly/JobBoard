@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection2)]
     public class EmployeeAccountControllerTests : ApiTest
     {
         const string Endpoint = "/api/employee-account";

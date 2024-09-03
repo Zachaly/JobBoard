@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection5)]
     public class JobOfferTagControllerTests : ApiTest
     {
         const string Endpoint = "api/job-offer-tag";

@@ -4,6 +4,7 @@ using JobBoard.Model.CompanyAccount;
 
 namespace JobBoard.Tests.Integration.RepositoryTests
 {
+    [Collection(Collections.RepositoryCollection1)]
     public class CompanyAccountRepositoryTests : DatabaseTest
     {
         private readonly CompanyAccountRepository _repository;

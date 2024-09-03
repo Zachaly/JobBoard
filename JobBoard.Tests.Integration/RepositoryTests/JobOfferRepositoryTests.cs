@@ -4,6 +4,7 @@ using JobBoard.Model.JobOffer;
 
 namespace JobBoard.Tests.Integration.RepositoryTests
 {
+    [Collection(Collections.RepositoryCollection2)]
     public class JobOfferRepositoryTests : DatabaseTest
     {
         private readonly JobOfferRepository _repository;

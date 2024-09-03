@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 
 namespace JobBoard.Tests.Integration.ApiTests
 {
+    [Collection(Collections.ApiCollection1)]
     public class BusinessControllerTests : ApiTest
     {
         const string Endpoint = "api/business";
