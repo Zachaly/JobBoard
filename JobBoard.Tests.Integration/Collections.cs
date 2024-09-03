@@ -1,5 +1,9 @@
 ﻿namespace JobBoard.Tests.Integration
 {
+    /*
+     Added because tests were failing when there was too many containers running at once(i.e. one container per class),
+     so i added collections to limit number of concurrent containers
+     */
     internal static class Collections
     {
         public const string ApiCollection1 = "Api1";
