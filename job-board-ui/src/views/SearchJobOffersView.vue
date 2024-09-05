@@ -66,6 +66,7 @@
                     {{ offerCount }} offers found
                 </p>
                 <JobOfferListItem v-for="offer in offers" :key="offer.id" :offer="offer" />
+                <Pages :pageCount="Math.ceil(offerCount / 5)" @change-page="changePage"/>
             </div>
         </div>
     </ViewTemplate>
@@ -81,18 +82,19 @@ import GetJobOfferRequest from '../model/job-offer/GetJobOfferRequest';
 import BusinessModel from '../model/business/BusinessModel';
 import JobOfferWorkType from '../model/enum/JobOfferWorkType'
 import WorkExperienceLevel from '../model/enum/WorkExperienceLevel';
+import Pages from '@/components/PagesComponent.vue'
 
 const offers = ref<JobOfferModel[]>([])
 const offerCount = ref(0)
 const businesses = ref<BusinessModel[]>([])
 
-console.log(Object.entries(JobOfferWorkType))
-
 const searchRequest: Ref<GetJobOfferRequest> = ref({
     MinimalExpirationDate: new Date().toISOString(),
     BusinessIds: [],
     Tags: [],
-    ExperienceLevel: []
+    ExperienceLevel: [],
+    PageIndex: 0,
+    PageSize: 10
 })
 
 const changeBusinesses = (id: number) => {
@@ -104,8 +106,14 @@ const changeBusinesses = (id: number) => {
 }
 
 const loadOffers = () => {
+    searchRequest.value.PageIndex = 0
     axios.get('job-offer', { params: searchRequest.value }).then(res => offers.value = res.data)
     axios.get('job-offer/count', { params: searchRequest.value }).then(res => offerCount.value = res.data)
+}
+
+const changePage = (index: number) => {
+    searchRequest.value.PageIndex = index
+    axios.get('job-offer', { params: searchRequest.value }).then(res => offers.value = res.data)
 }
 
 const newTag = ref('')

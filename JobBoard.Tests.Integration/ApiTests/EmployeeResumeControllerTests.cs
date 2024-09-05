@@ -61,5 +61,26 @@ namespace JobBoard.Tests.Integration.ApiTests
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
+
+        [Fact]
+        public async Task GetCount_ReturnsCorrectCount()
+        {
+            var employeeData = await AuthorizeEmployeeAsync();
+
+            const int Count = 20;
+
+            var resumes = FakeDataFactory.CreateEmployeeResumes(employeeData.UserId, Count);
+
+            _dbContext.AddRange(resumes);
+            _dbContext.SaveChanges();
+
+
+            var response = await _httpClient.GetAsync($"{Endpoint}/count");
+
+            var content = await response.Content.ReadFromJsonAsync<int>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(Count, content);
+        }
     }
 }

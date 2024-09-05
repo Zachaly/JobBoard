@@ -137,7 +137,7 @@ const getCompaniesRequest: Ref<GetCompanyAccountRequest> = ref({})
 const getEmployeesRequest: Ref<GetEmployeeAccountRequest> = ref({})
 
 onMounted(() => {
-    axios.get<AdminAccountModel[]>('admin-account').then(res => admins.value = res.data)
+    axios.get<AdminAccountModel[]>('admin-account', { params: { SkipPagination: true }}).then(res => admins.value = res.data)
     axios.get<CompanyAccountModel[]>('company-account').then(res => companies.value = res.data)
     axios.get<EmployeeAccountModel[]>('employee-account').then(res => employees.value = res.data)
 

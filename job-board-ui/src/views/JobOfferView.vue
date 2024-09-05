@@ -77,7 +77,8 @@ const offer: Ref<JobOfferModel> = ref({
     requirements: [],
     tags: [],
     workType: JobOfferWorkType.Onsite,
-    salaryType: 0
+    salaryType: 0,
+    experienceLevel: 0
 })
 
 const changeFile = (e: Event) => {
