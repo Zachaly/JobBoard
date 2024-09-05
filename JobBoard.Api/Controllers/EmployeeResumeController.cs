@@ -98,5 +98,18 @@ namespace JobBoard.Api.Controllers
 
             return res.ReturnNoContentOrBadRequest();
         }
+
+        /// <summary>
+        /// Returns number of employee resumes filtered by request
+        /// </summary>
+        /// <response code="200">Number of resumes</response>
+        [HttpGet("count")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<int>> GetCount([FromQuery] GetEmployeeResumeCountCommand command)
+        {
+            var res = await _mediator.Send(command);
+
+            return Ok(res);
+        } 
     }
 }
